@@ -4,6 +4,7 @@ import React from "react";
 import "@/styles/globals.css";
 
 import Footer from "@/components/Footer";
+import Navbar from "@/components/navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} relative xl:pt-0`}>
+        <Navbar />
         {children}
         <Footer />
       </body>

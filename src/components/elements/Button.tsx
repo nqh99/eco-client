@@ -23,7 +23,7 @@ const Button: React.FC<ButtonProps> = ({ className, children, ...props }) => {
   return (
     <m.button
       whileHover={{ scale: 0.9 }}
-      className={`box-border inline-flex items-center justify-center gap-3 rounded-md bg-white font-medium p-1 text-green-600 ${className}`}
+      className={`box-border inline-flex items-center gap-3 rounded-md bg-white font-semibold text-sm p-1 shadow-inner shadow-white/80 text-green-700 data-[focus]:outline-1 data-[focus]:outline-white ${className}`}
       {...props}
     >
       {children}
