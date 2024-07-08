@@ -15,43 +15,34 @@ interface CartItemProps {
   discountPercent?: number;
 }
 
-const CartItem: React.FC<CartItemProps> = ({
-  image,
-  title,
-  qualityStar,
-  soldNum,
-  price,
-  isDiscount = false,
-  discountPrice,
-  discountPercent,
-}) => {
+const CartItem = ({ ...props }: CartItemProps) => {
   return (
     <div className="w-56 h-80 max-h-80 rounded-sm box-border">
       <div className="relative w-56 h-48">
-        {typeof image == "string" ? (
+        {typeof props.image == "string" ? (
           <Image
-            src={image}
-            alt={title}
+            src={props.image}
+            alt={props.image}
             width={224}
             height={192}
             className="rounded"
           ></Image>
         ) : (
-          image
+          props.image
         )}
 
-        {isDiscount ? (
+        {props.isDiscount ? (
           <span className="block absolute top-2 left-2 bg-red-600 rounded text-white text-sm">
-            Giảm {discountPercent}%
+            Giảm {props.discountPercent}%
           </span>
         ) : null}
       </div>
       <div className="p-2">
-        <h3 className="text-sm h-12">{title}</h3>
+        <h3 className="text-sm h-12">{props.title}</h3>
         <div className="flex justify-between items-end pb-2 border-b border-emerald-600">
-          {qualityStar && qualityStar <= 5 && (
+          {props.qualityStar && props.qualityStar <= 5 && (
             <div className="flex items-center">
-              {Array.from({ length: qualityStar }).map((_, index) => (
+              {Array.from({ length: props.qualityStar }).map((_, index) => (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -71,24 +62,24 @@ const CartItem: React.FC<CartItemProps> = ({
             </div>
           )}
           <span className="block text-gray-500 font-light text-xs">
-            Đã bán {soldNum}
+            Đã bán {props.soldNum}
           </span>
         </div>
         <div className="flex content-center justify-between gap-3 items-center mt-2">
-          {isDiscount ? (
+          {props.isDiscount ? (
             <>
               <p className="text-lg font-medium text-red-500">
-                {discountPrice}{" "}
+                {props.discountPrice}{" "}
                 <span className="underline underline-offset-2">đ</span>
               </p>
               <p className="text-sm text-gray-400">
-                <s>{price}</s>
+                <s>{props.price}</s>
                 <span className="underline underline-offset-2">đ</span>
               </p>
             </>
           ) : (
             <>
-              <p className="text-lg">{price}</p>
+              <p className="text-lg">{props.price}</p>
             </>
           )}
           {/* <Image src={"/icons/shopping-cart.svg"} alt="shopping cart item" width={}/> */}

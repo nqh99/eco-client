@@ -5,7 +5,7 @@ import { motion as m } from "framer-motion";
 
 interface StackedListProps {
   title?: string | React.ReactNode;
-  elements: React.ReactNode[];
+  children: React.ReactNode;
   direction?: "vertical" | "horizontal";
   className?: string;
 }
@@ -19,12 +19,12 @@ interface StackedListProps {
  * @param {boolean} props.direction - The direction in which the elements should be stacked. If true, elements are stacked horizontally (row direction), otherwise stacked vertically (column direction).
  * @returns {JSX.Element} The rendered StackedList component.
  */
-const StackedList: React.FC<StackedListProps> = ({
+const StackedList = ({
   title,
-  elements,
+  children,
   direction = "horizontal",
   className,
-}) => {
+}: StackedListProps) => {
   return (
     <div className={`p-2 rounded-xl bg-white ${className || ""}`}>
       {title != null &&
@@ -41,9 +41,7 @@ const StackedList: React.FC<StackedListProps> = ({
           direction == "horizontal" ? "flex-row" : "flex-col"
         } justify-between`}
       >
-        {elements.map((element, index) => (
-          <m.li key={index}>{element}</m.li>
-        ))}
+        {children}
       </m.ul>
     </div>
   );
