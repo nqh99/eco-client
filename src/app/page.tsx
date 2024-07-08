@@ -1,11 +1,10 @@
-import Dialog from "@/components/elements/Dialog";
+import Checkbox from "@/components/elements/Checkbox";
 import React from "react";
 
 export default function Home() {
-
   return (
     <main className="px-8">
-      <Dialog />
+      <Checkbox />
     </main>
   );
 }
