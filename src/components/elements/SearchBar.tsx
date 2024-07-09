@@ -5,6 +5,7 @@ import Image from "next/image";
 
 //========= import image =========== //
 import iconSearch from "@/public/icons/Icon-search-placehod.svg";
+import Suggestions from "./Suggestions";
 
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,6 +47,15 @@ export default function SearchBar() {
           className="relative flex w-full pl-2 pr-4 placeholder:text-sm outline-none decoration-none rounded-r-xl"
           placeholder="Tìm kiếm sản phẩm tươi ngon"
         />
+        {searchTerm.length > 2 ? (
+          <Suggestions
+            searchTerm={searchTerm}
+            className={"top-10"}
+            setSearchTerm={setSearchTerm}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
