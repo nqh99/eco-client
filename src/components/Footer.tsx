@@ -4,8 +4,8 @@ import Button from "./elements/Button";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="">
-      <div className="px-8 bg-amber-500 flex items-center justify-between">
+    <footer>
+      <div className="px-10 bg-amber-500 flex items-center justify-between">
         <div className="flex items-center">
           <Image
             src="/images/supermarket.png"
@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
           </Button>
         </div>
       </div>
-      <div className="px-8 bg-lime-50 flex justify-between pt-6">
+      <div className="px-10 bg-lime-50 flex justify-between pt-6">
         <div>
           <h5 className="text-xs font-semibold">
             CÔNG TY TNHH ĐẦU TƯ THƯƠNG MẠI & <br /> DỊCH VỤ QUỐC TẾ ECO-HHB
@@ -164,7 +164,7 @@ const Footer: React.FC = () => {
           <p className="text-xs">Chính sách vận chuyển</p>
         </div>
       </div>
-      <div className="px-8 bg-green-800 h-10 text-center text-white text-xs">
+      <div className="bg-green-800 h-10 text-center text-white text-xs">
         <p className="leading-10">Copyright &copy;2023 ECO - HHB</p>
       </div>
     </footer>
