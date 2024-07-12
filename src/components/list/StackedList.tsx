@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion as m } from "framer-motion";
 
 interface StackedListProps {
@@ -25,24 +25,68 @@ const StackedList = ({
   direction = "horizontal",
   className,
 }: StackedListProps) => {
+  const childrenArr = React.Children.toArray(children);
+
+  const [width, setWidth] = useState(0);
+
+  const carousel = useRef<HTMLDivElement>(null);
+
+  const useCarouselByBtn = ({
+    childrenArr,
+  }: {
+    childrenArr: React.ReactNode[];
+  }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const handleNext = () => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex + 1 === childrenArr.length ? 0 : prevIndex + 1
+      );
+    };
+    const handlePrevious = () => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex - 1 < 0 ? childrenArr.length - 1 : prevIndex - 1
+      );
+    };
+    const handleDotClick = (index: number) => {
+      setCurrentIndex(index);
+    };
+  };
+
+  useEffect(() => {
+    if (carousel.current) {
+      setWidth(carousel.current.scrollWidth - carousel.current.offsetWidth);
+    }
+  }, []);
+
   return (
-    <div className={`p-2 rounded-xl bg-white ${className || ""}`}>
+    <div className={`rounded-xl bg-white ${className || ""}`}>
       {title != null &&
         (typeof title == "string" ? (
-          <div className="flex justify-between p-2">
+          <div className="flex justify-between mt-2 p-2">
             <h2 className="text-lg font-bold">{title}</h2>
             <span className="block text-sm text-green-800">Xem tất cả</span>
           </div>
         ) : (
           title
         ))}
-      <m.ul
-        className={`flex ${
-          direction == "horizontal" ? "flex-row" : "flex-col"
-        } justify-between`}
+      <m.div
+        ref={carousel}
+        whileTap={{ cursor: "grabbing" }}
+        className="cursor-grab overflow-hidden p-2"
       >
-        {children}
-      </m.ul>
+        <m.ul
+          drag="x"
+          dragConstraints={{ right: 0, left: -width }}
+          className={`flex flex-nowrap ${
+            direction == "horizontal" ? "flex-row" : "flex-col"
+          } gap-5`}
+        >
+          {childrenArr.map((element, index) => {
+            return <m.li key={index}>{element}</m.li>;
+          })}
+        </m.ul>
+      </m.div>
     </div>
   );
 };

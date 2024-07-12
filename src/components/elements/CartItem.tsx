@@ -8,7 +8,7 @@ interface CartItemProps {
   image: string | React.ReactNode;
   title: string;
   qualityStar?: number;
-  soldNum?: number;
+  soldNum: number;
   price: number;
   isDiscount: boolean;
   discountPrice?: number;
@@ -17,15 +17,15 @@ interface CartItemProps {
 
 const CartItem = ({ ...props }: CartItemProps) => {
   return (
-    <div className="w-56 h-80 max-h-80 rounded-sm box-border">
-      <div className="relative w-56 h-48">
+    <div className="w-56 h-80 min-w-56 max-h-80 rounded-sm box-border">
+      <div className="relative w-full h-48">
         {typeof props.image == "string" ? (
           <Image
             src={props.image}
             alt={props.image}
             width={224}
             height={192}
-            className="rounded"
+            className="rounded pointer-events-none"
           ></Image>
         ) : (
           props.image
