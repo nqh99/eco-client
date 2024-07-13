@@ -38,10 +38,10 @@ const StackedList = ({
   }, []);
 
   return (
-    <div className={`rounded-xl bg-white ${className || ""}`}>
+    <div className={`rounded-xl bg-white p-4 ${className || ""}`}>
       {title != null &&
         (typeof title == "string" ? (
-          <div className="flex justify-between mt-2 p-2">
+          <div className="flex justify-between items-center mb-3">
             <h2 className="text-lg font-bold">{title}</h2>
             <span className="block text-sm text-green-800">Xem tất cả</span>
           </div>
@@ -51,7 +51,7 @@ const StackedList = ({
       <m.div
         ref={carousel}
         whileTap={{ cursor: "grabbing" }}
-        className="cursor-grab overflow-hidden p-2"
+        className="cursor-grab overflow-hidden"
       >
         <m.ul
           drag="x"
