@@ -1,18 +1,19 @@
 "use client";
-"use client";
 
-import { useState } from "react";
-import { Dialog, DialogPanel } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import React from "react";
-import Link from "next/link";
-import Footer from "@/components/Footer";
+import SideBar from "@/components/sidebar/SideBar";
 
 export default function Home() {
- 
   return (
-    <main className="px-8">
-      MAIN BODY
+    <main className="relative max-w-[2560px] flex min-h-screen flex-row justify-center gap-[3%] mx-auto w-full pb-36 pt-40 px-16">
+      {/* //sidebar */}
+      <div className="flex w-[20%]">
+        <SideBar />
+      </div>
+      {/* //main */}
+      <div className="flex w-[77%] h-[calc(100vh-10rem)] bg-green-400">
+        MAIN BODY
+      </div>
     </main>
   );
 }
