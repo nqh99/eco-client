@@ -15,9 +15,18 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
-
+html {
+  box-sizing: border-box;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  background: rgb(255, 255, 255);
+}
+html::-webkit-scrollbar {
+  width: 0px;
+}
 body {
-  color: rgb(var(--foreground-rgb));
+  text-wrap: balance;
+  min-width: 305px;
   background: linear-gradient(
       to bottom,
       transparent,
