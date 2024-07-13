@@ -30,9 +30,12 @@ body {
   background: linear-gradient(
       to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  /* width: 0px; */
 }
 
 @layer utilities {

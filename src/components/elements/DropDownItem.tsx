@@ -1,15 +1,14 @@
 import React, { MouseEventHandler } from "react";
 import Image, { StaticImageData } from "next/image";
-//interface
 interface props {
+  key: number;
   imageIcon?: string | StaticImageData | any;
-  alt?: string;
+  alt: string;
   classNameButton?: string;
   classNameImage?: string;
-  titleItem?: string;
+  titleItem: string;
   handleClick?: MouseEventHandler<HTMLButtonElement>;
 }
-
 const DropDownItem = ({
   imageIcon,
   alt,
@@ -24,8 +23,14 @@ const DropDownItem = ({
       onClick={handleClick}
       className={`${classNameButton}`}
     >
-      <Image src={imageIcon} alt="login icon" className={`${classNameImage}`} />
-      <p>{titleItem}</p>
+      <Image
+        src={imageIcon}
+        alt="login icon"
+        width={20}
+        height={20}
+        className={`${classNameImage}`}
+      />
+      <p className="text-black">{titleItem}</p>
     </button>
   );
 };
