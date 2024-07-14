@@ -1,18 +1,19 @@
-"use client";
-"use client";
-
-import { useState } from "react";
-import { Dialog, DialogPanel } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import HeroSlider from "@/components/heroslider/HeroSlider";
+import SideBar from "@/components/sidebar/SideBar";
 import React from "react";
-import Link from "next/link";
-import Footer from "@/components/Footer";
 
-export default function Home() {
- 
+export default function HomePage() {
   return (
-    <main className="px-8">
-      MAIN BODY
+    <main className="p-10">
+      {/* //sidebar */}
+      <div className="flex flex-row gap-5">
+        <div className="w-[20%]">
+          <SideBar></SideBar>
+        </div>
+        <div className="w-[80%] flex flex-col gap-5">
+          <HeroSlider />
+        </div>
+      </div>
     </main>
   );
 }
