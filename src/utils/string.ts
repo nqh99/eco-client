@@ -10,27 +10,6 @@ const capitalizeWords = (str: string): string => {
   });
   const capitalizedJoined = capitalizedWords.join(" ");
   return capitalizedJoined;
-}
+};
 
-/**
- * Converts a string to a URL-friendly format.
- *
- * @param string - The string to be converted.
- * @returns The converted URL string.
- */
-const convertToURL = (str: string): string => {
-  const stringWithHyphens = str.toLocaleLowerCase().replace(/\s+/g, "-");
-  const stringWithoutSpecialCharacters = stringWithHyphens
-    .replace(/(?<![a-zA-Z])[0-9%]+/g, "")
-    .replace(/\-+/g, "-")
-    .replace("&", "and");
-
-  const url =
-    stringWithoutSpecialCharacters.charAt(0) === "-"
-      ? stringWithoutSpecialCharacters.substring(1)
-      : stringWithoutSpecialCharacters;
-
-  return url;
-}
-
-export { capitalizeWords, convertToURL };
+export { capitalizeWords };

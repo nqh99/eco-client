@@ -1,15 +1,16 @@
 import { ProductCategoryMdl } from "@/models/product-category";
-import ResponseMdl from "@/models/response";
-import { safeJsonParse } from "@/utils/core";
+import { safeDataFetching } from "@/utils/http";
 
 const getProductCategories = async () => {
-  const res = await fetch("http://localhost:9991/ehb-api/api/v1/categories");
-
-  const data = safeJsonParse<ResponseMdl<ProductCategoryMdl>>(
-    await res.text()
-  ) || { data: [], httpStatus: "404", message: "" };
-
-  return data.data;
+  const url = "http://localhost:9991/ehb-api/api/v1/categories";
+  const ret = await safeDataFetching<ProductCategoryMdl>(url);
+  return ret.data;
 };
 
-export { getProductCategories };
+const getTopSellingProductCategories = async () => {
+  const url = "http://localhost:9991/ehb-api/api/v1/categoriess";
+  const ret = await safeDataFetching<ProductCategoryMdl>(url);
+  return ret.data;
+};
+
+export { getProductCategories, getTopSellingProductCategories };

@@ -1,3 +1,5 @@
+import React from "react";
+
 interface props {
   session?: boolean | false; //test api session login: session : Section
   setMenu: (value: boolean) => void;

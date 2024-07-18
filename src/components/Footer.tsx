@@ -4,8 +4,8 @@ import Button from "./elements/Button";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="">
-      <div className="px-8 bg-amber-500 flex items-center justify-between">
+    <footer>
+      <div className="px-8 bg-amber-500 flex items-center justify-between select-none">
         <div className="flex items-center">
           <Image
             src="/images/supermarket.png"
@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="size-5"
+              className="size-5 select-none"
             >
               <path
                 strokeLinecap="round"
@@ -65,7 +65,7 @@ const Footer: React.FC = () => {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="size-5"
+              className="size-5 select-none"
             >
               <path
                 strokeLinecap="round"
@@ -83,7 +83,7 @@ const Footer: React.FC = () => {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="size-5"
+              className="size-5 select-none"
             >
               <path
                 strokeLinecap="round"
@@ -101,7 +101,7 @@ const Footer: React.FC = () => {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="size-5"
+              className="size-5 select-none"
             >
               <path
                 strokeLinecap="round"
@@ -121,7 +121,7 @@ const Footer: React.FC = () => {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="size-5"
+              className="size-5 select-none"
             >
               <path
                 strokeLinecap="round"

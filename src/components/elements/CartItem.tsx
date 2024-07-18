@@ -3,11 +3,12 @@
 import React from "react";
 import Image from "next/image";
 import Button from "./Button";
+import DiscountMdl from "@/models/products/discount";
 
 interface CartItemProps {
-  image: string | React.ReactNode;
+  image: string;
   title: string;
-  qualityStar?: number;
+  qualityStar: number;
   soldNum: number;
   price: number;
   isDiscount: boolean;
@@ -17,19 +18,16 @@ interface CartItemProps {
 
 const CartItem = ({ ...props }: CartItemProps) => {
   return (
-    <div className="w-56 h-80 min-w-56 max-h-80 rounded-sm box-border">
+    <div className="w-56 h-80 min-w-56 max-h-80 rounded-lg box-border border-2 border-slate-50 shadow-sm overflow-hidden">
       <div className="relative w-full h-48">
-        {typeof props.image == "string" ? (
-          <Image
-            src={props.image}
-            alt={props.image}
-            width={224}
-            height={192}
-            className="rounded pointer-events-none"
-          ></Image>
-        ) : (
-          props.image
-        )}
+        <Image
+          src={props.image}
+          alt={props.title}
+          fill={true}
+          // TODO: need to add sizes prop to optimized
+          sizes=""
+          className="pointer-events-none"
+        ></Image>
 
         {props.isDiscount ? (
           <span className="block absolute top-2 left-2 bg-red-600 rounded text-white text-sm">
@@ -69,7 +67,7 @@ const CartItem = ({ ...props }: CartItemProps) => {
           {props.isDiscount ? (
             <>
               <p className="text-lg font-medium text-red-500">
-                {props.discountPrice}{" "}
+                {props.discountPrice}
                 <span className="underline underline-offset-2">đ</span>
               </p>
               <p className="text-sm text-gray-400">

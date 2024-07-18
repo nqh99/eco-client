@@ -19,21 +19,11 @@ const config: Config = {
       xxs: { max: "364px" },
     },
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-      colors: {
-        "green-1": "#7EC200",
-        "green-2": "#429D5C",
-        "green-3": "#409A3C",
-        "green-4": "#00652E",
-        "green-5": "#143C27",
-        "green-6": "#002814",
-      },
       fontFamily: {
         sansita: ["Sansita", "sans-serif"],
+      },
+      padding: {
+        default: "var(--default-padding)",
       },
     },
   },

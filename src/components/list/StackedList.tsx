@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion as m } from "framer-motion";
 
 interface StackedListProps {
-  title?: string | React.ReactNode;
   children: React.ReactNode;
   direction?: "vertical" | "horizontal";
   className?: string;
@@ -20,7 +19,6 @@ interface StackedListProps {
  * @returns {JSX.Element} The rendered StackedList component.
  */
 const StackedList = ({
-  title,
   children,
   direction = "horizontal",
   className,
@@ -38,34 +36,25 @@ const StackedList = ({
   }, []);
 
   return (
-    <div className={`rounded-xl bg-white p-4 ${className || ""}`}>
-      {title != null &&
-        (typeof title == "string" ? (
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-lg font-bold">{title}</h2>
-            <span className="block text-sm text-green-800">Xem tất cả</span>
-          </div>
-        ) : (
-          title
-        ))}
-      <m.div
-        ref={carousel}
-        whileTap={{ cursor: "grabbing" }}
-        className="cursor-grab overflow-hidden"
+    <m.div
+      ref={carousel}
+      whileTap={{ cursor: "grabbing" }}
+      className={`bg-white mt-2 ${
+        className || ""
+      } cursor-grab overflow-hidden`}
+    >
+      <m.ul
+        drag="x"
+        dragConstraints={{ right: 0, left: -width }}
+        className={`flex flex-nowrap ${
+          direction == "horizontal" ? "flex-row" : "flex-col"
+        } gap-5`}
       >
-        <m.ul
-          drag="x"
-          dragConstraints={{ right: 0, left: -width }}
-          className={`flex flex-nowrap ${
-            direction == "horizontal" ? "flex-row" : "flex-col"
-          } gap-5`}
-        >
-          {childrenArr.map((element, index) => {
-            return <m.li key={index}>{element}</m.li>;
-          })}
-        </m.ul>
-      </m.div>
-    </div>
+        {childrenArr.map((element, index) => {
+          return <m.li key={index}>{element}</m.li>;
+        })}
+      </m.ul>
+    </m.div>
   );
 };
 

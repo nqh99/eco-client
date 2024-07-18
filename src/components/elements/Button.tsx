@@ -23,7 +23,7 @@ const Button = ({ className, ...props }: ButtonProps ) => {
   return (
     <m.button
       whileHover={{ scale: 0.9 }}
-      className={`box-border inline-flex items-center justify-center gap-3 rounded-md bg-white focus:outline-none font-medium p-1 text-green-600 ${className}`}
+      className={`box-border inline-flex items-center justify-center gap-3 select-none rounded-md bg-white focus:outline-none font-medium p-1 text-green-600 ${className}`}
       {...props}
     >
       {props.children}

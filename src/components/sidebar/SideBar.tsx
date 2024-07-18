@@ -5,16 +5,16 @@ import Image from "next/image";
 import { CgMenuRight } from "react-icons/cg";
 import Link from "next/link";
 
-const productCategories = await getProductCategories();
+const SideBar = async () => {
+  const productCategories = await getProductCategories();
 
-const SideBar = () => {
   return (
     <div className="flex flex-col w-full gap-2">
-      <div className="w-full h-12 flex flex-row items-center gap-4 bg-[#1E6B0A] rounded-md px-3 py-2">
+      <div className="w-full h-12 flex flex-row items-center gap-4 bg-[#1E6B0A] shadow-inner rounded-md px-3 py-2">
         <CgMenuRight className="size-5 text-white/90" />
         <p className="text-white font-medium text-base">Danh mục sản phẩm</p>
       </div>
-      <ul className="flex flex-col gap-2 rounded-md p-3 bg-[#FFFFFF] overflow-x-hidden">
+      <ul className="flex flex-col gap-2 rounded-md p-3 bg-[#FFFFFF] shadow-inner overflow-x-hidden">
         {productCategories
           ? productCategories.map((category: ProductCategoryMdl) => (
               <li key={category.id}>

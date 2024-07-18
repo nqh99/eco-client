@@ -9,7 +9,7 @@ const Logo = () => {
       <Link
         aria-label="logo hhb, click to go to the homepage"
         href="/"
-        className={`flex ml-8 w-[20%] items-center xl:h-full `}
+        className={`flex items-center justify-center h-full`}
       >
         <Image src={logoHHB} alt="logo HHB"></Image>
       </Link>
