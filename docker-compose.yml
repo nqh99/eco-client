@@ -2,8 +2,8 @@ version: "3.8"
 
 services:
   psql-db:
-    image: vanthanhdocker/ecommerce_ehb:db_v1.5
-    container_name: psql-db_v5
+    image: vanthanhdocker/ecommerce_ehb:db_v1.6
+    container_name: psql-db_v6
     restart: always
     environment:
       - POSTGRES_USER=postgres
@@ -13,12 +13,12 @@ services:
       - '5433:5432'
 
   app:
-    image: vanthanhdocker/ecommerce_ehb:v1.5
-    container_name: ecommerce_app_v5
+    image: vanthanhdocker/ecommerce_ehb:v1.6
+    container_name: ecommerce_app_v6
     ports:
       - '9991:9991'
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db_v5:5432/ecommerce
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db_v6:5432/ecommerce
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=123456
     depends_on:

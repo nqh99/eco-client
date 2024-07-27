@@ -25,6 +25,11 @@ const config: Config = {
       padding: {
         default: "var(--default-padding)",
       },
+      colors: {
+        default: "var(--default-color)",
+        discount: "var(--discount-color)",
+        informal: "var(--informal-color)",
+      },
     },
   },
   plugins: [],
