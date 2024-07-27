@@ -1,6 +1,9 @@
-import ErrorType from "@/configs/Errors";
+import { isCustomError } from "@/models/errors/custom-err";
+import { ServiceError } from "@/models/errors/service-err";
 import ResponseMdl from "@/models/https/response";
 import { revalidatePath } from "next/cache";
+import { generateReadableErr } from "./core";
+import { ClientError } from "@/models/errors/client-err";
 
 /**
  * Converts a string to a URL-friendly format.
@@ -24,34 +27,56 @@ const convertToURL = (str: string): string => {
 };
 
 /**
- * Fetches data from the specified URL, convert it into common response api model and handles error cases.
+ * Fetches data from the specified URL, convert it into specific response model (T type) and handles error cases.
  *
  * @param url - The URL to fetch the data from.
  * @param T - type of responded data
  * @returns A promise that resolves to the fetched data or an empty `ResponseMdl` object.
- * @throws An error of type `ErrorType.SysErr` if the response is not OK.
  */
-const safeDataFetching = async <T>(url: string): Promise<ResponseMdl<T>> => {
-  const res = await fetch(url, {
+const safeDataFetching = async <T>(
+  url: string,
+  needRevalidate?: boolean
+): Promise<T | undefined> => {
+  if (needRevalidate) {
+    revalidatePath(url);
+  }
+  const ret: ResponseMdl<T> = await fetch(url, {
     headers: {
       "ConTent-Type": "application/json",
     },
-  });
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw generateReadableErr(res.status, {
+          msg: res.statusText,
+          info: res.text,
+        });
+      }
+      return res.text();
+    })
+    .then((data) => JSON.parse(data))
+    .catch((err: Error) => {
+      throw new ClientError(err.cause as string, err.stack);
+    });
 
-  revalidatePath(url);
-
-  if (!res.ok) {
-    throw new Error(ErrorType.SysErr);
+  if (!isResOK(ret.httpStatus || "")) {
+    throw generateReadableErr(parseInt(ret.httpStatus ?? ""), {
+      msg: ret.message,
+      info: ret.data,
+    });
   }
 
-  try {
-    const strTrans = await res.text();
-    const jsonVal: ResponseMdl<T> = JSON.parse(strTrans);
-
-    return jsonVal;
-  } catch {
-    return new ResponseMdl();
-  }
+  return ret.data;
 };
 
-export { convertToURL, safeDataFetching };
+/**
+ * Checks if the HTTP response status is OK (200).
+ *
+ * @param response - The HTTP response object.
+ * @returns True if the response status is OK, false otherwise.
+ */
+const isResOK = (res: string | number): boolean => {
+  return res >= "200" && res < "300";
+};
+
+export { convertToURL, safeDataFetching, isResOK };
