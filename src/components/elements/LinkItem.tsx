@@ -20,7 +20,7 @@ const LinkItem = ({ children, href, className }: LinkItemProps) => {
       className={
         `${
           className ? className + " " : ""
-        } flex items-center px-2 h-full hover:border-[#B95A30] hover:border-b-2 hover:text-[#B95A30]` +
+        } flex items-center px-2 h-full hover:border-[#B95A30] hover:border-b-2 hover:text-[#B95A30]  hover:shadow-sm` +
         (isActive ? "text-[#B95A30] border-b-2 border-[#B95A30]" : "")
       }
       passHref

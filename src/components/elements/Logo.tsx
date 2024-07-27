@@ -1,8 +1,8 @@
 import React from "react";
 import Image from "next/image";
-//import image
 import logoHHB from "@/public/images/logo-hhb.png";
 import Link from "next/link";
+
 const Logo = () => {
   return (
     <>

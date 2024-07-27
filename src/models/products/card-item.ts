@@ -1,4 +1,5 @@
-import DiscountMdl from "./product/discount-item";
+import ProductDiscountMdl from "./discount";
+
 
 type CartItemMdl = {
   id: string;
@@ -11,7 +12,7 @@ type CartItemMdl = {
   rating: number;
   quantitySold: number;
   quantityAvailable: number;
-  discount: DiscountMdl;
+  discount: ProductDiscountMdl;
 };
 
 export default CartItemMdl;

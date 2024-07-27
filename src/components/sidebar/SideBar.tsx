@@ -1,6 +1,6 @@
 import React from "react";
 import { getProductCategories } from "@/apis/product-category";
-import { ProductCategoryMdl } from "@/models/product-category";
+import { ProductCategoryMdl } from "@/models/products/category";
 import Image from "next/image";
 import { CgMenuRight } from "react-icons/cg";
 import Link from "next/link";

@@ -7,10 +7,10 @@ import { motion } from "framer-motion";
 import { FaCartShopping } from "react-icons/fa6";
 
 export default function Cart() {
-  const [totalCartItems, setTotalCartItems] = useState<number>();
+  const [totalCartItems, setTotalCartItems] = useState<number>(0);
   function handleClick() {}
   useEffect(() => {
-    setTotalCartItems(3);
+    
   }, []);
 
   return (

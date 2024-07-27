@@ -6,10 +6,8 @@ import Cart from "@/components/elements/Cart";
 import Language from "@/components/elements/Language";
 import Notification from "@/components/elements/Notification";
 import Logo from "@/components/elements/Logo";
-import { getTopSellingProductCategories } from "@/apis/product-category";
-import { ProductCategoryMdl } from "@/models/product-category";
+import { ProductCategoryMdl } from "@/models/products/category";
 import Link from "next/link";
-import Error from "next/error";
 import LinkItem from "../elements/LinkItem";
 
 const Navbar = async () => {
@@ -34,7 +32,7 @@ const Navbar = async () => {
         className={`flex flex-row gap-5 h-28 px-8 z-50 max-w-[2560px] mx-auto w-full ]`}
       >
         <div className="w-[20%]">
-        <Logo />
+          <Logo />
         </div>
         <div className="w-[80%] flex flex-col">
           <div className="flex flex-row w-full h-[65%] justify-between items-center">
@@ -50,7 +48,7 @@ const Navbar = async () => {
               <Language />
             </div>
           </div>
-          <ul className="flex justify-start h-[35%] items-center">
+          <ul className="flex justify-start gap-2 h-[35%] items-center">
             {suggestionCategories.map((category: ProductCategoryMdl) => (
               <li key={category.id} className="flex items-center h-full">
                 <LinkItem href={category.id}>
