@@ -6,8 +6,8 @@ import React from "react";
 
 type AdsBannerProps = {
   imgURL: string;
-  imgWidth: number;
-  imgHeight: number;
+  imgWidth?: number;
+  imgHeight?: number;
   position: "top left" | "top right" | "bottom left" | "bottom right" | "full";
   children?: React.ReactNode;
   className?: string;
@@ -16,7 +16,7 @@ type AdsBannerProps = {
 const AdsBanner = ({ className, ...props }: AdsBannerProps) => {
   return (
     <div
-      className={`relative rounded-lg w-full h-full overflow-hidden shadow-inner ${
+      className={`relative rounded-lg overflow-hidden shadow-inner min-h-32 min-w-36 ${
         className || ""
       }`}
     >
@@ -25,16 +25,14 @@ const AdsBanner = ({ className, ...props }: AdsBannerProps) => {
         alt="Advertisement banner"
         width={props.position != "full" ? props.imgWidth : undefined}
         height={props.position != "full" ? props.imgHeight : undefined}
-        className={clsx(
-          "absolute",
-          {
-            "top-2 left-2": props.position == "top left",
-            "top-2 right-2": props.position == "top right",
-            "bottom-2 left-2": props.position == "bottom left",
-            "bottom-2 right-2": props.position == "bottom right",
-            "": props.position == "full",
-          }
-        )}
+        fill={props.position == "full" ? true : false}
+        className={clsx("absolute", {
+          "top-2 left-2": props.position == "top left",
+          "top-2 right-2": props.position == "top right",
+          "bottom-2 left-2": props.position == "bottom left",
+          "bottom-2 right-2": props.position == "bottom right",
+          "": props.position == "full",
+        })}
       />
       {props.children}
     </div>

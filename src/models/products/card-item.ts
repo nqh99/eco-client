@@ -1,6 +1,5 @@
 import ProductDiscountMdl from "./discount";
 
-
 type CartItemMdl = {
   id: string;
   name: string;
