@@ -1,11 +1,13 @@
 export default class ResponseMdl<T> {
   data?: T;
-  httpStatus?: string;
-  message?: string;
+  status: number;
+  message: string;
+  timestamp?: number;
 
-  constructor(data?: T, httpStatus?: string, message?: string) {
+  constructor(status: number, message: string, data?: T, timestamp?: number) {
     this.data = data;
-    this.httpStatus = httpStatus;
+    this.status = status;
     this.message = message;
+    this.timestamp = timestamp;
   }
 }

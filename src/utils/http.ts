@@ -59,8 +59,8 @@ const safeDataFetching = async <T>(
       throw new ClientError(err.cause as string, err.stack);
     });
 
-  if (!isResOK(ret.httpStatus || "")) {
-    throw generateReadableErr(parseInt(ret.httpStatus ?? ""), {
+  if (!isResOK(ret.status)) {
+    throw generateReadableErr(ret.status, {
       msg: ret.message,
       info: ret.data,
     });
@@ -75,8 +75,8 @@ const safeDataFetching = async <T>(
  * @param response - The HTTP response object.
  * @returns True if the response status is OK, false otherwise.
  */
-const isResOK = (res: string | number): boolean => {
-  return res >= "200" && res < "300";
+const isResOK = (res: number): boolean => {
+  return res >= 200 && res < 300;
 };
 
 export { convertToURL, safeDataFetching, isResOK };
