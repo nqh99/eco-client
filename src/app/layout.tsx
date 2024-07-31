@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 
 import Navbar from "../components/navbar/Navbar";
 import Footer from "@/components/Footer";
+import StoreProvider from "./StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +21,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`w-screen h-screen overflow-x-hidden ${inter.className}`}>
-        <div>
-          <Navbar />
-          {children}
-          <Footer />
-        </div>
+      <body
+        className={`w-screen h-screen overflow-x-hidden ${inter.className}`}
+      >
+        <StoreProvider>
+          <div>
+            <Navbar />
+            {children}
+            <Footer />
+          </div>
+        </StoreProvider>
       </body>
     </html>
   );
