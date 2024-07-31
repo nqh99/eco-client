@@ -6,6 +6,7 @@ import CartItemMdl from "@/models/products/card-item";
 import { useRouter } from "next/navigation";
 import Button from "./Button";
 import Rating from "./Rating";
+import { formatCurrency } from "@/utils/core";
 interface CartItemProps {
   itemMdl: CartItemMdl;
   href: string;
@@ -32,7 +33,7 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
         ></Image>
 
         {itemMdl.discount ? (
-          <span className="block absolute top-2 left-2 bg-red-600 rounded text-white text-sm">
+          <span className="block absolute top-2 left-2 bg-discount px-1 py-[2px] rounded text-white text-sm">
             Giảm {itemMdl.discount.discountPercent}%
           </span>
         ) : null}
@@ -53,18 +54,18 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
         <div className="flex content-center justify-around gap-3 items-center mt-2">
           {itemMdl.discount ? (
             <>
-              <p className="text-base font-medium text-red-500">
-                {itemMdl.discount.discountPrice}
+              <p className="text-base font-medium text-discount">
+                {formatCurrency(itemMdl.discount.discountPrice)}
                 <span className="underline underline-offset-2">đ</span>
               </p>
               <p className="text-xs text-gray-400">
-                <s>{itemMdl.price}</s>
+                <s>{formatCurrency(itemMdl.price)}</s>
                 <span className="underline underline-offset-2">đ</span>
               </p>
             </>
           ) : (
             <>
-              <p className="text-lg">{itemMdl.price}</p>
+              <p className="text-lg">{formatCurrency(itemMdl.price)}</p>
             </>
           )}
           <Button className="border border-current">
