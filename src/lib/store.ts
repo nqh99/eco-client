@@ -4,7 +4,7 @@ import { cartSlice } from "./features/checkout/cartSlice";
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      
+      cart: cartSlice.reducer,
     },
   });
 };
