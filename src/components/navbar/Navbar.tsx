@@ -2,7 +2,7 @@ import React from "react";
 import SearchBar from "@/components/elements/SearchBar";
 import MiniNavbar from "@/components/navbar/MiniNavbar";
 import Login from "@/components/elements/Login";
-import Cart from "@/components/elements/Cart";
+import Cart from "@/components/elements/ShoppingCartIcon";
 import Language from "@/components/elements/Language";
 import Notification from "@/components/elements/Notification";
 import Logo from "@/components/elements/Logo";

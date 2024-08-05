@@ -6,7 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 236, 253, 245;
   --background-end-rgb: 236, 241, 245;
-  --primary-color-rgb: 30, 107, 10;
+  --primary-color: rgb(30, 107, 10);
   --default-padding: 1rem;
   --default-color: #0c0a09;
   --discount-color: #ff1212;
@@ -95,4 +95,28 @@ body {
   .text-balance {
     text-wrap: pretty;
   }
+}
+
+/* Custom */
+.scrollbar-primary::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.scrollbar-primary::-webkit-scrollbar-track {
+  background: #c9c7c7;
+  border-radius: 5px;
+}
+
+/* Handle */
+.scrollbar-primary::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 5px;
+  scrollbar-width: thin;
+}
+
+/* Handle on hover */
+.scrollbar-primary::-webkit-scrollbar-thumb:hover {
+  background: #268002;
+  cursor: pointer;
 }
