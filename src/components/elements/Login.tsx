@@ -12,7 +12,7 @@ export default function Login() {
       aria-haspopup="true"
       className="p-2 focus:outline-none bg-emerald-50 w-10 h-10 rounded-full flex justify-center items-center"
     >
-      <FaUser className="text-[rgb(var(--primary-color-rgb))] size-5" />
+      <FaUser className="text-primary size-5" />
     </button>
   );
 }

@@ -1,25 +1,37 @@
 import { createSlice, PayloadAction, Reducer } from "@reduxjs/toolkit";
-import { ICart } from "@/lib/types";
+import { ICartPayload } from "@/lib/types";
 import { RootState } from "@/lib/store";
 
 interface CartState {
-  items: ICart[];
+  items: ICartPayload[];
+  totalQuantity: number;
+  totalPrice: number;
 }
 
 const initialState: CartState = {
   items: [],
+  totalQuantity: 0,
+  totalPrice: 0,
 };
 
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addCartItem: (state, action: PayloadAction<ICart>) => {
+    addCartItem: (state, action: PayloadAction<ICartPayload>) => {
       const item = action.payload;
       if (item && item.quantity > 0) {
         const indexOfItem = state.items.findIndex(
-          (it) => it.productID === item.productID
+          (it) => it.itemMdl.id === item.itemMdl.id
         );
+
+        const newTotalQuantity = state.totalQuantity + item.quantity;
+        const newTotalPrice =
+          state.totalPrice +
+          (item.itemMdl.discount
+            ? item.itemMdl.discount.discountPrice
+            : item.itemMdl.price) *
+            item.quantity;
 
         const newItems = [...state.items];
 
@@ -30,44 +42,91 @@ export const cartSlice = createSlice({
           newItems.push({ ...item });
         }
 
-        return { ...state, items: newItems };
+        return {
+          items: newItems,
+          totalPrice: newTotalPrice,
+          totalQuantity: newTotalQuantity,
+        };
       } else {
-        const items = state.items.filter(
-          (it) => it.productID !== item.productID
-        );
-        return { ...state, items: items };
+        return { ...state };
       }
     },
-    removeCartItem: (state, action: PayloadAction<ICart>) => {
+    removeCartItem: (state, action: PayloadAction<ICartPayload>) => {
       const item = action.payload;
+
       if (item && item.quantity > 0) {
         const indexOfItem = state.items.findIndex(
-          (it) => it.productID === item.productID
+          (it) => it.itemMdl.id === item.itemMdl.id
         );
 
-        let newItems = [...state.items];
-
-        if (
-          indexOfItem !== -1 &&
-          newItems[indexOfItem].quantity - item.quantity > 0
-        ) {
-          const newQuantity = newItems[indexOfItem].quantity - item.quantity;
-
-          newItems[indexOfItem] = { ...item, quantity: newQuantity };
-        } else {
-          newItems = newItems.filter((it) => it.productID !== item.productID);
+        if (indexOfItem === -1) {
+          return { ...state };
         }
 
-        return { ...state, items: newItems };
-      } else {
-        const items = state.items.filter(
-          (it) => it.productID !== item.productID
+        let newTotalQuantity =
+          state.totalQuantity - item.quantity > 0
+            ? state.totalQuantity - item.quantity
+            : 0;
+
+        let itemPrice = item.itemMdl.discount
+          ? item.itemMdl.discount.discountPrice
+          : item.itemMdl.price;
+
+        let newTotalPrice =
+          state.totalPrice - itemPrice * item.quantity > 0
+            ? state.totalPrice - itemPrice * item.quantity
+            : 0;
+
+        let newItems = [...state.items];
+        const newItemQuantity = newItems[indexOfItem].quantity - item.quantity;
+
+        if (newItemQuantity > 0) {
+          newItems[indexOfItem] = { ...item, quantity: newItemQuantity };
+        } else {
+          newItems = newItems.filter((it) => it.itemMdl.id !== item.itemMdl.id);
+        }
+
+        return {
+          items: newItems,
+          totalPrice: newTotalPrice,
+          totalQuantity: newTotalQuantity,
+        };
+      } else if (item.quantity === -1) {
+        const removeItem = state.items.find(
+          (it) => it.itemMdl.id === item.itemMdl.id
         );
-        return { ...state, items: items };
+
+        if (removeItem) {
+          let newTotalQuantity =
+            state.totalQuantity - removeItem.quantity > 0
+              ? state.totalQuantity - removeItem.quantity
+              : 0;
+
+          let itemPrice = removeItem.itemMdl.discount
+            ? removeItem.itemMdl.discount.discountPrice
+            : removeItem.itemMdl.price;
+
+          let newTotalPrice =
+            state.totalPrice - itemPrice * removeItem.quantity > 0
+              ? state.totalPrice - itemPrice * removeItem.quantity
+              : 0;
+
+          const newItems = state.items.filter(
+            (it) => it.itemMdl.id !== removeItem.itemMdl.id
+          );
+
+          return {
+            items: newItems,
+            totalPrice: newTotalPrice,
+            totalQuantity: newTotalQuantity,
+          };
+        }
+
+        return { ...state };
       }
     },
     clearCart: (state) => {
-      return { items: [] };
+      return { items: [], totalPrice: 0, totalQuantity: 0 };
     },
   },
 });

@@ -21,7 +21,7 @@ export default function Notification({
   return (
     <Popover>
       <PopoverButton className="p-2 focus:outline-none bg-emerald-50 w-10 h-10 rounded-full flex justify-center items-center data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white">
-        <IoMdNotifications className="text-[rgb(var(--primary-color-rgb))] size-6" />
+        <IoMdNotifications className="text-primary size-6" />
       </PopoverButton>
       <PopoverPanel
         transition

@@ -4,9 +4,12 @@ import React from "react";
 import Image from "next/image";
 import CartItemMdl from "@/models/products/card-item";
 import { useRouter } from "next/navigation";
-import Button from "./Button";
 import Rating from "./Rating";
 import { formatCurrency } from "@/utils/core";
+import { useAppDispatch } from "@/hooks/redux";
+import { addCartItem } from "@/lib/features/checkout/cartSlice";
+import CustomButton from "./Button";
+
 interface CartItemProps {
   itemMdl: CartItemMdl;
   href: string;
@@ -14,6 +17,7 @@ interface CartItemProps {
 
 const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   return (
     <div
@@ -68,17 +72,25 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
               <p className="text-lg">{formatCurrency(itemMdl.price)}</p>
             </>
           )}
-          <Button className="border border-current">
+          <CustomButton
+            className="border border-primary rounded p-[3px]"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              // TODO: enhance when business changed
+              dispatch(addCartItem({ itemMdl: itemMdl, quantity: 1 }));
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="size-5 text-green-800"
+              className="size-4 text-primary"
             >
               <path d="M0 0h24v24H0z" fill="none" />
               <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
             </svg>
-          </Button>
+          </CustomButton>
         </div>
       </div>
     </div>
