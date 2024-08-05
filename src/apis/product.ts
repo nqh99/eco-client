@@ -2,10 +2,10 @@ import CartItemMdl from "@/models/products/card-item";
 import ProductDetailMdl from "@/models/products/product-detail";
 import { safeDataFetching } from "@/utils/http";
 
-const getTopDealProducts = () => {
+const getTopDealProducts = (needRevalidate: boolean) => {
   const url =
     "http://localhost:9991/ehb-api/api/v1/products/top-deals?page=0&size=4";
-  const ret = safeDataFetching<CartItemMdl[]>(url, true);
+  const ret = safeDataFetching<CartItemMdl[]>(url, needRevalidate);
 
   return ret;
 };

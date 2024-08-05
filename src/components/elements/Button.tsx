@@ -1,15 +1,16 @@
 "use client";
 
-import React, { ButtonHTMLAttributes } from "react";
+import React from "react";
 import { motion as m, MotionProps } from "framer-motion";
+import { Button, ButtonProps } from "@headlessui/react";
 
-type ButtonProps = MotionProps & ButtonHTMLAttributes<HTMLElement>;
+type CustomProps = MotionProps & ButtonProps;
 
 /**
  * Button Component.
  * This component support all features that a button html supported and can be styled with motion. It should contain a word/string or a icon inside its.
  * Some attributes that you should pay attention to such as: value, children, type, onClick, ...
- * Use case: 
+ * Use case:
  * - use with form
  * - in case, it isn't linked to anything url
  * - .. etc
@@ -19,16 +20,24 @@ type ButtonProps = MotionProps & ButtonHTMLAttributes<HTMLElement>;
  * @param {ButtonProps} props - The button element props.
  * @returns {ReactNode} The rendered button element.
  */
-const Button = ({ className, ...props }: ButtonProps ) => {
+const CustomButton = ({ className, ...props }: CustomProps) => {
   return (
-    <m.button
-      whileHover={{ scale: 0.9 }}
-      className={`box-border inline-flex items-center justify-center gap-3 select-none rounded-md bg-white focus:outline-none font-medium p-1 text-green-600 ${className}`}
+    <Button
+      as={m.button}
+      whileTap={{
+        scale: 0.95,
+        transition: { duration: 0.1, ease: "easeInOut" },
+      }}
+      animate={{
+        scale: 1,
+        transition: { duration: 0.3, ease: "easeInOut" },
+      }}
+      className={className}
       {...props}
     >
       {props.children}
-    </m.button>
+    </Button>
   );
 };
 
-export default Button;
+export default CustomButton;

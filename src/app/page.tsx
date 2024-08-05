@@ -9,7 +9,7 @@ import CartItemMdl from "@/models/products/card-item";
 import React from "react";
 
 const HomePage = async () => {
-  const topDealProducts = await getTopDealProducts();
+  const topDealProducts = await getTopDealProducts(true);
 
   return (
     <main className="p-10">
