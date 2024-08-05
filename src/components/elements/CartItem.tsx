@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import CartItemMdl from "@/models/products/card-item";
 import { useRouter } from "next/navigation";
 import Button from "./Button";
 import Rating from "./Rating";
 import { formatCurrency } from "@/utils/core";
+import LoadingCartItem from "../skeleton/LoadingCartItem";
+
 interface CartItemProps {
   itemMdl: CartItemMdl;
   href: string;
@@ -14,7 +16,21 @@ interface CartItemProps {
 
 const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    if (itemMdl) {
+      setIsLoading(false);
+    }
+  }, [itemMdl]);
+
+  if (isLoading) {
+    return <LoadingCartItem />;
+  }
+
+  // if (!itemMdl) {
+  //   return <div>Không có dữ liệu</div>;
+  // }
   return (
     <div
       onClick={() => {
