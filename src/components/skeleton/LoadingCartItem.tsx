@@ -1,6 +1,6 @@
 import React from "react";
-import LoadingImage from "@/components/elements/LoadingImage";
-import LoadingText from "@/components/elements/LoadingText";
+import LoadingImage from "@/components/skeleton/LoadingImage";
+import LoadingText from "@/components/skeleton/LoadingText";
 
 interface LoadingCartItemProps {
   imageClassName?: string;
