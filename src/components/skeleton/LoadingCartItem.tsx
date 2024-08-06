@@ -14,13 +14,15 @@ const LoadingCartItem = ({
   containerClassName = "",
 }: LoadingCartItemProps) => (
   <div
-    className={`w-56 h-80 min-w-60 max-h-80 rounded-lg box-border border-2 border-slate-50 cursor-pointer shadow-sm overflow-hidden animate-pulse ${containerClassName}`}
+    className={`w-56 h-80 min-w-60 max-h-80 rounded-lg box-border border-2 border-slate-50 cursor-pointer shadow-sm overflow-hidden ${containerClassName}`}
   >
-    <LoadingImage className={imageClassName} />
+    <div className="flex justify-center">
+      <LoadingImage className={`rounded-full bg-blue-400 ${imageClassName}`} />
+    </div>
     <div className="p-2">
-      <LoadingText className={textClassName} />
-      <LoadingText className={textClassName} />
-      <LoadingText className={textClassName} />
+      <LoadingText className={`mb-2 ${textClassName}`} />
+      <LoadingText className={`mb-2 ${textClassName}`} />
+      <LoadingText className={`mb-2 ${textClassName}`} />
       <LoadingText />
     </div>
   </div>
