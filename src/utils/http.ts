@@ -79,4 +79,47 @@ const isResOK = (res: number): boolean => {
   return res >= 200 && res < 300;
 };
 
-export { convertToURL, safeDataFetching, isResOK };
+/**
+ * Sends a POST request to the specified URL with the provided data, convert the response into specific response model (T type) and handles error cases.
+ *
+ * @param url - The URL to send the request to.
+ * @param data - The data to send in the request body.
+ * @param T - The type of the response data.
+ * @returns A promise that resolves to the response data or an empty `ResponseMdl` object.
+ */
+const safePostRequest = async <T>(
+  url: string,
+  data: any
+): Promise<T | undefined> => {
+  const ret: ResponseMdl<T> = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw generateReadableErr(res.status, {
+          msg: res.statusText,
+          info: res.text,
+        });
+      }
+      return res.text();
+    })
+    .then((responseData) => JSON.parse(responseData))
+    .catch((err: Error) => {
+      throw new ClientError(err.cause as string, err.stack);
+    });
+
+  if (!isResOK(ret.status)) {
+    throw generateReadableErr(ret.status, {
+      msg: ret.message,
+      info: ret.data,
+    });
+  }
+
+  return ret.data;
+};
+
+export { convertToURL, safeDataFetching, isResOK, safePostRequest };
