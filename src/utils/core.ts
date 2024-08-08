@@ -46,4 +46,37 @@ const formatCurrency = (number: number): string => {
   return number.toLocaleString("it-IT");
 };
 
-export { generateReadableErr, formatCurrency };
+/**
+ * Converts a plain JavaScript object (POJO) to FormData.
+ *
+ * @param obj - The object to convert to FormData.
+ * @param form - Optional FormData instance to append the converted data to. If not provided, a new FormData instance will be created.
+ * @param namespace - Optional namespace to prepend to the form keys.
+ * @returns The FormData instance with the converted data.
+ */
+const convertPOJOToFormData = (
+  obj: Record<string, any>,
+  form?: FormData,
+  namespace?: string
+): FormData => {
+  const formData = form || new FormData();
+
+  for (let property in obj) {
+    if (obj.hasOwnProperty(property)) {
+      const formKey = namespace ? `${namespace}[${property}]` : property;
+
+      if (
+        typeof obj[property] === "object" &&
+        !(obj[property] instanceof File)
+      ) {
+        convertPOJOToFormData(obj[property], formData, formKey);
+      } else {
+        formData.append(formKey, obj[property]);
+      }
+    }
+  }
+
+  return formData;
+};
+
+export { generateReadableErr, formatCurrency, convertPOJOToFormData };
