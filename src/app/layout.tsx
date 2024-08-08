@@ -4,7 +4,7 @@ import React from "react";
 import "@/styles/globals.css";
 
 import Navbar from "../components/navbar/Navbar";
-import Footer from "@/components/Footer";
+import Footer from "@/components/footer/Footer";
 import StoreProvider from "./StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
