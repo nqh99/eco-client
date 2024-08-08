@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion as m, MotionProps } from "framer-motion";
-import { Button, ButtonProps } from "@headlessui/react";
+import { Button as IButton, ButtonProps } from "@headlessui/react";
 
 type CustomProps = MotionProps & ButtonProps;
 
@@ -20,9 +20,9 @@ type CustomProps = MotionProps & ButtonProps;
  * @param {ButtonProps} props - The button element props.
  * @returns {ReactNode} The rendered button element.
  */
-const CustomButton = ({ className, ...props }: CustomProps) => {
+const Button = ({ children, className, ...props }: CustomProps) => {
   return (
-    <Button
+    <IButton
       as={m.button}
       whileTap={{
         scale: 0.95,
@@ -35,9 +35,9 @@ const CustomButton = ({ className, ...props }: CustomProps) => {
       className={className}
       {...props}
     >
-      {props.children}
-    </Button>
+      {children}
+    </IButton>
   );
 };
 
-export default CustomButton;
+export default Button;
