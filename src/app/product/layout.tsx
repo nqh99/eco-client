@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-import "@/styles/globals.css";
 
 import PageLoading from "@/components/skeleton/PageLoading";
 
