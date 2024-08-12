@@ -1,15 +1,17 @@
 "use client";
 
-import { getTopDealProducts } from "@/apis/product";
+import { getProductsByTradeMark, getTopDealProducts } from "@/apis/product";
 import AdsBanner from "@/components/elements/AdsBanner";
 import Button from "@/components/elements/Button";
 import CartItem from "@/components/elements/CartItem";
 import Checkbox from "@/components/elements/Checkbox";
+import NumberInput from "@/components/elements/NumberInput";
 import ProductTitle from "@/components/elements/ProductTitle";
 import CompanyPolicies from "@/components/footer/CompanyPolicies";
 import StackedList from "@/components/list/StackedList";
 import { useAppSelector } from "@/hooks/redux";
 import CartItemMdl from "@/models/products/card-item";
+import { convertPOJOToFormData } from "@/utils/core";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -22,10 +24,33 @@ const ShoppingCartPage = () => {
   const [topDealProducts, setTopDealProducts] = useState<CartItemMdl[]>();
 
   useEffect(() => {
+
+    // const cartItems = cartItems.map((item) => ({
+    //   productId: item.itemMdl.id,
+    //   productInventoryId: "",
+    // }));
+
+    const productsData = {
+      cartInfoList: cartState.items.map((item) => ({
+        productId: item.itemMdl.id,
+        productInventoryId: "",
+      })),
+    };
+
+    console.log(productsData);
+    console.log(convertPOJOToFormData(productsData));
+    
+    
+    
+    const data = getProductsByTradeMark(convertPOJOToFormData(productsData));
+    
+  }, [cartState.items]);
+
+  useEffect(() => {
     getTopDealProducts(false).then((data) => {
       setTopDealProducts(data);
     });
-  }, [cartState.items]);
+  }, []);
 
   return (
     <main className="px-default gap-3 flex flex-col">
@@ -97,7 +122,7 @@ const ShoppingCartPage = () => {
                   </div>
                   <div className="w-2/5 flex gap-3 justify-between items-center">
                     <span className="block">868.000 d</span>
-                    <div className="flex-grow">asdf</div>
+                    <NumberInput size="normal" onValChange={() => {}} />
                     <span className="block">176000 d</span>
                     <Button className="group border rounded-md bg-[#ebf1f5] p-1 hover:border-primary">
                       <GoTrash className="size-4 text-informal group-hover:text-primary" />

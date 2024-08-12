@@ -1,4 +1,4 @@
-import { BrandMld } from "../users/brand";
+import { TradeMarkMld } from "../users/trademark";
 import ProductDiscountMdl from "./discount";
 import { InventoryMdl } from "./inventory";
 import { ProductCategoryMdl } from "./category";
@@ -30,7 +30,7 @@ interface ProductDetailMdl {
   warranty: string;
   category: ProductCategoryMdl;
   discount: ProductDiscountMdl;
-  brand: BrandMld;
+  brand: TradeMarkMld;
   inventories: InventoryMdl[];
   reviews: ReviewMdl[];
 }
