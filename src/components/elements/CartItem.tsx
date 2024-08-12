@@ -17,7 +17,6 @@ interface CartItemProps {
 
 const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   return (
     <div
@@ -45,14 +44,14 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
       <div className="p-2">
         <h3 className="text-sm h-12">{itemMdl.name}</h3>
         <div className="flex justify-between items-end pb-2 border-b border-emerald-600">
-          {itemMdl.rating <= 5 && (
+          {itemMdl.rating && itemMdl.rating <= 5 && (
             <Rating
               avgRating={itemMdl.rating}
               className="text-yellow-400 size-5"
             />
           )}
           <span className="block text-gray-500 font-light text-xs">
-            Đã bán {itemMdl.quantitySold}
+            Đã bán {itemMdl.inventory?.quantitySold}
           </span>
         </div>
         <div className="flex content-center justify-around gap-3 items-center mt-2">
@@ -78,7 +77,6 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
               e.preventDefault();
               e.stopPropagation();
               // TODO: enhance when business changed
-              dispatch(addCartItem({ itemMdl: itemMdl, quantity: 1 }));
             }}
           >
             <svg
