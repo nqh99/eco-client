@@ -25,13 +25,33 @@ const ProductDetailPage = async ({
   params: string;
   searchParams: { productID: string; categoryID: string };
 }) => {
-  const productData = await getProductDetailsByID(searchParams.productID);
+  // TODO: enhance later by below reason
+  let productInfo: CartItemMdl | undefined;
+
+  const productData = await getProductDetailsByID(searchParams.productID).then(
+    (data) => {
+      // TODO: enhance later because the business is not clear && need discus with API to optimized
+      if (data) {
+        productInfo = {
+          id: data.id,
+          name: data.name,
+          price: data.price,
+          imageUrl: data.imageUrl,
+          discount: data.discount,
+          inventory: data.inventories,
+        };
+
+        return data;
+      }
+    }
+  );
 
   const relativeProducts = await getRelativeProductsByCategory(
     productData?.category.id || ""
   );
 
-  if (productData === undefined) return <Error />;
+  // TODO: enhance later by upper reason
+  if (productData === undefined || productInfo === undefined) return <Error />;
 
   return (
     <main className="px-default gap-3 flex flex-col">
@@ -208,7 +228,8 @@ const ProductDetailPage = async ({
           <OrderCheckout
             branchLogo={productData.brand.avatarUrl}
             branchName={productData.brand.name}
-            itemPrice={productData.discount?.discountPrice || productData.price}
+            // TODO: need enhance - read the upper reason
+            product={productInfo}
           />
           <AdsBanner
             imgURL="/images/tea-ads.png"

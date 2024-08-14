@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {  } from "react";
 import { motion as m } from "framer-motion";
 
-import { FaCartShopping, FaMinus, FaPlus } from "react-icons/fa6";
+import { FaCartShopping } from "react-icons/fa6";
 import {
   CloseButton,
-  Input,
   Popover,
   PopoverButton,
   PopoverPanel,
@@ -15,54 +14,18 @@ import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { formatCurrency } from "@/utils/core";
 import { addCartItem, removeCartItem } from "@/lib/features/checkout/cartSlice";
-import clsx from "clsx";
 import { GoTrash } from "react-icons/go";
 import CartItemMdl from "@/models/products/card-item";
 import { ICartPayload } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import CustomButton from "./Button";
+import NumberInput from "./NumberInput";
 
 export default function ShoppingCartIcon() {
   const cartState = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   const route = useRouter();
-
-  const [quantities, setQuantities] = useState<string[]>([]);
-
-  useEffect(() => {
-    setQuantities(
-      cartState.items.map((element) => element.quantity.toString())
-    );
-  }, [cartState.items]);
-
-  const handleIncreaseBtnClick = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    index: number,
-    cartPayload: ICartPayload
-  ) => {
-    const newQuantities = [...quantities];
-    newQuantities[index] = newQuantities[index] + 1;
-    setQuantities(newQuantities);
-
-    dispatch(addCartItem({ ...cartPayload, quantity: 1 }));
-  };
-
-  const handleDecreaseBtnClick = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    index: number,
-    cartPayload: ICartPayload
-  ) => {
-    const newQuantities = [...quantities];
-
-    const prevQuantity = parseInt(newQuantities[index]);
-    if (parseInt(newQuantities[index]) > 1) {
-      newQuantities[index] = (prevQuantity - 1).toString();
-      setQuantities(newQuantities);
-
-      dispatch(removeCartItem({ ...cartPayload, quantity: 1 }));
-    }
-  };
 
   const handleRemoveBtnClick = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -71,20 +34,12 @@ export default function ShoppingCartIcon() {
     dispatch(removeCartItem({ itemMdl: itemMdl, quantity: -1 }));
   };
 
-  const handleInputVal = (e: any, index: number, cartPayload: ICartPayload) => {
-    let newVal = parseInt(e.target.value);
-
-    const newQuantities = [...quantities];
-    if (newVal < 1 || isNaN(newVal)) {
-      newQuantities[index] = "";
-      setQuantities(newQuantities);
+  const handleInputVal = (val: number, cartPayload: ICartPayload) => {
+    if (!val) {
       return;
-    } else {
-      newQuantities[index] = newVal.toString();
-      setQuantities(newQuantities);
     }
 
-    const changedNum = newVal - cartPayload.quantity;
+    const changedNum = val - cartPayload.quantity;
 
     if (changedNum > 0) {
       dispatch(addCartItem({ ...cartPayload, quantity: changedNum }));
@@ -121,7 +76,7 @@ export default function ShoppingCartIcon() {
           gap: "20px",
           padding: "100px",
         }}
-        className="z-50 bg-white min-w-96 max-h-96 w-[440px] shadow-2xl origin-top-right rounded-xl border border-white/5 transition duration-100 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+        className="z-50 bg-white min-w-96 min-h-48 max-h-96 w-[440px] shadow-2xl origin-top-right rounded-xl border border-white/5 transition duration-100 ease-out focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
       >
         {cartState.items.length !== 0 ? (
           <>
@@ -134,7 +89,7 @@ export default function ShoppingCartIcon() {
               </span>
             </div>
             <div className="overflow-y-auto max-h-52 scrollbar-primary">
-              {cartState.items.map((element, index) => (
+              {cartState.items.map((cartPayload, index) => (
                 <div
                   key={index}
                   className={`flex gap-3 overflow-hidden mx-4 py-2 ${
@@ -143,71 +98,49 @@ export default function ShoppingCartIcon() {
                 >
                   <div className="w-1/5 relative">
                     <Image
-                      src={element.itemMdl.imageUrl}
-                      alt={element.itemMdl.name}
+                      // TODO: Discuss with BE to enhance this logic - cart item
+                      src={cartPayload.itemMdl.imageUrl}
+                      alt={cartPayload.itemMdl.name}
                       fill={true}
                       className="rounded-md"
                     />
                   </div>
                   <div className="w-4/5 flex flex-col">
                     <h3 className="font-medium text-sm">
-                      {element.itemMdl.name}
+                      {cartPayload.itemMdl.name}
                     </h3>
-                    {element.itemMdl.discount ? (
+                    {cartPayload.itemMdl.discount ? (
                       <div className="flex text-sm gap-2 items-center">
                         <span className="text-discount">
                           {formatCurrency(
-                            element.itemMdl.discount.discountPrice
+                            cartPayload.itemMdl.discount.discountPrice
                           )}{" "}
                           đ
                         </span>
                         <span className="line-through text-xs text-informal">
-                          {formatCurrency(element.itemMdl.price)} đ
+                          {formatCurrency(cartPayload.itemMdl.price)} đ
                         </span>
                       </div>
                     ) : (
                       <div>
                         <span className="text-default">
-                          {formatCurrency(element.itemMdl.price)} đ
+                          {formatCurrency(cartPayload.itemMdl.price)} đ
                         </span>
                       </div>
                     )}
                     <div className="flex justify-between">
                       <div className="flex flex-row gap-2 items-center justify-start w-full h-full">
-                        <CustomButton
-                          onClick={(event) => {
-                            handleDecreaseBtnClick(event, index, element);
+                        <NumberInput
+                          size="small"
+                          value={cartPayload.quantity}
+                          onValChange={(val) => {
+                            handleInputVal(val, cartPayload);
                           }}
-                          className="bg-slate-100 rounded w-6 h-6 min-w-6 min-h-5 flex items-center justify-center data-[hover]:bg-slate-200 data-[hover]:text-green-900 shadow-inner"
-                        >
-                          <FaMinus />
-                        </CustomButton>
-                        <Input
-                          type="number"
-                          value={quantities[index]}
-                          min={1}
-                          onChange={(event) =>
-                            handleInputVal(event, index, element)
-                          }
-                          required
-                          name="Buy Quantity Input"
-                          className={clsx(
-                            "block border border-slate-300 rounded w-11 h-6 min-w-11 min-h-5 py-1.5 px-3 text-xs no-spinner",
-                            "focus:border-[2px] focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-                          )}
-                        ></Input>
-                        <CustomButton
-                          onClick={(event) => {
-                            handleIncreaseBtnClick(event, index, element);
-                          }}
-                          className="bg-slate-100 rounded w-6 h-6 min-w-6 min-h-5 flex items-center justify-center data-[hover]:bg-slate-200 data-[hover]:text-green-900 shadow-inner"
-                        >
-                          <FaPlus />
-                        </CustomButton>
+                        />
                       </div>
                       <CustomButton
                         onClick={(event) =>
-                          handleRemoveBtnClick(event, element.itemMdl)
+                          handleRemoveBtnClick(event, cartPayload.itemMdl)
                         }
                         className="bg-slate-100 rounded w-8 h-7 min-w-7 min-h-5 flex items-center justify-center data-[hover]:bg-slate-200 data-[hover]:text-green-900 shadow-inner"
                       >

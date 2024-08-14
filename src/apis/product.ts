@@ -2,7 +2,7 @@ import { SERVER_ALIAS } from "@/constants/app";
 
 import CartItemMdl from "@/models/products/card-item";
 import ProductDetailMdl from "@/models/products/product-detail";
-import { safeDataFetching } from "@/utils/http";
+import { safeDataFetching, safePostRequest } from "@/utils/http";
 
 const getTopDealProducts = (needRevalidate: boolean) => {
   const url = `${SERVER_ALIAS}/products/top-deals?page=0&size=4`;
@@ -32,8 +32,24 @@ const getRelativeProductsByCategory = (categoryID: string) => {
   return ret;
 };
 
+const getProductsByTradeMark = (data: any) => {
+  const url = `${SERVER_ALIAS}/cart/items`;
+  // TODO: enhance the data object later [EW-46]
+  const ret = safePostRequest<
+    {
+      id: string;
+      name: string;
+      avatarUrl: string;
+      cartItems: { productId: string }[];
+    }[]
+  >(url, data);
+
+  return ret;
+};
+
 export {
   getTopDealProducts,
   getRelativeProductsByCategory,
   getProductDetailsByID,
+  getProductsByTradeMark,
 };

@@ -10,40 +10,54 @@ import { GoPackageDependents } from "react-icons/go";
 import { PiInfoLight } from "react-icons/pi";
 import NumberInput from "../elements/NumberInput";
 import { formatCurrency } from "@/utils/core";
+import { useAppDispatch } from "@/hooks/redux";
+import { addCartItem } from "@/lib/features/checkout/cartSlice";
+import CartItemMdl from "@/models/products/card-item";
+import { useRouter } from "next/navigation";
 
 interface OrderCheckoutProps {
   branchLogo: string;
   branchName: string;
-  itemPrice: number;
+  product: CartItemMdl;
 }
 
 const OrderCheckout = ({ ...props }: OrderCheckoutProps) => {
   const [orderQuantity, setOrderQuantity] = useState(1);
+  const dispatch = useAppDispatch();
+  const route = useRouter();
 
   const handleOrderQuantityChange = (val: number) => {
     setOrderQuantity(val);
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-inner px-4 py-2 flex flex-col gap-2">
-      <div className="p-2.5 border-b border-slate-300 justify-start items-center gap-3 inline-flex">
-        <div className="rounded-full overflow-hidden w-10 h-10 relative border-[0.5px]">
-          <Image
-            src={props.branchLogo}
-            alt="Brand Logo Icon"
-            fill={true}
-          ></Image>
+    <div className="bg-white rounded-xl shadow-inner px-4 py-2 flex flex-col gap-2 min-w-80">
+      <div className="py-2.5 border-b-[0.5px] border-slate-300">
+        <div className="w-fit cursor-pointer justify-start items-center gap-5 inline-flex">
+          <div className="rounded-full overflow-hidden w-10 h-10 relative border-[0.5px]">
+            <Image
+              src={props.branchLogo}
+              alt="Brand Logo Icon"
+              fill={true}
+            ></Image>
+          </div>
+          <span className="block text-xl font-semibold font-serif select-none">
+            {props.branchName}
+          </span>
         </div>
-        <span className="block text-xl font-medium font-sans">{props.branchName}</span>
       </div>
       <div className="mb-2">
-        <h6 className="mb-3 text-base">Số lượng</h6>
-        <NumberInput onValChange={handleOrderQuantityChange} />
+        <h6 className="mb-3 text-lg select-none">Số lượng</h6>
+        <NumberInput size="big" onValChange={handleOrderQuantityChange} />
       </div>
       <div>
-        <span className="block text-base">Tạm tính</span>
+        <span className="block text-lg select-none">Tạm tính</span>
         <span className="block font-bold text-2xl font-sans">
-          {formatCurrency(props.itemPrice * orderQuantity)} đ
+          {formatCurrency(
+            (props.product.discount?.discountPrice ?? props.product.price) *
+              orderQuantity
+          )}{" "}
+          đ
         </span>
       </div>
       <div className="flex flex-row justify-between gap-3 items-center mt-2">
@@ -54,6 +68,9 @@ const OrderCheckout = ({ ...props }: OrderCheckoutProps) => {
             transition: { duration: 0.1, ease: "easeInOut" },
           }}
           className="w-full h-10 py-2 text-center text-white text-base font-medium rounded-lg  bg-discount"
+          onClick={() => {
+            route.push("/checkout");
+          }}
         >
           Mua ngay
         </Button>
@@ -64,6 +81,11 @@ const OrderCheckout = ({ ...props }: OrderCheckoutProps) => {
             transition: { duration: 0.1, ease: "easeInOut" },
           }}
           className="w-full h-10 py-2 rounded-lg border text-lime-800 border-lime-800 flex-col justify-center items-center gap-2.5 inline-flex"
+          onClick={(e) => {
+            dispatch(
+              addCartItem({ itemMdl: props.product, quantity: orderQuantity })
+            );
+          }}
         >
           Thêm vào giỏ
         </Button>
