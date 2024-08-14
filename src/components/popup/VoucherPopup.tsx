@@ -149,7 +149,7 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
     return filteredVouchers.map((voucher) => {
       const isExpired = new Date(voucher.expiryDate) < new Date();
       const isSelected = selectedVouchers.includes(voucher.id);
-      const baseClass = isSelected ? "bg-green-50 border-green-500" : "bg-gray-50 border-gray-300";
+      const baseClass = isSelected ? "bg-green-50 border-green-500 border-primary" : "bg-gray-50 border-gray-300";
       const textClass = isExpired ? "text-gray-400" : "text-orange-500";
 
       return (
@@ -176,7 +176,7 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
           </label>
 
           <div className={`flex items-center w-full relative rounded-lg overflow-hidden`}>
-            <div className={`flex-grow p-3 ${baseClass} border-2 border-r-0 rounded-l-lg relative`}>
+            <div className={`flex-grow p-3 ${baseClass} border-2 border-r-0 rounded-l-lg relative border`}>
               <span className={`text-sm font-semibold ${textClass} flex items-center`}>
                 Giảm {voucher.discount} tới đa {voucher.maxDiscount} đơn từ {voucher.minOrder}.
                 <span className="ml-2 cursor-pointer relative" onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
@@ -194,7 +194,7 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
 
           {tooltipVisible && tooltipPosition && (
             <div
-              className="fixed w-64 p-4 bg-white border border-gray-300 rounded shadow-lg z-50"
+              className="fixed w-64 p-4 bg-white border boder-primary rounded shadow-lg z-50"
               style={{ top: tooltipPosition.top, left: tooltipPosition.left }}
               onMouseEnter={() => setTooltipVisible(true)}
               onMouseLeave={hideTooltip}
@@ -251,7 +251,7 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
           <button
               className={`flex-1 pb-2 ${
                 activeTab === "all"
-                  ? "text-green-500 border-b-2 border-green-500"
+                  ? "tab-active border-b-2"
                   : "text-gray-500"
               }`}
               onClick={() => setActiveTab("all")}
@@ -261,7 +261,7 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
             <button
               className={`flex-1 pb-2 ${
                 activeTab === "shipping"
-                  ? "text-green-500 border-b-2 border-green-500"
+                  ? "tab-active border-b-2"
                   : "text-gray-500"
               }`}
               onClick={() => setActiveTab("shipping")}
@@ -271,7 +271,7 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
             <button
               className={`flex-1 pb-2 ${
                 activeTab === "other"
-                  ? "text-green-500 border-b-2 border-green-500"
+                  ? "tab-active border-b-2"
                   : "text-gray-500"
               }`}
               onClick={() => setActiveTab("other")}
