@@ -2,7 +2,6 @@ import { SERVER_ALIAS } from "@/constants/app";
 
 import CartItemMdl from "@/models/products/card-item";
 import ProductDetailMdl from "@/models/products/product-detail";
-import { TradeMarkMld } from "@/models/users/trademark";
 import { safeDataFetching, safePostRequest } from "@/utils/http";
 
 const getTopDealProducts = (needRevalidate: boolean) => {
@@ -33,12 +32,17 @@ const getRelativeProductsByCategory = (categoryID: string) => {
   return ret;
 };
 
-const getProductsByTradeMark = (body: FormData) => {
+const getProductsByTradeMark = (data: any) => {
   const url = `http://localhost:9991/ehb-api/api/v1/cart/items`;
-  const ret = safePostRequest<{
-    tradeMark: TradeMarkMld;
-    products: CartItemMdl[];
-  }>(url, body);
+  // TODO: enhance the data object later [EW-46]
+  const ret = safePostRequest<
+    {
+      id: string;
+      name: string;
+      avatarUrl: string;
+      cartItems: { productId: string }[];
+    }[]
+  >(url, data);
 
   return ret;
 };
