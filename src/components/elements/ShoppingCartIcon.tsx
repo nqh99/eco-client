@@ -1,6 +1,6 @@
 "use client";
 
-import React, {  } from "react";
+import React, { useEffect, useState } from "react";
 import { motion as m } from "framer-motion";
 
 import { FaCartShopping } from "react-icons/fa6";
@@ -20,18 +20,29 @@ import { ICartPayload } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import CustomButton from "./Button";
 import NumberInput from "./NumberInput";
+import DeletePopup from "@/components/popup/DeletePopup";
 
 export default function ShoppingCartIcon() {
   const cartState = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
-
+  const [showPopup, setShowPopup] = useState(false);
+  const [itemToRemove, setItemToRemove] = useState<CartItemMdl | null>(null);
   const route = useRouter();
 
   const handleRemoveBtnClick = (
     e: React.MouseEvent<HTMLButtonElement>,
     itemMdl: CartItemMdl
   ) => {
-    dispatch(removeCartItem({ itemMdl: itemMdl, quantity: -1 }));
+    setItemToRemove(itemMdl);
+    setShowPopup(true);
+  };
+
+  const handleDelete = () => {
+    if (itemToRemove) {
+      dispatch(removeCartItem({ itemMdl: itemToRemove, quantity: -1 }));
+      setShowPopup(false);
+      setItemToRemove(null);
+    }
   };
 
   const handleInputVal = (val: number, cartPayload: ICartPayload) => {
@@ -146,6 +157,11 @@ export default function ShoppingCartIcon() {
                       >
                         <GoTrash />
                       </CustomButton>
+                      <DeletePopup
+                            show={showPopup}
+                            onClose={() => setShowPopup(false)}
+                            onConfirm={handleDelete}
+                        />
                     </div>
                   </div>
                 </div>
