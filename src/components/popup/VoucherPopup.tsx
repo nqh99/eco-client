@@ -165,7 +165,7 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
           <label
             htmlFor={`voucher-checkbox-${voucher.id}`}
             className={`flex items-center justify-center w-5 h-5 rounded-sm border-2 mr-2 ${
-              isSelected ? "bg-green-600 border-green-600" : "bg-gray-100 border-gray-300"
+              isSelected ? "bg-primary border-primary" : "bg-gray-100 border-gray-300"
             } cursor-pointer`}
           >
             {isSelected && (
@@ -231,13 +231,13 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
           <input
             type="text"
             placeholder="Nhập mã ưu đãi"
-            className="flex-grow p-2 border border-gray-300 rounded"
+            className="flex-grow p-2 border border-primary rounded"
             value={voucherCode}
             onChange={(e) => setVoucherCode(e.target.value)}
           />
           <button
             className={`px-4 py-2 rounded ${
-              voucherCode && vouchers.some((voucher) => voucher.code === voucherCode) ? "bg-green-500 text-white" : "bg-gray-100 text-zinc-400"
+              voucherCode && vouchers.some((voucher) => voucher.code === voucherCode) ? "bg-primary text-white" : "bg-gray-100 text-zinc-400"
             }`}
             onClick={handleApplyVoucher}
             disabled={!voucherCode}
@@ -251,8 +251,8 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
           <button
               className={`flex-1 pb-2 ${
                 activeTab === "all"
-                  ? "tab-active border-b-2"
-                  : "text-gray-500"
+                ? "text-[var(--primary-color)] border-b-2 border-[var(--primary-color)]"
+                : "text-gray-500"
               }`}
               onClick={() => setActiveTab("all")}
             >
@@ -261,7 +261,7 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
             <button
               className={`flex-1 pb-2 ${
                 activeTab === "shipping"
-                  ? "tab-active border-b-2"
+                  ? "text-[var(--primary-color)] border-b-2 border-[var(--primary-color)]"
                   : "text-gray-500"
               }`}
               onClick={() => setActiveTab("shipping")}
@@ -271,8 +271,8 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
             <button
               className={`flex-1 pb-2 ${
                 activeTab === "other"
-                  ? "tab-active border-b-2"
-                  : "text-gray-500"
+                ? "text-[var(--primary-color)] border-b-2 border-[var(--primary-color)]"
+                : "text-gray-500"
               }`}
               onClick={() => setActiveTab("other")}
             >
@@ -284,11 +284,6 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
           </ul>
         </div>
         <div className="flex justify-between items-center border-t pt-4 px-3 pb-2">
-          {/* <p className="text-sm text-gray-500">
-            {selectedVouchers.length > 0
-              ? `Đã chọn ${selectedVouchers.length} mã giảm giá`
-              : "Chọn mã giảm giá"}
-          </p> */}
           <p className="text-sm text-gray-700 grid">
             Tiết kiệm{" "}
             <span className="text-red-500">
@@ -299,7 +294,7 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
             onClick={handleApplyVoucher}
             className={`px-4 py-2 rounded ${
               selectedVouchers.length > 0
-                ? "bg-green-500 text-white"
+                ? "bg-primary text-white"
                 : "bg-gray-100 text-gray-400 cursor-not-allowed"
             }`}
             disabled={selectedVouchers.length === 0}
