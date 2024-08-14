@@ -33,7 +33,7 @@ const getRelativeProductsByCategory = (categoryID: string) => {
 };
 
 const getProductsByTradeMark = (data: any) => {
-  const url = `http://localhost:9991/ehb-api/api/v1/cart/items`;
+  const url = `${SERVER_ALIAS}/cart/items`;
   // TODO: enhance the data object later [EW-46]
   const ret = safePostRequest<
     {

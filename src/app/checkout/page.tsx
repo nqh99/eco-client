@@ -167,7 +167,7 @@ const ShoppingCartPage = () => {
                             <Checkbox id={branchItem.id}>
                               <Checkbox.Indicator />
                             </Checkbox>
-                            <div className="flex gap-2">
+                            <div className="flex gap-3">
                               <Image
                                 src={cartItem.itemMdl.imageUrl}
                                 alt={"Branch Name"}
@@ -176,7 +176,7 @@ const ShoppingCartPage = () => {
                                 className="block rounded-md border-[0.5px] border-informal"
                               />
                               <div className="">
-                                <h2 className="text-base font-normal">
+                                <h2 className="text-lg font-normal">
                                   {cartItem.itemMdl.name}
                                 </h2>
                                 <div>{/* Combobox section */}</div>
