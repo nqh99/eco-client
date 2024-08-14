@@ -1,6 +1,12 @@
 "use client";
 
-import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { motion as m, MotionProps } from "framer-motion";
 import { Field, Label, LabelProps } from "@headlessui/react";
 import { Checkbox as ICheckbox } from "@headlessui/react";
@@ -38,10 +44,17 @@ const CheckboxContext = createContext<CheckboxContextProps>({
 interface CheckboxProps {
   children: ReactNode;
   id: string;
+  onChecked?: (val: boolean) => void;
 }
 
-const Checkbox = ({ children, id }: CheckboxProps) => {
+const Checkbox = ({ children, id, onChecked }: CheckboxProps) => {
   const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    if (onChecked) {
+      onChecked(isChecked);
+    }
+  }, [isChecked, onChecked]);
 
   return (
     <Field className="flex items-center gap-2">
@@ -106,10 +119,10 @@ const CheckboxLabel = ({
 
   return (
     <Label
-      id={id}
-      as={m.label}
-      className={`${className ?? "relative ml-1 overflow-hidden text-base cursor-pointer"}`}
-      htmlFor={id}
+      as={m.span}
+      className={`${
+        className ?? "relative ml-1 overflow-hidden text-base cursor-pointer"
+      }`}
       animate={{
         x: isChecked ? [0, -4, 0] : [0, 4, 0],
       }}

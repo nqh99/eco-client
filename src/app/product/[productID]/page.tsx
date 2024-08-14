@@ -38,7 +38,7 @@ const ProductDetailPage = async ({
           price: data.price,
           imageUrl: data.imageUrl,
           discount: data.discount,
-          inventory: data.inventories[0],
+          inventory: data.inventories,
         };
 
         return data;

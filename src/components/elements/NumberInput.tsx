@@ -69,7 +69,7 @@ const NumberInput = ({
   };
 
   return (
-    <div className="flex flex-row gap-2 items-center justify-start w-full h-full">
+    <div className="inline-flex flex-row gap-2 items-center">
       <Button
         as={m.button}
         whileTap={{

@@ -89,7 +89,7 @@ const isResOK = (res: number): boolean => {
  */
 const safePostRequest = async <T>(
   url: string,
-  data: FormData
+  data: any
 ): Promise<T | undefined> => {
   const ret: ResponseMdl<T> = await fetch(url, {
     method: "POST",

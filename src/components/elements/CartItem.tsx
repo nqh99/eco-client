@@ -6,8 +6,6 @@ import CartItemMdl from "@/models/products/card-item";
 import { useRouter } from "next/navigation";
 import Rating from "./Rating";
 import { formatCurrency } from "@/utils/core";
-import { useAppDispatch } from "@/hooks/redux";
-import { addCartItem } from "@/lib/features/checkout/cartSlice";
 import CustomButton from "./Button";
 
 interface CartItemProps {
@@ -51,7 +49,8 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
             />
           )}
           <span className="block text-gray-500 font-light text-xs">
-            Đã bán {itemMdl.inventory?.quantitySold}
+            {/* TODO: discuss with BE to enhance this object {itemMdl.inventory[0]?.quantitySold} */}
+            Đã bán 
           </span>
         </div>
         <div className="flex content-center justify-around gap-3 items-center mt-2">
