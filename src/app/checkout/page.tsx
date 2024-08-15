@@ -104,7 +104,7 @@ const ShoppingCartPage = () => {
     setShowPopup(true);
   };
 
-  const handleDelete = () => {
+  const handleCartItemDeletion = () => {
     if (itemToRemove) {
       dispatch(removeCartItem({ itemMdl: itemToRemove, quantity: -1 }));
       setShowPopup(false);
@@ -232,7 +232,7 @@ const ShoppingCartPage = () => {
                             <DeletePopup
                                 show={showPopup}
                                 onClose={() => setShowPopup(false)}
-                                onConfirm={handleDelete}
+                                onConfirm={handleCartItemDeletion}
                             />
                           </div>
                         </div>
