@@ -23,11 +23,15 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { GoTrash } from "react-icons/go";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import DeletePopup from "@/components/popup/DeletePopup";
 
 const ShoppingCartPage = () => {
   const cartState = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const [isCheckedAllBox, setIsCheckedAllBox] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [itemToRemove, setItemToRemove] = useState<CartItemMdl | null>(null);
+  
   // TODO: enhance later with BE - [EW-46]
   const [productsInCart, setProductsInCart] = useState<
     {
@@ -94,8 +98,16 @@ const ShoppingCartPage = () => {
       dispatch(clearCart());
       return;
     }
+    setItemToRemove(cartPayload.itemMdl);
+    setShowPopup(true);
+  };
 
-    dispatch(removeCartItem({ ...cartPayload, quantity: -1 }));
+  const handleCartItemDeletion = () => {
+    if (itemToRemove) {
+      dispatch(removeCartItem({ itemMdl: itemToRemove, quantity: -1 }));
+      setShowPopup(false);
+      setItemToRemove(null);
+    }
   };
 
   return (
@@ -215,6 +227,11 @@ const ShoppingCartPage = () => {
                             >
                               <GoTrash className="size-4 text-informal group-hover:text-primary" />
                             </Button>
+                            <DeletePopup
+                              show={showPopup}
+                              onClose={() => setShowPopup(false)}
+                              onConfirm={handleCartItemDeletion}
+                            />
                           </div>
                         </div>
                       );
