@@ -7,16 +7,16 @@ const config: Config = {
   ],
   theme: {
     screens: {
-      hg: { min: "1921px" },
-      xgg: { max: "1920px" },
-      gg: { max: "1739px" },
-      xxl: { max: "1535px" },
-      xl: { max: "1279px" },
-      lg: { max: "1023px" },
-      md: { max: "767px" },
-      sm: { max: "639px" },
-      xs: { max: "479px" },
-      xxs: { max: "364px" },
+      xxs: "364px",   
+      xs: "480px",    
+      sm: "640px",    
+      md: "768px",    
+      lg: "1024px",   
+      xl: "1280px",   
+      xxl: "1536px",  
+      gg: "1740px",   
+      xgg: "1920px",  
+      hg: "1921px",   
     },
     extend: {
       fontFamily: {
@@ -38,4 +38,5 @@ const config: Config = {
   },
   plugins: [],
 };
+
 export default config;
