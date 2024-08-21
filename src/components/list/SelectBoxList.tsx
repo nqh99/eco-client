@@ -6,18 +6,18 @@ import { FiChevronDown } from "react-icons/fi";
 import { CiCircleCheck } from "react-icons/ci";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 
-interface PersonOption {
+interface SelectOption {
   id: string;
   name: string;
 }
 
 interface SelectBoxListProps {
-  options: PersonOption[];
+  options: SelectOption[];
   required?: boolean;
   placeholder?: string;
   colSpan?: string;
   width?: string;
-  onChange: (person: PersonOption | null) => void;
+  onChange: (person: SelectOption | null) => void;
   isTouched?: boolean;
 }
 
@@ -30,9 +30,9 @@ export default function SelectBoxList({
   onChange,
   isTouched = false,
 }: SelectBoxListProps) {
-  const [selectedPerson, setSelectedPerson] = useState<PersonOption | null>(null);
+  const [selectedPerson, setSelectedPerson] = useState<SelectOption | null>(null);
 
-  const handlePersonChange = (person: PersonOption) => {
+  const handlePersonChange = (person: SelectOption) => {
     setSelectedPerson(person);
     onChange(person);
   };
