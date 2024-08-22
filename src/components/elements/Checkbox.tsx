@@ -32,37 +32,29 @@ const tickVariants = {
 interface CheckboxContextProps {
   id: string;
   isChecked: boolean;
-  setIsChecked: (isChecked: boolean) => void;
+  onCheck?: (val: boolean) => void;
 }
 
 const CheckboxContext = createContext<CheckboxContextProps>({
   id: "",
   isChecked: false,
-  setIsChecked: () => {},
 });
 
 interface CheckboxProps {
   children: ReactNode;
   id: string;
-  onChecked?: (val: boolean) => void;
+  value?: boolean;
+  onCheck?: (val: boolean) => void;
 }
 
-const Checkbox = ({ children, id, onChecked }: CheckboxProps) => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  useEffect(() => {
-    if (onChecked) {
-      onChecked(isChecked);
-    }
-  }, [isChecked, onChecked]);
-
+const Checkbox = ({ children, id, value, onCheck }: CheckboxProps) => {
   return (
     <Field className="flex items-center gap-2">
       <CheckboxContext.Provider
         value={{
           id,
-          isChecked,
-          setIsChecked,
+          isChecked: value || false,
+          onCheck: onCheck,
         }}
       >
         {children}
@@ -72,15 +64,15 @@ const Checkbox = ({ children, id, onChecked }: CheckboxProps) => {
 };
 
 const CheckboxIndicator = ({ className }: { className?: string }) => {
-  const { id, isChecked, setIsChecked } = useContext(CheckboxContext);
+  const { id, isChecked, onCheck } = useContext(CheckboxContext);
 
   return (
     <ICheckbox
       id={id}
       checked={isChecked}
-      onChange={setIsChecked}
+      onChange={onCheck}
       className={`${
-        className ??
+        className ||
         "group flex items-center justify-center border-blue-gray-200 h-5 w-5 min-h-5 min-w-5 cursor-pointer appearance-none rounded-md border transition-all duration-500 data-[checked]:border-blue-500 data-[checked]:bg-[#e5e9ec]"
       }`}
     >

@@ -1,13 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
 
-interface PopupProps {
+interface DeletePopupProps {
     show: boolean;
-    onClose: () => void;
-    onConfirm: () => void;
+    onClose: (e: React.MouseEvent) => void;
+    onConfirm: (e: React.MouseEvent) => void;
 }
 
-const Popup: React.FC<PopupProps> = ({ show, onClose, onConfirm }) => {
+const DeletePopup: React.FC<DeletePopupProps> = ({ show, onClose, onConfirm }) => {
     if (!show) return null;
 
     return (
@@ -24,4 +24,4 @@ const Popup: React.FC<PopupProps> = ({ show, onClose, onConfirm }) => {
     );
 };
 
-export default Popup;
+export default DeletePopup;
