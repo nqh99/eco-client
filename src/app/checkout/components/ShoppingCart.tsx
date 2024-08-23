@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 
-import Checkbox from "../elements/Checkbox";
+import Checkbox from "../../../components/elements/Checkbox";
 import Link from "next/link";
 import Image from "next/image";
 import { ICartPayload } from "@/lib/types";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { formatCurrency } from "@/utils/core";
-import NumberInput from "../elements/NumberInput";
-import Button from "../elements/Button";
+import NumberInput from "../../../components/elements/NumberInput";
+import Button from "../../../components/elements/Button";
 import { GoTrash } from "react-icons/go";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
@@ -18,11 +18,10 @@ import {
   removeCartItem,
 } from "@/lib/features/checkout/cartSlice";
 import { getProductsByTradeMark } from "@/apis/product";
-import DeletePopup from "../popup/DeletePopup";
-import CartItemMdl from "@/models/products/card-item";
+import DeletePopup from "../../../components/popup/DeletePopup";
 
 type ShoppingCartProp = {
-  onChecked?: (products: ICartPayload[]) => {};
+  onChecked?: (products: ICartPayload[]) => void;
 };
 
 const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
@@ -40,7 +39,9 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
     new Map()
   );
 
-  const [showPopup, setShowPopup] = useState(false);
+  const [showDeletePops, setShowDeletePops] = useState<Map<string, boolean>>(
+    new Map()
+  );
 
   const [productsByTradeMark, setProductsByTradeMark] = useState<
     Map<
@@ -71,8 +72,11 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
           id: data.id,
           name: data.name,
           avatarUrl: data.avatarUrl,
-          cartItems: cartState.items.filter((item) =>
-            data.cartItems.some((e) => e.productId === item.itemMdl.id)
+          cartItems: cartState.items.filter(
+            (item) =>
+              data.cartItems.findIndex(
+                (val) => item.itemMdl.id === val.productId
+              ) !== -1
           ),
         });
 
@@ -107,7 +111,32 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
         return newVal;
       });
     });
+
+    setShowDeletePops((prev) => {
+      const newVal = new Map<string, boolean>();
+
+      newVal.set("all", false);
+
+      cartState.items.forEach((val) => {
+        newVal.set(val.itemMdl.id, false);
+      });
+
+      return newVal;
+    });
   }, [cartState.items]);
+
+  useEffect(() => {
+    if (onChecked) {
+      const checkedItems = Array.from(checkedProducts.entries())
+        .filter(([_, val]) => val)
+        .map(([key, _]) =>
+          cartState.items.find((item) => item?.itemMdl.id === key)
+        )
+        .filter((item): item is ICartPayload => item !== undefined);
+
+      onChecked(checkedItems);
+    }
+  }, [checkedProducts]);
 
   const onSelectAllItems = (val: boolean) => {
     setIsCheckedAllBox(val);
@@ -127,11 +156,6 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
 
       return newVal;
     });
-
-    if (onChecked) {
-      const payload = handleOnChecked();
-      onChecked(payload);
-    }
   };
 
   const onSelectTradeMark = (val: boolean, id: string) => {
@@ -156,11 +180,6 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
     if (!val) {
       setIsCheckedAllBox(false);
     }
-
-    if (onChecked) {
-      const payload = handleOnChecked();
-      onChecked(payload);
-    }
   };
 
   const onSelectItem = (val: boolean, itemID: string, tradeMarkID: string) => {
@@ -182,11 +201,6 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
       });
 
       setIsCheckedAllBox(false);
-    }
-
-    if (onChecked) {
-      const payload = handleOnChecked();
-      onChecked(payload);
     }
   };
 
@@ -211,38 +225,49 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
     isClearAll: boolean,
     cartPayload?: ICartPayload
   ) => {
-    setShowPopup(true);
-
     if (isClearAll) {
       dispatch(clearCart());
-      setShowPopup(false);
+      setShowDeletePops((prev) => {
+        const newVal = new Map(prev);
+
+        newVal.set("all", false);
+
+        return newVal;
+      });
 
       return;
     }
 
     if (cartPayload) {
       dispatch(removeCartItem({ ...cartPayload, quantity: -1 }));
-      setShowPopup(false);
+      setShowDeletePops((prev) => {
+        const newVal = new Map(prev);
+
+        newVal.set(cartPayload.itemMdl.id, false);
+
+        return newVal;
+      });
     }
   };
 
-  const handleOnChecked = (): ICartPayload[] => {
-    if (isCheckedAllBox) return cartState.items;
+  const onCloseDeletePop = (popID: string) => {
+    setShowDeletePops((prev) => {
+      const newVal = new Map(prev);
 
-    const ret: ICartPayload[] = [];
+      newVal.set(popID, false);
 
-    checkedProducts.forEach((val, key) => {
-      if (val) {
-        const cartPayload = cartState.items.find(
-          (item) => item.itemMdl.id === key
-        );
-        if (cartPayload) {
-          ret.push(cartPayload);
-        }
-      }
+      return newVal;
     });
+  };
 
-    return ret;
+  const onShowDeletePop = (popID: string) => {
+    setShowDeletePops((prev) => {
+      const newVal = new Map(prev);
+
+      newVal.set(popID, true);
+
+      return newVal;
+    });
   };
 
   return (
@@ -266,14 +291,23 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
           <span className="block flex-grow">Số lượng</span>
           <span className="block w-28">Thành tiền</span>
           <Button
-            onClick={(event) => setShowPopup(true)}
+            onClick={(event) =>
+              setShowDeletePops((prev) => {
+                const newVal = new Map(prev);
+
+                newVal.set("all", true);
+
+                return newVal;
+              })
+            }
             className="flex-shrink group border rounded-md bg-[#ebf1f5] p-1 hover:border-primary"
           >
             <GoTrash className="size-4 text-informal group-hover:text-primary" />
           </Button>
           <DeletePopup
-            show={showPopup}
-            onClose={(e) => setShowPopup(false)}
+            show={showDeletePops.get("all") || false}
+            title="Bạn có muốn xóa toàn bộ giỏ hàng không?"
+            onClose={(e) => onCloseDeletePop("all")}
             onConfirm={(e) => {
               handleRemoveCartItems(e, true);
             }}
@@ -346,9 +380,9 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
                       <NumberInput
                         value={cartPayload.quantity}
                         size="normal"
-                        onValChange={(val) =>
-                          handleCartItemValChange(val, cartPayload)
-                        }
+                        onValChange={(val) => {
+                          handleCartItemValChange(val, cartPayload);
+                        }}
                       />
                     </div>
                     <span className="w-28 flex justify-center text-base text-discount">
@@ -359,14 +393,16 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
                       <u>đ</u>
                     </span>
                     <Button
-                      onClick={(event) => setShowPopup(true)}
+                      onClick={(event) =>
+                        onShowDeletePop(cartPayload.itemMdl.id)
+                      }
                       className="group border rounded-md bg-[#ebf1f5] p-1 hover:border-primary"
                     >
                       <GoTrash className="size-4 text-informal group-hover:text-primary" />
                     </Button>
                     <DeletePopup
-                      show={showPopup}
-                      onClose={(e) => setShowPopup(false)}
+                      show={showDeletePops.get(cartPayload.itemMdl.id) || false}
+                      onClose={(e) => onCloseDeletePop(cartPayload.itemMdl.id)}
                       onConfirm={(e) => {
                         handleRemoveCartItems(e, false, cartPayload);
                       }}

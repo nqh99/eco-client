@@ -2,7 +2,7 @@
 
 import { Button, Input } from "@headlessui/react";
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { motion as m } from "framer-motion";
 
@@ -27,6 +27,10 @@ const NumberInput = ({
   ...props
 }: NumberInputProps) => {
   const [val, setVal] = useState<string>(props.value?.toString() ?? "1");
+
+  useEffect(() => {
+    setVal(props.value?.toString() || "1");
+  }, [props.value]);
 
   const increaseByBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
     const newVal = parseInt(val, 0) + 1;

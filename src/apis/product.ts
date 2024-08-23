@@ -47,9 +47,33 @@ const getProductsByTradeMark = (data: any) => {
   return ret;
 };
 
+const postUserOrder = (data: {
+  orderInfoList: {
+    productId: string;
+    quantity: number;
+    productInventoryId: string;
+  }[];
+  shippingAddress: string;
+  discountCode: string;
+  phoneNumber: string;
+  email: string;
+  customerName: string;
+  subTotalPrice: number;
+  shippingPrice: number;
+  discountPrice: number;
+  totalPrice: number;
+}) => {
+  const url = `${SERVER_ALIAS}/cart/items`;
+
+  const ret = safePostRequest<string>(url, data);
+
+  return ret;
+};
+
 export {
   getTopDealProducts,
   getRelativeProductsByCategory,
   getProductDetailsByID,
   getProductsByTradeMark,
+  postUserOrder
 };

@@ -20,7 +20,7 @@ import { ICartPayload } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import CustomButton from "./Button";
 import NumberInput from "./NumberInput";
-import DeletePopup from "@/components/popup/DeletePopup";
+import DeletePopup from "../popup/DeletePopup";
 
 export default function ShoppingCartIcon() {
   const cartState = useAppSelector((state) => state.cart);
