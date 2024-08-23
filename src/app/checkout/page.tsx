@@ -28,12 +28,14 @@ const ShoppingCartPage = () => {
   }, []);
 
   return (
-    <main className="px-default gap-3 flex flex-col">
+    <main className="px-default gap-3 flex flex-col h-fit">
       {cartState.totalQuantity > 0 ? (
         <>
           {/* Shopping Cart section with user orders */}
-          <h2 className="text-base">Giỏ hàng của bạn</h2>
-          <div className="flex flex-row gap-4 mt-4 overflow-visible">
+          <h2 className="text-xl font-semibold mt-6 select-none hover:text-primary h-fit w-fit">
+            Giỏ hàng của bạn
+          </h2>
+          <div className="flex flex-row gap-4 mt-3 overflow-visible">
             {/* Shopping products cart */}
             <div className="w-3/4 min-w-[850px] flex flex-col gap-3 text-sm">
               <ShoppingCart
@@ -43,7 +45,7 @@ const ShoppingCartPage = () => {
               />
             </div>
             {/* Order Summary */}
-            <div className="w-1/4 min-w-80 inline-flex flex-col gap-4 sticky h-fit top-0">
+            <div className="w-1/4 min-w-80 min-h-72 h-fit flex flex-col gap-4 sticky top-0">
               <OrderSummary items={checkedItems || []} />
               <AdsBanner
                 imgURL="/images/tea-ads.png"

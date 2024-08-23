@@ -53,7 +53,7 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
   }, [items]);
 
   return (
-    <div className="flex flex-col justify-between px-4 p-2 bg-white rounded-lg min-h-44">
+    <div className="flex flex-col gap-1.5 px-4 pt-2 pb-4 bg-white rounded-lg min-h-52">
       <div className="h-8 flex justify-between items-center">
         <span className="inline-block w-2/5 text-informal text-sm">
           Tạm tính

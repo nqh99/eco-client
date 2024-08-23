@@ -271,7 +271,7 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
   };
 
   return (
-    <div className="flex flex-col gap-3 text-sm">
+    <div className="flex flex-col gap-3 text-sm h-full">
       {/* Column headers section */}
       <div className="flex gap-3 justify-between items-center bg-white rounded-lg p-2 text-sm">
         <div className="min-w-[420px]">
@@ -316,7 +316,7 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
       </div>
       {[...productsByTradeMark.values()].map((tradeMark, index) => {
         return (
-          <div key={index} className="bg-white rounded-lg px-2 text-sm">
+          <div key={index} className="bg-white rounded-lg px-2 text-sm h-full">
             <div className="border-b-[0.5px] flex gap-3 py-2 items-center">
               <Checkbox
                 id={tradeMark.id}
