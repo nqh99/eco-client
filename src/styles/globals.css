@@ -6,7 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 236, 253, 245;
   --background-end-rgb: 236, 241, 245;
-  --primary-color-rgb: 30, 107, 10;
+  --primary-color: rgb(30, 107, 10);
   --default-padding: 1rem;
   --default-color: #0c0a09;
   --discount-color: #ff1212;
@@ -31,28 +31,25 @@
 @media (min-width: 768px) {
   :root {
     --default-padding: 2rem;
-    font-size: 14px;
   }
 }
 
 @media (min-width: 1024px) {
   :root {
     --default-padding: 2.5rem;
-    font-size: 16px;
   }
 }
 
 @media (min-width: 1280px) {
   :root {
     --default-padding: 3rem;
-    font-size: 18px;
   }
 }
 
 @media (min-width: 1536px) {
   :root {
     --default-padding: 4rem;
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 
@@ -73,7 +70,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-  font-size: 14px;
+  font-size: 16px;
   font-family: "Roboto", sans-serif, monospace;
   color: #0c0a09;
 }
@@ -95,4 +92,28 @@ body {
   .text-balance {
     text-wrap: pretty;
   }
+}
+
+/* Custom */
+.scrollbar-primary::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.scrollbar-primary::-webkit-scrollbar-track {
+  background: #c9c7c7;
+  border-radius: 5px;
+}
+
+/* Handle */
+.scrollbar-primary::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 5px;
+  scrollbar-width: thin;
+}
+
+/* Handle on hover */
+.scrollbar-primary::-webkit-scrollbar-thumb:hover {
+  background: #268002;
+  cursor: pointer;
 }

@@ -27,8 +27,12 @@ const config: Config = {
       },
       colors: {
         default: "var(--default-color)",
+        primary: "var(--primary-color)",
         discount: "var(--discount-color)",
         informal: "var(--informal-color)",
+      },
+      backgroundColor: {
+        primary: "var(--primary-color)",
       },
     },
   },

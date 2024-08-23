@@ -25,13 +25,33 @@ const ProductDetailPage = async ({
   params: string;
   searchParams: { productID: string; categoryID: string };
 }) => {
-  const productData = await getProductDetailsByID(searchParams.productID);
+  // TODO: enhance later by below reason
+  let productInfo: CartItemMdl | undefined;
+
+  const productData = await getProductDetailsByID(searchParams.productID).then(
+    (data) => {
+      // TODO: enhance later because the business is not clear && need discus with API to optimized
+      if (data) {
+        productInfo = {
+          id: data.id,
+          name: data.name,
+          price: data.price,
+          imageUrl: data.imageUrl,
+          discount: data.discount,
+          inventory: data.inventories,
+        };
+
+        return data;
+      }
+    }
+  );
 
   const relativeProducts = await getRelativeProductsByCategory(
     productData?.category.id || ""
   );
 
-  if (productData === undefined) return <Error />;
+  // TODO: enhance later by upper reason
+  if (productData === undefined || productInfo === undefined) return <Error />;
 
   return (
     <main className="px-default gap-3 flex flex-col">
@@ -208,7 +228,8 @@ const ProductDetailPage = async ({
           <OrderCheckout
             branchLogo={productData.brand.avatarUrl}
             branchName={productData.brand.name}
-            itemPrice={productData.discount?.discountPrice || productData.price}
+            // TODO: need enhance - read the upper reason
+            product={productInfo}
           />
           <AdsBanner
             imgURL="/images/tea-ads.png"
@@ -230,50 +251,6 @@ const ProductDetailPage = async ({
               />
             ))}
         </StackedList>
-      </div>
-
-      {/* Policies section */}
-      <div className="inline-flex gap-28 my-4 m-auto text-xs font-light font-serif justify-around">
-        <div className="flex flex-col gap-3 items-center text-center min-w-36 w-40 rounded-lg border-[0.5px] py-2 px-3 shadow-sm">
-          <Image
-            src={"/icons/product-return.svg"}
-            unoptimized={true}
-            alt="Policies Icons"
-            width={40}
-            height={40}
-          ></Image>
-          <span>Đổi trả MIỄN PHÍ trong ngày</span>
-        </div>
-        <div className="flex flex-col gap-3 items-center text-center min-w-36 w-40 rounded-lg border-[0.5px] py-2 px-3 shadow-sm">
-          <Image
-            src={"/icons/credit-card.svg"}
-            unoptimized={true}
-            alt="Policies Icons"
-            width={40}
-            height={40}
-          ></Image>
-          <span>Bảo mật thanh toán</span>
-        </div>
-        <div className="flex flex-col gap-3 items-center text-center min-w-36 w-40 rounded-lg border-[0.5px] py-2 px-3 shadow-sm">
-          <Image
-            src={"/icons/free-delivery.svg"}
-            unoptimized={true}
-            alt="Policies Icons"
-            width={40}
-            height={40}
-          ></Image>
-          <span>Miễn phí giao hàng các quận trung tâm TPHCM</span>
-        </div>
-        <div className="flex flex-col gap-3 items-center text-center min-w-36 w-40 rounded-lg border-[0.5px] py-2 px-3 shadow-sm">
-          <Image
-            src={"/icons/assistant.svg"}
-            unoptimized={true}
-            alt="Policies Icons"
-            width={40}
-            height={40}
-          ></Image>
-          <span>Hỗ trợ khách hàng</span>
-        </div>
       </div>
     </main>
   );

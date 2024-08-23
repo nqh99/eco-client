@@ -9,7 +9,7 @@ import CartItemMdl from "@/models/products/card-item";
 import React from "react";
 
 const HomePage = async () => {
-  const topDealProducts = await getTopDealProducts();
+  const topDealProducts = await getTopDealProducts(true);
 
   return (
     <main className="p-10">
@@ -17,17 +17,17 @@ const HomePage = async () => {
         {/* Sidebar section */}
         <div className="w-[25%] sticky top-0 left-0 h-fit">
           <SideBar></SideBar>
-            <AdsBanner
-              imgURL="/images/maps-ads.png"
-              imgWidth={163}
-              imgHeight={116}
-              position="bottom right"
+          <AdsBanner
+            imgURL="/images/maps-ads.png"
+            imgWidth={163}
+            imgHeight={116}
+            position="bottom right"
             className="bg-[#FFA439] h-44 mt-3"
-            >
-              <span className="absolute block text-white font-bold text-base font-sansita w-1/3 top-3 left-2">
-                Giao hàng đúng giờ, không lo chờ đợi
-              </span>
-            </AdsBanner>
+          >
+            <span className="absolute block text-white font-bold text-base font-sansita w-1/3 top-3 left-2">
+              Giao hàng đúng giờ, không lo chờ đợi
+            </span>
+          </AdsBanner>
         </div>
 
         <div className="w-[75%] flex flex-col gap-5">
@@ -38,12 +38,12 @@ const HomePage = async () => {
             <StackedList>
               {topDealProducts &&
                 topDealProducts.map((item: CartItemMdl) => (
-                <CartItem
-                  key={item.id}
+                  <CartItem
+                    key={item.id}
                     itemMdl={item}
                     href={`/product/${item.name}?productID=${item.id}`}
-                />
-              ))}
+                  />
+                ))}
             </StackedList>
           </div>
           {/* Advertisement section */}
@@ -87,12 +87,12 @@ const HomePage = async () => {
             <StackedList>
               {topDealProducts &&
                 topDealProducts.map((item: CartItemMdl) => (
-                <CartItem
-                  key={item.id}
+                  <CartItem
+                    key={item.id}
                     itemMdl={item}
                     href={`/product/${item.name}?productID=${item.id}`}
-                />
-              ))}
+                  />
+                ))}
             </StackedList>
           </div>
           <div className="bg-white rounded-lg p-4 shadow-inner">
@@ -100,12 +100,12 @@ const HomePage = async () => {
             <StackedList>
               {topDealProducts &&
                 topDealProducts.map((item: CartItemMdl) => (
-                <CartItem
-                  key={item.id}
+                  <CartItem
+                    key={item.id}
                     itemMdl={item}
                     href={`/product/${item.name}?productID=${item.id}`}
-                />
-              ))}
+                  />
+                ))}
             </StackedList>
           </div>
         </div>

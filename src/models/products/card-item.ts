@@ -1,17 +1,14 @@
 import ProductDiscountMdl from "./discount";
+import { InventoryMdl } from "./inventory";
 
 type CartItemMdl = {
   id: string;
   name: string;
-  sku: string;
-  productCode: string;
   price: number;
-  description: string;
   imageUrl: string;
-  rating: number;
-  quantitySold: number;
-  quantityAvailable: number;
-  discount: ProductDiscountMdl;
+  rating?: number;
+  inventory: InventoryMdl[];
+  discount?: ProductDiscountMdl;
 };
 
 export default CartItemMdl;

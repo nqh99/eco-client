@@ -2,29 +2,60 @@
 
 import { Button, Input } from "@headlessui/react";
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { motion as m } from "framer-motion";
 
 interface NumberInputProps {
+  size: "small" | "normal" | "big" | "custom";
+  value?: number;
   onValChange: (val: number) => void;
+  onDecreaseBtnClick?: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+  onIncreaseBtnClick?: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+  customStyleBtn?: string;
+  customStyleInput?: string;
 }
 
-const NumberInput = ({ onValChange }: NumberInputProps) => {
-  const [val, setVal] = useState<number>(1);
+const NumberInput = ({
+  onValChange,
+  onDecreaseBtnClick,
+  onIncreaseBtnClick,
+  ...props
+}: NumberInputProps) => {
+  const [val, setVal] = useState<string>(props.value?.toString() ?? "1");
+
+  useEffect(() => {
+    setVal(props.value?.toString() || "1");
+  }, [props.value]);
 
   const increaseByBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const newVal = val + 1;
-    setVal(newVal);
+    const newVal = parseInt(val, 0) + 1;
+
+    setVal(newVal.toString());
+
+    if (onIncreaseBtnClick) {
+      onIncreaseBtnClick(e);
+    }
+
     onValChange(newVal);
   };
 
   const decreaseByBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const newVal = val - 1;
+    const newVal = parseInt(val, 0) - 1;
     if (newVal <= 0) {
       return;
     }
-    setVal(newVal);
+
+    setVal(newVal.toString());
+
+    if (onDecreaseBtnClick) {
+      onDecreaseBtnClick(e);
+    }
+
     onValChange(newVal);
   };
 
@@ -32,17 +63,17 @@ const NumberInput = ({ onValChange }: NumberInputProps) => {
     const newVal = parseInt(e.target.value);
 
     if (newVal < 1 || isNaN(newVal)) {
-      setVal(0);
+      setVal("");
       onValChange(0);
       return;
     }
 
-    setVal(newVal);
+    setVal(newVal.toString());
     onValChange(newVal);
   };
 
   return (
-    <div className="flex flex-row gap-2 items-center justify-start w-full h-full">
+    <div className="inline-flex flex-row gap-2 items-center">
       <Button
         as={m.button}
         whileTap={{
@@ -51,21 +82,33 @@ const NumberInput = ({ onValChange }: NumberInputProps) => {
         }}
         animate={{ scale: 1, transition: { duration: 0.3, ease: "easeInOut" } }}
         onClick={decreaseByBtn}
-        className="bg-slate-100 rounded w-10 h-9 min-w-8 min-h-7 flex items-center justify-center data-[hover]:bg-slate-200 data-[hover]:text-green-900 shadow-inner"
+        className={`${props.size == "custom" && props.customStyleBtn} ${clsx(
+          "bg-slate-100 rounded flex items-center justify-center data-[hover]:bg-slate-200 data-[hover]:text-green-900 shadow-inner",
+          {
+            "w-7 h-7 min-w-6 min-h-6": props.size == "small",
+            "w-8 h-8 min-w-8 min-h-8": props.size == "normal",
+            "w-12 h-10 min-w-12 min-h-10": props.size == "big",
+          }
+        )}`}
       >
         <FaMinus />
       </Button>
       <Input
         type="number"
         value={val}
-        min={0}
-        onChange={handleInputValChange}
+        min={1}
+        onInput={handleInputValChange}
         required
         name="Buy Quantity Input"
-        className={clsx(
-          "block border border-slate-300 rounded w-20 h-9 min-w-20 min-h-6 py-1.5 px-3 text-sm/6 no-spinner",
-          "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-        )}
+        className={`${props.size == "custom" && props.customStyleInput} ${clsx(
+          "block border border-slate-300 rounded no-spinner text-center",
+          "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25",
+          {
+            "w-10 h-6 min-w-10 min-h-7 text-xs": props.size == "small",
+            "w-16 h-8 min-w-16 min-h-8 text-sm": props.size == "normal",
+            "w-24 h-10 min-w-24 min-h-10 text-lg": props.size == "big",
+          }
+        )}`}
       ></Input>
       <Button
         as={m.button}
@@ -75,7 +118,14 @@ const NumberInput = ({ onValChange }: NumberInputProps) => {
         }}
         animate={{ scale: 1, transition: { duration: 0.3, ease: "easeInOut" } }}
         onClick={increaseByBtn}
-        className="bg-slate-100 rounded w-10 h-9 min-w-8 min-h-7 flex items-center justify-center data-[hover]:bg-slate-200 data-[hover]:text-green-900 shadow-inner"
+        className={`${props.size == "custom" && props.customStyleBtn} ${clsx(
+          "bg-slate-100 rounded flex items-center justify-center data-[hover]:bg-slate-200 data-[hover]:text-green-900 shadow-inner",
+          {
+            "w-7 h-7 min-w-6 min-h-6": props.size == "small",
+            "w-8 h-8 min-w-8 min-h-8": props.size == "normal",
+            "w-12 h-10 min-w-12 min-h-10": props.size == "big",
+          }
+        )}`}
       >
         <FaPlus />
       </Button>
