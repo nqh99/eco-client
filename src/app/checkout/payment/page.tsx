@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Button from "@/components/elements/Button";
-import RecipientInfo from "@/components/elements/RecipientInfo";
+import RecipientInfo from "@/app/checkout/components/RecipientInfo";
 import PaymentMethod from "@/components/elements/PaymentMethod";
 
 const PaymentInfo: React.FC = () => {
@@ -16,42 +16,21 @@ const PaymentInfo: React.FC = () => {
     address: "",
   });
 
-  const [touchedFields, setTouchedFields] = useState({
-    name: false,
-    phone: false,
-    email: false,
-    city: false,
-    district: false,
-    ward: false,
-    address: false,
-  });
-
+  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("COD");
+
+  const recipientInfoRef = useRef<{ validateFields: () => boolean }>(null);
 
   const handleFormDataChange = (data: typeof recipientData) => {
     setRecipientData(data);
   };
 
-  const validateFields = () => {
-    const fieldsToValidate = {
-      name: !recipientData.name,
-      phone: !recipientData.phone,
-      email: !recipientData.email,
-      city: !recipientData.city,
-      district: !recipientData.district,
-      ward: !recipientData.ward,
-      address: !recipientData.address,
-    };
-
-    setTouchedFields(fieldsToValidate);
-
-    return !Object.values(fieldsToValidate).some(Boolean);
-  };
-
   const handleSubmit = () => {
-    if (validateFields()) {
-      console.log("Recipient Info:", recipientData);
-      console.log("Selected Payment Method:", selectedPaymentMethod);
+    if (recipientInfoRef.current?.validateFields()) {
+      // console.log("Validation passed");
+      // console.log("recipientData", recipientData);
+    } else {
+      // console.log("Validation failed");
     }
   };
 
@@ -69,6 +48,7 @@ const PaymentInfo: React.FC = () => {
           <RecipientInfo
             onFormDataChange={handleFormDataChange}
             touchedFields={touchedFields}
+            ref={recipientInfoRef}
           />
         </div>
 
