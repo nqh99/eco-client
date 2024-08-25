@@ -37,7 +37,7 @@ interface FormFieldProps<T extends Record<string, any>> {
   as?: InputType;
 }
 
-const FromInput = <T extends Record<string, any>>({
+const input = <T extends Record<string, any>>({
   value,
   onChange,
   onBlur,
@@ -88,4 +88,4 @@ const FromInput = <T extends Record<string, any>>({
   );
 };
 
-export default FromInput;
+export default input;
