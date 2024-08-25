@@ -48,7 +48,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ selectedMethod, onMethodC
         </label>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 xxs:grid-cols-2 gap-4 text-sm">
+      <div className="mt-6 grid grid-cols-2 xxs:grid-cols-1 gap-4 text-sm">
         <AccountInfo
           name="Cty TNHH ĐT TM và DV QT Eco-HHB"
           accountNumber="152704073686868"

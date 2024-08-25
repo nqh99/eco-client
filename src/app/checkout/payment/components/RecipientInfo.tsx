@@ -1,6 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle, useEffect } from "react";
 import SelectBoxList from "@/components/list/SelectBoxList";
-import FromInput, { InputType, validationRules } from "@/components/interactive/TextInput";
+import FromInput, { InputType, validationRules } from "@/components/elements/FromInput";
 
 const initialTouchedFields = {
   name: false,
@@ -107,7 +107,7 @@ const RecipientInfo = forwardRef<{
             field={field}
             isTouched={touchedFields[field] || false}
             formData={formData}
-            col={field === "email" ? "col-span-12" : "col-span-12 xs:col-span-6 md:col-span-12 lg:col-span-6"}
+            col={field === "email" ? "col-span-12" : "col-span-6 xs:col-span-12 xxl:col-span-12 md:col-span-12 lg:col-span-12"}
             as={InputType.Input}
           />
         ))}
@@ -116,7 +116,7 @@ const RecipientInfo = forwardRef<{
             key={field}
             options={options[field]}
             placeholder={field === "city" ? "Thành phố" : field === "district" ? "Quận/huyện" : "Phường/xã"}
-            colSpan="col-span-12 xs:col-span-4 md:col-span-12 lg:col-span-4"
+            colSpan="col-span-4 xs:col-span-12 xxl:col-span-12 md:col-span-12 lg:col-span-12"
             onChange={(selectedOption) => handleFieldChange(field, selectedOption?.id || null)}
             isTouched={touchedFields[field] || false}
             required

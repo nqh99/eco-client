@@ -2,10 +2,10 @@
 
 import React, { useState, useRef } from "react";
 import Button from "@/components/elements/Button";
-import RecipientInfo from "@/app/checkout/components/RecipientInfo";
-import PaymentMethod from "@/components/elements/PaymentMethod";
+import RecipientInfo from "./components/RecipientInfo";
+import PaymentMethod from "./components/PaymentMethod";
 
-const PaymentInfo: React.FC = () => {
+const PaymentPage: React.FC = () => {
   const [recipientData, setRecipientData] = useState({
     name: "",
     phone: "",
@@ -36,14 +36,14 @@ const PaymentInfo: React.FC = () => {
 
   return (
     <div className="p-6 rounded-lg shadow-md grid grid-cols-12 gap-6 bg-[#f9f9f9]">
-      <div className="col-span-12 lg:col-span-8 sm:col-span-6">
+      <div className="col-span-8 lg:col-span-8 sm:col-span-12">
         <PaymentMethod
           selectedMethod={selectedPaymentMethod}
           onMethodChange={setSelectedPaymentMethod}
         />
       </div>
 
-      <div className="col-span-12 lg:col-span-4">
+      <div className="col-span-4 lg:col-span-12">
         <div className="p-4 bg-white rounded-lg shadow-md">
           <RecipientInfo
             onFormDataChange={handleFormDataChange}
@@ -83,4 +83,4 @@ const PaymentInfo: React.FC = () => {
   );
 };
 
-export default PaymentInfo;
+export default PaymentPage;
