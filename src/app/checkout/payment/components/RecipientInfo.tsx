@@ -1,6 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle, useEffect } from "react";
 import SelectBoxList from "@/components/list/SelectBoxList";
-import FromInput, { InputType, validationRules } from "@/components/elements/FromInput";
+import FromInput, { InputType, validationRules } from "@/components/elements/Input";
 
 const initialTouchedFields = {
   name: false,
