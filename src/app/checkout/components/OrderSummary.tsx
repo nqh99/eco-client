@@ -6,6 +6,8 @@ import { formatCurrency } from "@/utils/core";
 import OrderCalculator from "@/utils/calculator";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { postUserOrder } from "@/apis/product";
+import { CustomError } from "@/models/errors/custom-err";
 
 type OrderSummaryProps = {
   items: ICartPayload[];
@@ -18,6 +20,8 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
 
   const onSubmit = (event: React.MouseEvent) => {
     if (items) {
+      console.log(items);
+      
       // TODO: enhance later
       const userOrdersForm = {
         orderInfoList: items.map((item, index) => {
@@ -35,16 +39,24 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
         subTotalPrice: 190,
         shippingPrice: 10000,
         discountPrice: 0,
-        totalPrice: 130000,
+        totalPrice: cal.computeTemporaryPrice(),
       };
 
+      console.log(userOrdersForm);
+
       // TODO: enhance later
-      // postUserOrder(userOrdersForm).then((res) => {
-      //   if (res === "success") {
-      //     router.push("/checkout/payment");
-      //   }
-      // });
-      router.push("/checkout/payment");
+      postUserOrder(userOrdersForm)
+        .then((res) => {
+          console.log(res);
+
+          if (res === "success") {
+            router.push("/checkout/payment");
+          }
+        })
+        .catch((err: CustomError) => {
+          console.log(err.cause);
+        });
+      // router.push("/checkout/payment");
     }
   };
 

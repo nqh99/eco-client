@@ -33,14 +33,14 @@ const getRelativeProductsByCategory = (categoryID: string) => {
 };
 
 const getProductsByTradeMark = (data: any) => {
-  const url = `${SERVER_ALIAS}/cart/items`;
+  const url = `${SERVER_ALIAS}/cart/items/non-registered/list`;
   // TODO: enhance the data object later [EW-46]
   const ret = safePostRequest<
     {
       id: string;
       name: string;
       avatarUrl: string;
-      cartItems: { productId: string }[];
+      cartItems: CartItemMdl[];
     }[]
   >(url, data);
 
@@ -63,7 +63,7 @@ const postUserOrder = (data: {
   discountPrice: number;
   totalPrice: number;
 }) => {
-  const url = `${SERVER_ALIAS}/cart/items`;
+  const url = `${SERVER_ALIAS}/orders`;
 
   const ret = safePostRequest<string>(url, data);
 
@@ -75,5 +75,5 @@ export {
   getRelativeProductsByCategory,
   getProductDetailsByID,
   getProductsByTradeMark,
-  postUserOrder
+  postUserOrder,
 };

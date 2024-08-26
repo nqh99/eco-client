@@ -19,6 +19,7 @@ import {
 } from "@/lib/features/checkout/cartSlice";
 import { getProductsByTradeMark } from "@/apis/product";
 import DeletePopup from "../../../components/popup/DeletePopup";
+import SelectBoxList from "@/components/list/SelectBoxList";
 
 type ShoppingCartProp = {
   onChecked?: (products: ICartPayload[]) => void;
@@ -74,14 +75,13 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
           avatarUrl: data.avatarUrl,
           cartItems: cartState.items.filter(
             (item) =>
-              data.cartItems.findIndex(
-                (val) => item.itemMdl.id === val.productId
-              ) !== -1
+              data.cartItems.findIndex((val) => item.itemMdl.id === val.id) !==
+              -1
           ),
         });
 
         data.cartItems.forEach((item) => {
-          newCheckedProducts.set(item.productId, false);
+          newCheckedProducts.set(item.id, false);
         });
       });
 
@@ -364,7 +364,21 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
                         <h2 className="text-lg font-normal">
                           {cartPayload.itemMdl.name}
                         </h2>
-                        <div>{/* Combobox section */}</div>
+                        <div>
+                          <SelectBoxList
+                            options={cartPayload.itemMdl.inventory.map(
+                              (inv) => {
+                                return {
+                                  obj: inv,
+                                  displayMsg: inv.variantValue,
+                                };
+                              }
+                            )}
+                            placeholder={cartPayload.itemMdl.inventory[0].variantName}
+                            onChange={() => {}}
+                            // width="w-48"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
