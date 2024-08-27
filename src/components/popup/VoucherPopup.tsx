@@ -80,8 +80,10 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
   const [selectedVouchers, setSelectedVouchers] = useState<number[]>([]);
   const [activeTab, setActiveTab] = useState<string>("all");
   const [tooltipVisible, setTooltipVisible] = useState<boolean>(false);
-  const [tooltipPosition, setTooltipPosition] = useState<{ top: number; left: number } | null>(null);
-  const [copied, setCopied] = useState<boolean>(false);
+  const [tooltipPosition, setTooltipPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
   const [cartHasItems] = useState<boolean>(true); // Giả định có sản phẩm trong giỏ hàng
   const [voucherCode, setVoucherCode] = useState<string>("");
 
@@ -104,16 +106,16 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
 
   const hideTooltip = () => {
     setTooltipVisible(false);
-    setCopied(false);
   };
 
   const copyToClipboard = (code: string) => {
     navigator.clipboard.writeText(code);
-    setCopied(true);
   };
 
   const handleApplyVoucher = () => {
-    const selectedVoucher = vouchers.find((voucher) => selectedVouchers.includes(voucher.id));
+    const selectedVoucher = vouchers.find((voucher) =>
+      selectedVouchers.includes(voucher.id)
+    );
     if (selectedVoucher) {
       onApply(selectedVoucher);
       onClose();
@@ -123,7 +125,9 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
   };
 
   const getFilteredVouchers = () => {
-    let filtered = vouchers.filter((voucher) => activeTab === "all" || voucher.type === activeTab);
+    let filtered = vouchers.filter(
+      (voucher) => activeTab === "all" || voucher.type === activeTab
+    );
     if (voucherCode) {
       filtered = filtered.filter((voucher) => voucher.code === voucherCode);
     }
@@ -138,10 +142,18 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
         <div className="flex flex-col items-center justify-center h-40">
           <div className="mb-4 p-2 bg-blue-100 text-blue-600 rounded-lg flex items-center">
             <FiInfo className="mr-2" />
-            <p>Vui lòng chọn sản phẩm trong giỏ hàng trước khi chọn mã giảm giá</p>
+            <p>
+              Vui lòng chọn sản phẩm trong giỏ hàng trước khi chọn mã giảm giá
+            </p>
           </div>
-          <Image src={noVouchers} alt="logo vouchers" className="w-16 h-16 mb-4" />
-          <p className="text-gray-500 text-center">Chưa có mã giảm giá của Shop</p>
+          <Image
+            src={noVouchers}
+            alt="logo vouchers"
+            className="w-16 h-16 mb-4"
+          />
+          <p className="text-gray-500 text-center">
+            Chưa có mã giảm giá của Shop
+          </p>
         </div>
       );
     }
@@ -149,11 +161,18 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
     return filteredVouchers.map((voucher) => {
       const isExpired = new Date(voucher.expiryDate) < new Date();
       const isSelected = selectedVouchers.includes(voucher.id);
-      const baseClass = isSelected ? "bg-green-50 border-green-500 border-primary" : "bg-gray-50 border-gray-300";
+      const baseClass = isSelected
+        ? "bg-green-50 border-green-500 border-primary"
+        : "bg-gray-50 border-gray-300";
       const textClass = isExpired ? "text-gray-400" : "text-orange-500";
 
       return (
-        <li key={voucher.id} className={`flex items-center justify-between py-2 relative ${isExpired ? "opacity-50" : ""}`}>
+        <li
+          key={voucher.id}
+          className={`flex items-center justify-between py-2 relative ${
+            isExpired ? "opacity-50" : ""
+          }`}
+        >
           <input
             type="checkbox"
             id={`voucher-checkbox-${voucher.id}`}
@@ -165,30 +184,65 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
           <label
             htmlFor={`voucher-checkbox-${voucher.id}`}
             className={`flex items-center justify-center w-5 h-5 rounded-sm border-2 mr-2 ${
-              isSelected ? "bg-primary border-primary" : "bg-gray-100 border-gray-300"
+              isSelected
+                ? "bg-primary border-primary"
+                : "bg-gray-100 border-gray-300"
             } cursor-pointer`}
           >
             {isSelected && (
-              <svg className="w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+              <svg
+                className="w-4 h-4 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             )}
           </label>
 
-          <div className={`flex items-center w-full relative rounded-lg overflow-hidden`}>
-            <div className={`flex-grow p-3 ${baseClass} border-2 border-r-0 rounded-l-lg relative border`}>
-              <span className={`text-sm font-semibold ${textClass} flex items-center`}>
-                Giảm {voucher.discount} tới đa {voucher.maxDiscount} đơn từ {voucher.minOrder}.
-                <span className="ml-2 cursor-pointer relative" onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
+          <div
+            className={`flex items-center w-full relative rounded-lg overflow-hidden`}
+          >
+            <div
+              className={`flex-grow p-3 ${baseClass} border-r-0 rounded-l-lg relative border`}
+            >
+              <span
+                className={`text-sm font-semibold ${textClass} flex items-center`}
+              >
+                Giảm {voucher.discount} tới đa {voucher.maxDiscount} đơn từ{" "}
+                {voucher.minOrder}.
+                <span
+                  className="ml-2 cursor-pointer relative"
+                  onMouseEnter={showTooltip}
+                  onMouseLeave={hideTooltip}
+                >
                   <FiInfo />
                 </span>
               </span>
-              <p className="text-xs text-gray-500">HSD: {voucher.expiryDate} {isExpired && <span className="text-red-500">Mã đã hết hạn</span>}</p>
+              <p className="text-xs text-gray-500">
+                HSD: {voucher.expiryDate}{" "}
+                {isExpired && (
+                  <span className="text-red-500">Mã đã hết hạn</span>
+                )}
+              </p>
             </div>
-            <div className={`w-8 h-16 ${baseClass} border-2 border-l-0 rounded-r-lg flex items-center justify-between relative`}>
-              <div className={`absolute top-[-0.625rem] left-[-0.625rem] w-5 h-5 ${baseClass} border-2 rounded-full`} />
+            <div
+              className={`w-8 h-16 ${baseClass} border-2 border-l-0 rounded-r-lg flex items-center justify-between relative`}
+            >
+              <div
+                className={`absolute top-[-0.625rem] left-[-0.625rem] w-5 h-5 ${baseClass} border-2 rounded-full`}
+              />
               <div className={`h-10 border-l-2 border-dotted ${baseClass}`} />
-              <div className={`absolute bottom-[-0.625rem] left-[-0.625rem] w-5 h-5 ${baseClass} border-2 rounded-full`} />
+              <div
+                className={`absolute bottom-[-0.625rem] left-[-0.625rem] w-5 h-5 ${baseClass} border-2 rounded-full`}
+              />
             </div>
           </div>
 
@@ -201,7 +255,10 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
             >
               <p className="font-bold flex items-center">
                 Mã: {voucher.code}
-                <button onClick={() => copyToClipboard(voucher.code)} className="ml-2 flex items-center text-green-500">
+                <button
+                  onClick={() => copyToClipboard(voucher.code)}
+                  className="ml-2 flex items-center text-green-500"
+                >
                   <FaRegCopy />
                 </button>
               </p>
@@ -223,7 +280,10 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
       <div className="bg-white rounded-lg w-full max-w-md shadow-lg">
         <div className="flex justify-between items-center p-3">
           <h2 className="text-lg font-semibold">Mã ưu đãi từ gia dụng ABC</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+          >
             <AiOutlineClose />
           </button>
         </div>
@@ -237,7 +297,10 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
           />
           <button
             className={`px-4 py-2 rounded ${
-              voucherCode && vouchers.some((voucher) => voucher.code === voucherCode) ? "bg-primary text-white" : "bg-gray-100 text-zinc-400"
+              voucherCode &&
+              vouchers.some((voucher) => voucher.code === voucherCode)
+                ? "bg-primary text-white"
+                : "bg-gray-100 text-zinc-400"
             }`}
             onClick={handleApplyVoucher}
             disabled={!voucherCode}
@@ -247,12 +310,11 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
         </div>
         <div className="mb-6">
           <div className="flex justify-between text-gray-600 text-sm mb-2 border-b">
-           
-          <button
+            <button
               className={`flex-1 pb-2 ${
                 activeTab === "all"
-                ? "text-[var(--primary-color)] border-b-2 border-[var(--primary-color)]"
-                : "text-gray-500"
+                  ? "text-primary border-b-2 border-primary"
+                  : "text-gray-500"
               }`}
               onClick={() => setActiveTab("all")}
             >
@@ -261,7 +323,7 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
             <button
               className={`flex-1 pb-2 ${
                 activeTab === "shipping"
-                  ? "text-[var(--primary-color)] border-b-2 border-[var(--primary-color)]"
+                  ? "text-primary border-b-2 border-primary"
                   : "text-gray-500"
               }`}
               onClick={() => setActiveTab("shipping")}
@@ -271,8 +333,8 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({ onClose, onApply }) => {
             <button
               className={`flex-1 pb-2 ${
                 activeTab === "other"
-                ? "text-[var(--primary-color)] border-b-2 border-[var(--primary-color)]"
-                : "text-gray-500"
+                  ? "text-primary border-b-2 border-primary"
+                  : "text-gray-500"
               }`}
               onClick={() => setActiveTab("other")}
             >

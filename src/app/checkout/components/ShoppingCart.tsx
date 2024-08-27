@@ -19,6 +19,7 @@ import {
 } from "@/lib/features/checkout/cartSlice";
 import { getProductsByTradeMark } from "@/apis/product";
 import DeletePopup from "../../../components/popup/DeletePopup";
+import VoucherPopup from "@/components/popup/VoucherPopup";
 
 type ShoppingCartProp = {
   onChecked?: (products: ICartPayload[]) => void;
@@ -270,8 +271,33 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
     });
   };
 
+  const [showVoucher, setShowVoucher] = useState<boolean>(false);
+  const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
+
+  const handleOpenPopup = () => {
+    setShowVoucher(true);
+  };
+  interface Voucher {
+    id: number;
+    discount: string;
+    maxDiscount: string;
+    minOrder: string;
+    expiryDate: string;
+    code: string;
+    conditions: string[];
+    type: string;
+  }
+  const handleClosePopup = () => {
+    setShowVoucher(false);
+  };
+
+  const handleApplyVoucher = (voucher: Voucher) => {
+    setSelectedVoucher(voucher);
+    setShowVoucher(false);
+  };
+
   return (
-    <div className="flex flex-col gap-3 text-sm h-full">
+    <div className="flex flex-col gap-3 text-sm">
       {/* Column headers section */}
       <div className="flex gap-3 justify-between items-center bg-white rounded-lg p-2 text-sm">
         <div className="min-w-[420px]">
@@ -291,7 +317,7 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
           <span className="block flex-grow">Số lượng</span>
           <span className="block w-28">Thành tiền</span>
           <Button
-            onClick={(event) =>
+            onClick={() =>
               setShowDeletePops((prev) => {
                 const newVal = new Map(prev);
 
@@ -307,7 +333,7 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
           <DeletePopup
             show={showDeletePops.get("all") || false}
             title="Bạn có muốn xóa toàn bộ giỏ hàng không?"
-            onClose={(e) => onCloseDeletePop("all")}
+            onClose={() => onCloseDeletePop("all")}
             onConfirm={(e) => {
               handleRemoveCartItems(e, true);
             }}
@@ -316,7 +342,10 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
       </div>
       {[...productsByTradeMark.values()].map((tradeMark, index) => {
         return (
-          <div key={index} className="bg-white rounded-lg px-2 text-sm h-full">
+          <div
+            key={index}
+            className="bg-white rounded-lg px-2 text-sm"
+          >
             <div className="border-b-[0.5px] flex gap-3 py-2 items-center">
               <Checkbox
                 id={tradeMark.id}
@@ -412,7 +441,37 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
               );
             })}
             {/* TODO: Discount voucher section */}
-            <div></div>
+            <div className="border-t-[0.5px] py-2 flex gap-3 items-center">
+              <Button onClick={handleOpenPopup} className="flex flex-row gap-2 items-center">
+                <Image
+                  src={"/icons/voucher.svg"}
+                  alt={"Branch Name"}
+                  width={25}
+                  height={25}
+                />
+                <h5 className="text-sm font-semibold">Nhận mã giảm giá</h5>
+                <MdOutlineKeyboardArrowRight className="size-4" />
+              </Button>
+              {showVoucher && (
+                <VoucherPopup
+                  onClose={handleClosePopup}
+                  onApply={handleApplyVoucher}
+                />
+              )}
+              {selectedVoucher ? (
+                <div className="flex items-center space-x-2 text-orange-500">
+                  <div className="inline-flex items-center rounded-[5px] justify-center px-5 py-[2px] border border-orange-500 text-orange-500 bg-[#fff5e8] relative">
+                    <span className="font-medium">
+                      Đã giảm {selectedVoucher.maxDiscount}{" "}
+                    </span>
+                    <div className="absolute -left-[0.05rem] top-1/2 transform -translate-y-1/2 bg-[#fff5e8] w-2 h-3 rounded-r-full border border-orange-500 border-l-0"></div>
+                    <div className="absolute -right-[0.08rem] top-1/2 transform -translate-y-1/2 bg-[#fff5e8] w-2 h-3 rounded-l-full border border-orange-500 border-r-0"></div>
+                  </div>
+                </div>
+              ) : (
+                <span>Vui lòng chọn mã ưu đãi</span>
+              )}
+            </div>
           </div>
         );
       })}
