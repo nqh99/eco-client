@@ -7,19 +7,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { ICartPayload } from "@/lib/types";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { formatCurrency } from "@/utils/core";
-import NumberInput from "../../../components/elements/NumberInput";
 import Button from "../../../components/elements/Button";
 import { GoTrash } from "react-icons/go";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import {
-  addCartItem,
-  clearCart,
-  removeCartItem,
-} from "@/lib/features/checkout/cartSlice";
+import { clearCart } from "@/lib/features/checkout/cartSlice";
 import { getProductsByTradeMark } from "@/apis/product";
 import DeletePopup from "../../../components/popup/DeletePopup";
-import VoucherPopup from "@/components/popup/VoucherPopup";
+import ShoppingCartItem from "@/components/elements/ShoppingCartItem";
 
 type ShoppingCartProp = {
   onChecked?: (products: ICartPayload[]) => void;
@@ -40,9 +34,7 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
     new Map()
   );
 
-  const [showDeletePops, setShowDeletePops] = useState<Map<string, boolean>>(
-    new Map()
-  );
+  const [showDeleteAllPop, setShowDeleteAllPop] = useState(false);
 
   const [productsByTradeMark, setProductsByTradeMark] = useState<
     Map<
@@ -75,14 +67,13 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
           avatarUrl: data.avatarUrl,
           cartItems: cartState.items.filter(
             (item) =>
-              data.cartItems.findIndex(
-                (val) => item.itemMdl.id === val.productId
-              ) !== -1
+              data.cartItems.findIndex((val) => item.itemMdl.id === val.id) !==
+              -1
           ),
         });
 
         data.cartItems.forEach((item) => {
-          newCheckedProducts.set(item.productId, false);
+          newCheckedProducts.set(item.id, false);
         });
       });
 
@@ -112,28 +103,23 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
         return newVal;
       });
     });
-
-    setShowDeletePops((prev) => {
-      const newVal = new Map<string, boolean>();
-
-      newVal.set("all", false);
-
-      cartState.items.forEach((val) => {
-        newVal.set(val.itemMdl.id, false);
-      });
-
-      return newVal;
-    });
   }, [cartState.items]);
 
   useEffect(() => {
     if (onChecked) {
-      const checkedItems = Array.from(checkedProducts.entries())
-        .filter(([_, val]) => val)
-        .map(([key, _]) =>
-          cartState.items.find((item) => item?.itemMdl.id === key)
-        )
-        .filter((item): item is ICartPayload => item !== undefined);
+      const checkedItems: ICartPayload[] = [];
+
+      checkedProducts.forEach((value, key) => {
+        if (value) {
+          const cartPayload = cartState.items.find(
+            (item) => item?.itemMdl.id === key
+          );
+
+          if (cartPayload) {
+            checkedItems.push(cartPayload);
+          }
+        }
+      });
 
       onChecked(checkedItems);
     }
@@ -171,7 +157,7 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
     setCheckedProducts((prev) => {
       const newVal = new Map(prev);
 
-      productsByTradeMark?.get(id)?.cartItems.forEach((item, index) => {
+      productsByTradeMark?.get(id)?.cartItems.forEach((item) => {
         newVal.set(item.itemMdl.id, val);
       });
 
@@ -205,147 +191,50 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
     }
   };
 
-  const handleCartItemValChange = (val: number, cartPayload: ICartPayload) => {
-    if (!val) {
-      return;
-    }
-
-    const changedNum = val - cartPayload.quantity;
-
-    if (changedNum > 0) {
-      dispatch(addCartItem({ ...cartPayload, quantity: changedNum }));
-    } else if (changedNum < 0) {
-      dispatch(
-        removeCartItem({ ...cartPayload, quantity: Math.abs(changedNum) })
-      );
-    }
-  };
-
-  const handleRemoveCartItems = (
-    event: React.MouseEvent,
-    isClearAll: boolean,
-    cartPayload?: ICartPayload
-  ) => {
-    if (isClearAll) {
-      dispatch(clearCart());
-      setShowDeletePops((prev) => {
-        const newVal = new Map(prev);
-
-        newVal.set("all", false);
-
-        return newVal;
-      });
-
-      return;
-    }
-
-    if (cartPayload) {
-      dispatch(removeCartItem({ ...cartPayload, quantity: -1 }));
-      setShowDeletePops((prev) => {
-        const newVal = new Map(prev);
-
-        newVal.set(cartPayload.itemMdl.id, false);
-
-        return newVal;
-      });
-    }
-  };
-
-  const onCloseDeletePop = (popID: string) => {
-    setShowDeletePops((prev) => {
-      const newVal = new Map(prev);
-
-      newVal.set(popID, false);
-
-      return newVal;
-    });
-  };
-
-  const onShowDeletePop = (popID: string) => {
-    setShowDeletePops((prev) => {
-      const newVal = new Map(prev);
-
-      newVal.set(popID, true);
-
-      return newVal;
-    });
-  };
-
-  const [showVoucher, setShowVoucher] = useState<boolean>(false);
-  const [selectedVoucher, setSelectedVoucher] = useState<Voucher | null>(null);
-
-  const handleOpenPopup = () => {
-    setShowVoucher(true);
-  };
-  interface Voucher {
-    id: number;
-    discount: string;
-    maxDiscount: string;
-    minOrder: string;
-    expiryDate: string;
-    code: string;
-    conditions: string[];
-    type: string;
-  }
-  const handleClosePopup = () => {
-    setShowVoucher(false);
-  };
-
-  const handleApplyVoucher = (voucher: Voucher) => {
-    setSelectedVoucher(voucher);
-    setShowVoucher(false);
+  const onConfirmDeleteAll = () => {
+    dispatch(clearCart());
+    setShowDeleteAllPop(false);
   };
 
   return (
     <div className="flex flex-col gap-3 text-sm">
       {/* Column headers section */}
-      <div className="flex gap-3 justify-between items-center bg-white rounded-lg p-2 text-sm">
-        <div className="min-w-[420px]">
+      <div className="grid grid-cols-12 gap-1 items-center bg-white rounded-lg p-2 text-sm">
+        <div className="col-span-6">
           <Checkbox
             id="all_checked_box"
             value={isCheckedAllBox}
             onCheck={onSelectAllItems}
           >
             <Checkbox.Indicator />
-            <Checkbox.Label className="text-informal select-none">
+            <Checkbox.Label className="text-informal select-none ml-2">
               Tất cả ({cartState.totalQuantity} sản phẩm)
             </Checkbox.Label>
           </Checkbox>
         </div>
-        <div className="flex flex-grow justify-between items-center gap-3 text-informal text-base text-center">
-          <span className="block w-28">Đơn giá</span>
-          <span className="block flex-grow">Số lượng</span>
-          <span className="block w-28">Thành tiền</span>
-          <Button
-            onClick={() =>
-              setShowDeletePops((prev) => {
-                const newVal = new Map(prev);
-
-                newVal.set("all", true);
-
-                return newVal;
-              })
-            }
-            className="flex-shrink group border rounded-md bg-[#ebf1f5] p-1 hover:border-primary"
-          >
-            <GoTrash className="size-4 text-informal group-hover:text-primary" />
-          </Button>
+        <div className="col-span-6 grid grid-cols-12 items-center justify-items-center gap-1 text-informal text-center">
+          <span className="block col-span-3">Đơn giá</span>
+          <span className="block col-span-5">Số lượng</span>
+          <span className="block col-span-3">Thành tiền</span>
+          <div className="col-span-1 justify-self-end">
+            <Button
+              onClick={() => setShowDeleteAllPop(true)}
+              className="flex-shrink group border rounded-md bg-[#ebf1f5] p-1 hover:border-primary"
+            >
+              <GoTrash className="size-4 text-informal group-hover:text-primary" />
+            </Button>
+          </div>
           <DeletePopup
-            show={showDeletePops.get("all") || false}
+            show={showDeleteAllPop}
             title="Bạn có muốn xóa toàn bộ giỏ hàng không?"
-            onClose={() => onCloseDeletePop("all")}
-            onConfirm={(e) => {
-              handleRemoveCartItems(e, true);
-            }}
+            onClose={() => setShowDeleteAllPop(false)}
+            onConfirm={onConfirmDeleteAll}
           />
         </div>
       </div>
       {[...productsByTradeMark.values()].map((tradeMark, index) => {
         return (
-          <div
-            key={index}
-            className="bg-white rounded-lg px-2 text-sm"
-          >
+          <div key={index} className="bg-white rounded-lg px-2 text-sm">
             <div className="border-b-[0.5px] flex gap-3 py-2 items-center">
               <Checkbox
                 id={tradeMark.id}
@@ -370,108 +259,21 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
             </div>
             {tradeMark.cartItems.map((cartPayload, index) => {
               return (
-                <div key={cartPayload.itemMdl.id} className="flex gap-3 py-6">
-                  <div className="flex gap-2 max-h-20 w-[420px]">
-                    <Checkbox
-                      id={cartPayload.itemMdl.id}
-                      value={checkedProducts.get(cartPayload.itemMdl.id)}
-                      onCheck={(val) => {
-                        onSelectItem(val, cartPayload.itemMdl.id, tradeMark.id);
-                      }}
-                    >
-                      <Checkbox.Indicator />
-                    </Checkbox>
-                    <div className="flex gap-3">
-                      <Image
-                        src={cartPayload.itemMdl.imageUrl}
-                        alt={"Branch Name"}
-                        width={70}
-                        height={50}
-                        className="block rounded-md border-[0.5px] border-informal"
-                      />
-                      <div className="">
-                        <h2 className="text-lg font-normal">
-                          {cartPayload.itemMdl.name}
-                        </h2>
-                        <div>{/* Combobox section */}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex-grow flex gap-3 items-center">
-                    <span className="w-28 flex justify-center text-base">
-                      {formatCurrency(
-                        cartPayload.itemMdl.discount?.discountPrice ||
-                          cartPayload.itemMdl.price
-                      )}{" "}
-                      <u>đ</u>
-                    </span>
-                    <div className="flex justify-center flex-grow">
-                      <NumberInput
-                        value={cartPayload.quantity}
-                        size="normal"
-                        onValChange={(val) => {
-                          handleCartItemValChange(val, cartPayload);
-                        }}
-                      />
-                    </div>
-                    <span className="w-28 flex justify-center text-base text-discount">
-                      {formatCurrency(
-                        (cartPayload.itemMdl.discount?.discountPrice ||
-                          cartPayload.itemMdl.price) * cartPayload.quantity
-                      )}{" "}
-                      <u>đ</u>
-                    </span>
-                    <Button
-                      onClick={(event) =>
-                        onShowDeletePop(cartPayload.itemMdl.id)
-                      }
-                      className="group border rounded-md bg-[#ebf1f5] p-1 hover:border-primary"
-                    >
-                      <GoTrash className="size-4 text-informal group-hover:text-primary" />
-                    </Button>
-                    <DeletePopup
-                      show={showDeletePops.get(cartPayload.itemMdl.id) || false}
-                      onClose={(e) => onCloseDeletePop(cartPayload.itemMdl.id)}
-                      onConfirm={(e) => {
-                        handleRemoveCartItems(e, false, cartPayload);
-                      }}
-                    />
-                  </div>
-                </div>
+                <ShoppingCartItem
+                  key={index}
+                  item="shopping-cart"
+                  cartPayload={cartPayload}
+                  isSelect={
+                    checkedProducts.get(cartPayload.itemMdl.id) || false
+                  }
+                  onSelect={(val) =>
+                    onSelectItem(val, cartPayload.itemMdl.id, tradeMark.id)
+                  }
+                />
               );
             })}
             {/* TODO: Discount voucher section */}
-            <div className="border-t-[0.5px] py-2 flex gap-3 items-center">
-              <Button onClick={handleOpenPopup} className="flex flex-row gap-2 items-center">
-                <Image
-                  src={"/icons/voucher.svg"}
-                  alt={"Branch Name"}
-                  width={25}
-                  height={25}
-                />
-                <h5 className="text-sm font-semibold">Nhận mã giảm giá</h5>
-                <MdOutlineKeyboardArrowRight className="size-4" />
-              </Button>
-              {showVoucher && (
-                <VoucherPopup
-                  onClose={handleClosePopup}
-                  onApply={handleApplyVoucher}
-                />
-              )}
-              {selectedVoucher ? (
-                <div className="flex items-center space-x-2 text-orange-500">
-                  <div className="inline-flex items-center rounded-[5px] justify-center px-5 py-[2px] border border-orange-500 text-orange-500 bg-[#fff5e8] relative">
-                    <span className="font-medium">
-                      Đã giảm {selectedVoucher.maxDiscount}{" "}
-                    </span>
-                    <div className="absolute -left-[0.05rem] top-1/2 transform -translate-y-1/2 bg-[#fff5e8] w-2 h-3 rounded-r-full border border-orange-500 border-l-0"></div>
-                    <div className="absolute -right-[0.08rem] top-1/2 transform -translate-y-1/2 bg-[#fff5e8] w-2 h-3 rounded-l-full border border-orange-500 border-r-0"></div>
-                  </div>
-                </div>
-              ) : (
-                <span>Vui lòng chọn mã ưu đãi</span>
-              )}
-            </div>
+            <div></div>
           </div>
         );
       })}

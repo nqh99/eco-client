@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { FiInfo } from "react-icons/fi";
 import { FaRegCopy } from "react-icons/fa";

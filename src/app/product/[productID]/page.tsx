@@ -16,10 +16,9 @@ import CartItem from "@/components/elements/CartItem";
 import CartItemMdl from "@/models/products/card-item";
 import Rating from "@/components/elements/Rating";
 import { formatCurrency } from "@/utils/core";
-import OrderCheckout from "@/components/checkout/OrderCheckout";
+import OrderCheckout from "./components/OrderCheckout";
 
 const ProductDetailPage = async ({
-  params,
   searchParams,
 }: {
   params: string;

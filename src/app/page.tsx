@@ -1,4 +1,8 @@
-import { getTopDealProducts } from "@/apis/product";
+import {
+  getBestSellingProducts,
+  getNewProducts,
+  getTopDealProducts,
+} from "@/apis/product";
 import AdsBanner from "@/components/elements/AdsBanner";
 import CartItem from "@/components/elements/CartItem";
 import ProductTitle from "@/components/elements/ProductTitle";
@@ -10,6 +14,10 @@ import React from "react";
 
 const HomePage = async () => {
   const topDealProducts = await getTopDealProducts(true);
+
+  const bestSellingProducts = await getBestSellingProducts(true);
+
+  const newProducts = await getNewProducts(true);
 
   return (
     <main className="p-10">
@@ -85,8 +93,8 @@ const HomePage = async () => {
           <div className="bg-white rounded-lg p-4 shadow-inner">
             <ProductTitle title="Sản phẩm bán chạy" style="normal" href="" />
             <StackedList>
-              {topDealProducts &&
-                topDealProducts.map((item: CartItemMdl) => (
+              {bestSellingProducts &&
+                bestSellingProducts.map((item: CartItemMdl) => (
                   <CartItem
                     key={item.id}
                     itemMdl={item}
@@ -98,8 +106,8 @@ const HomePage = async () => {
           <div className="bg-white rounded-lg p-4 shadow-inner">
             <ProductTitle title="Sản phẩm mới" style="normal" href="" />
             <StackedList>
-              {topDealProducts &&
-                topDealProducts.map((item: CartItemMdl) => (
+              {newProducts &&
+                newProducts.map((item: CartItemMdl) => (
                   <CartItem
                     key={item.id}
                     itemMdl={item}

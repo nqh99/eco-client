@@ -6,14 +6,24 @@ import { safeDataFetching, safePostRequest } from "@/utils/http";
 
 const getTopDealProducts = (needRevalidate: boolean) => {
   const url = `${SERVER_ALIAS}/products/top-deals?page=0&size=4`;
+
   const ret = safeDataFetching<CartItemMdl[]>(url, needRevalidate);
 
   return ret;
 };
 
-const getBestSellingProducts = () => {
-  const url = `${SERVER_ALIAS}/products/top-deals?page=0&size=4`;
-  const ret = safeDataFetching<CartItemMdl[]>(url, true);
+const getBestSellingProducts = (needRevalidate: boolean) => {
+  const url = `${SERVER_ALIAS}/products/featured-products?page=0&size=4`;
+
+  const ret = safeDataFetching<CartItemMdl[]>(url, needRevalidate);
+
+  return ret;
+};
+
+const getNewProducts = (needRevalidate: boolean) => {
+  const url = `${SERVER_ALIAS}/products/new-products?page=0&size=4`;
+
+  const ret = safeDataFetching<CartItemMdl[]>(url, needRevalidate);
 
   return ret;
 };
@@ -32,15 +42,20 @@ const getRelativeProductsByCategory = (categoryID: string) => {
   return ret;
 };
 
-const getProductsByTradeMark = (data: any) => {
-  const url = `${SERVER_ALIAS}/cart/items`;
+const getProductsByTradeMark = (data: {
+  cartInfoList: {
+    productId: string;
+    productInventoryId: string;
+  }[];
+}) => {
+  const url = `${SERVER_ALIAS}/cart/items/non-registered/list`;
   // TODO: enhance the data object later [EW-46]
   const ret = safePostRequest<
     {
       id: string;
       name: string;
       avatarUrl: string;
-      cartItems: { productId: string }[];
+      cartItems: CartItemMdl[];
     }[]
   >(url, data);
 
@@ -63,7 +78,7 @@ const postUserOrder = (data: {
   discountPrice: number;
   totalPrice: number;
 }) => {
-  const url = `${SERVER_ALIAS}/cart/items`;
+  const url = `${SERVER_ALIAS}/orders`;
 
   const ret = safePostRequest<string>(url, data);
 
@@ -72,8 +87,10 @@ const postUserOrder = (data: {
 
 export {
   getTopDealProducts,
+  getBestSellingProducts,
+  getNewProducts,
   getRelativeProductsByCategory,
   getProductDetailsByID,
   getProductsByTradeMark,
-  postUserOrder
+  postUserOrder,
 };

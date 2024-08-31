@@ -16,38 +16,6 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
 
   const [cal, setCalculator] = useState<OrderCalculator>(new OrderCalculator());
 
-  const onSubmit = (event: React.MouseEvent) => {
-    if (items) {
-      // TODO: enhance later
-      const userOrdersForm = {
-        orderInfoList: items.map((item, index) => {
-          return {
-            productId: item.itemMdl.id,
-            quantity: item.quantity,
-            productInventoryId: item.itemMdl.inventory[0].id,
-          };
-        }),
-        shippingAddress: "10000",
-        discountCode: "",
-        phoneNumber: "0113113119",
-        email: "eco-hhb@gmail.com",
-        customerName: "Nguyễn Quang Huy",
-        subTotalPrice: 190,
-        shippingPrice: 10000,
-        discountPrice: 0,
-        totalPrice: 130000,
-      };
-
-      // TODO: enhance later
-      // postUserOrder(userOrdersForm).then((res) => {
-      //   if (res === "success") {
-      //     router.push("/checkout/payment");
-      //   }
-      // });
-      router.push("/checkout/payment");
-    }
-  };
-
   useEffect(() => {
     setCalculator(new OrderCalculator(items));
   }, [items]);
@@ -91,7 +59,7 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
         </span>
       </div>
       <Button
-        onClick={onSubmit}
+        onClick={() => router.push("/checkout/payment")}
         className="bg-discount text-white text-center rounded-md px-3 py-1 mt-3 w-full"
       >
         Mua hàng

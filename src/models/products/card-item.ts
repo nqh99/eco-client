@@ -7,6 +7,7 @@ type CartItemMdl = {
   price: number;
   imageUrl: string;
   rating?: number;
+  quantitySold?: number;
   inventory: InventoryMdl[];
   discount?: ProductDiscountMdl;
 };
