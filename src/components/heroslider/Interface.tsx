@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
-import Slides from "@/components/elements/Slides";
+import Slides from "../elements/Slides";
 import Pagination from "@/components/elements/Pagination";
 
 const pages = [0, 1, 2, 3, 4, 5, 6];

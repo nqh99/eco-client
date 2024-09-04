@@ -13,7 +13,10 @@ import { ValidationError } from "@/models/errors/validation-err";
  *                  - info: which contains all error information like: cause, error stack trace, data object, etc
  * @returns A readable error object based on the status and err.
  */
-const generateReadableErr = (status: number, err?: any) => {
+const generateReadableErr = (
+  status: number,
+  err?: { msg: string; info: string }
+) => {
   if (!status) {
     return new ServiceError("Invalid HTTP response status!");
   }
@@ -34,7 +37,8 @@ const generateReadableErr = (status: number, err?: any) => {
       return new AuthenticationError(err?.msg);
     case 403:
       return new AuthorizationError(err?.msg);
-    case 409 || 422:
+    case 409:
+    case 422:
       return new ValidationError(err?.msg);
     default:
       return new ClientError(err?.msg);
@@ -61,8 +65,8 @@ const convertPOJOToFormData = (
 ): FormData => {
   const formData = form || new FormData();
 
-  for (let property in obj) {
-    if (obj.hasOwnProperty(property)) {
+  for (const property in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, property)) {
       const formKey = namespace ? `${namespace}[${property}]` : property;
 
       if (
@@ -79,4 +83,21 @@ const convertPOJOToFormData = (
   return formData;
 };
 
-export { generateReadableErr, formatCurrency, convertPOJOToFormData };
+const convertRoutingPath = (paths: string[]) => {
+  const result: string[] = [];
+  let currentPath = "";
+
+  for (const path of paths) {
+    currentPath += `/${path}`;
+    result.push(currentPath);
+  }
+
+  return result;
+};
+
+export {
+  generateReadableErr,
+  formatCurrency,
+  convertPOJOToFormData,
+  convertRoutingPath,
+};

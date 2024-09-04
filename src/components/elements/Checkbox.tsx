@@ -4,8 +4,6 @@ import {
   ReactNode,
   createContext,
   useContext,
-  useEffect,
-  useState,
 } from "react";
 import { motion as m, MotionProps } from "framer-motion";
 import { Field, Label, LabelProps } from "@headlessui/react";
@@ -32,6 +30,7 @@ const tickVariants = {
 interface CheckboxContextProps {
   id: string;
   isChecked: boolean;
+  disabled?: boolean;
   onCheck?: (val: boolean) => void;
 }
 
@@ -44,16 +43,18 @@ interface CheckboxProps {
   children: ReactNode;
   id: string;
   value?: boolean;
+  disabled?: boolean;
   onCheck?: (val: boolean) => void;
 }
 
-const Checkbox = ({ children, id, value, onCheck }: CheckboxProps) => {
+const Checkbox = ({ children, id, value, disabled, onCheck }: CheckboxProps) => {
   return (
     <Field className="flex items-center gap-2">
       <CheckboxContext.Provider
         value={{
           id,
           isChecked: value || false,
+          disabled: disabled || false,
           onCheck: onCheck,
         }}
       >
@@ -64,12 +65,13 @@ const Checkbox = ({ children, id, value, onCheck }: CheckboxProps) => {
 };
 
 const CheckboxIndicator = ({ className }: { className?: string }) => {
-  const { id, isChecked, onCheck } = useContext(CheckboxContext);
+  const { id, isChecked, disabled, onCheck } = useContext(CheckboxContext);
 
   return (
     <ICheckbox
       id={id}
       checked={isChecked}
+      disabled={disabled}
       onChange={onCheck}
       className={`${
         className ||
@@ -107,7 +109,7 @@ const CheckboxLabel = ({
   className,
   ...props
 }: CheckboxLabelProps) => {
-  const { id, isChecked } = useContext(CheckboxContext);
+  const { isChecked } = useContext(CheckboxContext);
 
   return (
     <Label

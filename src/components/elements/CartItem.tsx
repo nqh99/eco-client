@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import Rating from "./Rating";
 import { formatCurrency } from "@/utils/core";
 import CustomButton from "./Button";
+import { useAppDispatch } from "@/hooks/redux";
+import { addCartItem } from "@/lib/features/checkout/cartSlice";
 
 interface CartItemProps {
   itemMdl: CartItemMdl;
@@ -15,6 +17,8 @@ interface CartItemProps {
 
 const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
   const router = useRouter();
+
+  const dispatch = useAppDispatch();
 
   return (
     <div
@@ -49,8 +53,7 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
             />
           )}
           <span className="block text-gray-500 font-light text-xs">
-            {/* TODO: discuss with BE to enhance this object {itemMdl.inventory[0]?.quantitySold} */}
-            Đã bán 
+            Đã bán {itemMdl.quantitySold}
           </span>
         </div>
         <div className="flex content-center justify-around gap-3 items-center mt-2">
@@ -73,9 +76,8 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
           <CustomButton
             className="border border-primary rounded p-[3px]"
             onClick={(e) => {
-              e.preventDefault();
               e.stopPropagation();
-              // TODO: enhance when business changed
+              dispatch(addCartItem({ itemMdl: itemMdl, quantity: 1 }));
             }}
           >
             <svg

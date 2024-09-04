@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+"use client";
+
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
 
@@ -30,10 +32,10 @@ const variants = {
 
 const imagesAlts = ["1", "2", "3", "4", "5", "6", "7"];
 // TEST : list slide
-const listSlide: Array<string | StaticImageData | any> = [];
+const listSlide: Array<string | StaticImageData> = [];
 
 function Slides({ currentPage, direction, pages, setPage }: Props) {
-  // TEST: create list slide [7] 
+  // TEST: create list slide [7]
   for (let i = 0; i < 7; i++) {
     // const imgElement = document.createElement("img");
     listSlide.push(bannerSlide);

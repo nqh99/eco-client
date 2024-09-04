@@ -1,5 +1,3 @@
-import { isCustomError } from "@/models/errors/custom-err";
-import { ServiceError } from "@/models/errors/service-err";
 import ResponseMdl from "@/models/https/response";
 import { revalidatePath } from "next/cache";
 import { generateReadableErr } from "./core";
@@ -15,7 +13,7 @@ const convertToURL = (str: string): string => {
   const stringWithHyphens = str.toLocaleLowerCase().replace(/\s+/g, "-");
   const stringWithoutSpecialCharacters = stringWithHyphens
     .replace(/(?<![a-zA-Z])[0-9%]+/g, "")
-    .replace(/\-+/g, "-")
+    .replace(/-+/g, "-")
     .replace("&", "and");
 
   const url =
@@ -45,11 +43,11 @@ const safeDataFetching = async <T>(
       "ConTent-Type": "application/json",
     },
   })
-    .then((res) => {
+    .then(async (res) => {
       if (!res.ok) {
         throw generateReadableErr(res.status, {
           msg: res.statusText,
-          info: res.text,
+          info: await res.text(),
         });
       }
       return res.text();
@@ -62,7 +60,7 @@ const safeDataFetching = async <T>(
   if (!isResOK(ret.status)) {
     throw generateReadableErr(ret.status, {
       msg: ret.message,
-      info: ret.data,
+      info: String(ret.data),
     });
   }
 
@@ -87,9 +85,9 @@ const isResOK = (res: number): boolean => {
  * @param T - The type of the response data.
  * @returns A promise that resolves to the response data or an empty `ResponseMdl` object.
  */
-const safePostRequest = async <T>(
+const safePostRequest = async <T, D extends Record<string, unknown>>(
   url: string,
-  data: any
+  data: D
 ): Promise<T | undefined> => {
   const ret: ResponseMdl<T> = await fetch(url, {
     method: "POST",
@@ -98,11 +96,11 @@ const safePostRequest = async <T>(
     },
     body: JSON.stringify(data),
   })
-    .then((res) => {
+    .then(async (res) => {
       if (!res.ok) {
         throw generateReadableErr(res.status, {
           msg: res.statusText,
-          info: res.text,
+          info: await res.text(),
         });
       }
       return res.text();
@@ -115,7 +113,7 @@ const safePostRequest = async <T>(
   if (!isResOK(ret.status)) {
     throw generateReadableErr(ret.status, {
       msg: ret.message,
-      info: ret.data,
+      info: String(ret.data),
     });
   }
 

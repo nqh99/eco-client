@@ -8,7 +8,7 @@ import Image from "next/image";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { GoPackageDependents } from "react-icons/go";
 import { PiInfoLight } from "react-icons/pi";
-import NumberInput from "../elements/NumberInput";
+import NumberInput from "../../../../components/elements/NumberInput";
 import { formatCurrency } from "@/utils/core";
 import { useAppDispatch } from "@/hooks/redux";
 import { addCartItem } from "@/lib/features/checkout/cartSlice";
@@ -81,7 +81,7 @@ const OrderCheckout = ({ ...props }: OrderCheckoutProps) => {
             transition: { duration: 0.1, ease: "easeInOut" },
           }}
           className="w-full h-10 py-2 rounded-lg border text-lime-800 border-lime-800 flex-col justify-center items-center gap-2.5 inline-flex"
-          onClick={(e) => {
+          onClick={() => {
             dispatch(
               addCartItem({ itemMdl: props.product, quantity: orderQuantity })
             );

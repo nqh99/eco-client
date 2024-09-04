@@ -37,7 +37,7 @@ const ShoppingCartPage = () => {
           </h2>
           <div className="flex flex-row gap-4 mt-3 overflow-visible">
             {/* Shopping products cart */}
-            <div className="w-3/4 min-w-[850px] flex flex-col gap-3 text-sm">
+            <div className="w-3/4 min-w-[800px] flex flex-col gap-3 text-sm">
               <ShoppingCart
                 onChecked={(val) => {
                   setCheckedItems(val);

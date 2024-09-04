@@ -2,7 +2,7 @@ import React from "react";
 import SearchBar from "@/components/elements/SearchBar";
 import MiniNavbar from "@/components/navbar/MiniNavbar";
 import Login from "@/components/elements/Login";
-import Cart from "@/components/elements/ShoppingCartIcon";
+import ShoppingCartIcon from "./ShoppingCartIcon";
 import Language from "@/components/elements/Language";
 import Notification from "@/components/elements/Notification";
 import Logo from "@/components/elements/Logo";
@@ -43,7 +43,7 @@ const Navbar = async () => {
                 <Link href={""}>Chuyển khoản thành công</Link>
                 <Link href={""}>Đặt hàng thành công</Link>
               </Notification>
-              <Cart />
+              <ShoppingCartIcon />
               <Login />
               <Language />
             </div>
