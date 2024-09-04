@@ -56,34 +56,41 @@ const getProductsByTradeMark = (data: {
       name: string;
       avatarUrl: string;
       cartItems: CartItemMdl[];
-    }[]
+    }[],
+    {
+      cartInfoList: {
+        productId: string;
+        productInventoryId: string;
+      }[];
+    }
   >(url, data);
 
   return ret;
 };
 
-const postUserOrder = (data: {
-  orderInfoList: {
-    productId: string;
-    quantity: number;
-    productInventoryId: string;
-  }[];
-  shippingAddress: string;
-  discountCode: string;
-  phoneNumber: string;
-  email: string;
-  customerName: string;
-  subTotalPrice: number;
-  shippingPrice: number;
-  discountPrice: number;
-  totalPrice: number;
-}) => {
-  const url = `${SERVER_ALIAS}/orders`;
+// TODO: enhance later
+// const postUserOrder = (data: {
+//   orderInfoList: {
+//     productId: string;
+//     quantity: number;
+//     productInventoryId: string;
+//   }[];
+//   shippingAddress: string;
+//   discountCode: string;
+//   phoneNumber: string;
+//   email: string;
+//   customerName: string;
+//   subTotalPrice: number;
+//   shippingPrice: number;
+//   discountPrice: number;
+//   totalPrice: number;
+// }) => {
+//   const url = `${SERVER_ALIAS}/orders`;
 
-  const ret = safePostRequest<string>(url, data);
+//   const ret = safePostRequest<string>(url, data);
 
-  return ret;
-};
+//   return ret;
+// };
 
 export {
   getTopDealProducts,
@@ -92,5 +99,4 @@ export {
   getRelativeProductsByCategory,
   getProductDetailsByID,
   getProductsByTradeMark,
-  postUserOrder,
 };
