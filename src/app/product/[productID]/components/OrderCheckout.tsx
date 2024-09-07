@@ -16,8 +16,8 @@ import CartItemMdl from "@/models/products/card-item";
 import { useRouter } from "next/navigation";
 
 interface OrderCheckoutProps {
-  branchLogo: string;
-  branchName: string;
+  brandLogo: string;
+  brandName: string;
   product: CartItemMdl;
 }
 
@@ -36,13 +36,13 @@ const OrderCheckout = ({ ...props }: OrderCheckoutProps) => {
         <div className="w-fit cursor-pointer justify-start items-center gap-5 inline-flex">
           <div className="rounded-full overflow-hidden w-10 h-10 relative border-[0.5px]">
             <Image
-              src={props.branchLogo}
+              src={props.brandLogo}
               alt="Brand Logo Icon"
               fill={true}
             ></Image>
           </div>
           <span className="block text-xl font-semibold font-serif select-none">
-            {props.branchName}
+            {props.brandName}
           </span>
         </div>
       </div>

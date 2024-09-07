@@ -1,7 +1,7 @@
-interface TradeMarkMdl {
+interface BrandMdl {
   id: string;
   name: string;
   avatarUrl: string;
 }
 
-export default TradeMarkMdl;
+export default BrandMdl;

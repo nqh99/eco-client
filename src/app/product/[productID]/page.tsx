@@ -3,7 +3,7 @@ import React from "react";
 import AdsBanner from "@/components/elements/AdsBanner";
 import Article from "@/components/elements/Article";
 import ProductTitle from "@/components/elements/ProductTitle";
-import StackedList from "@/components/list/StackedList";
+import StackedList from "@/components/collection/StackedList";
 import Image from "next/image";
 
 import {
@@ -37,7 +37,8 @@ const ProductDetailPage = async ({
           price: data.price,
           imageUrl: data.imageUrl,
           discount: data.discount,
-          inventory: data.inventories,
+          inventories: data.inventories,
+          brand: data.brand,
         };
 
         return data;
@@ -225,8 +226,8 @@ const ProductDetailPage = async ({
         {/* User Order Information section */}
         <div className="w-1/4 inline-flex flex-col gap-4 sticky h-fit top-0 right-0">
           <OrderCheckout
-            branchLogo={productData.brand.avatarUrl}
-            branchName={productData.brand.name}
+            brandLogo={productData.brand.avatarUrl}
+            brandName={productData.brand.name}
             // TODO: need enhance - read the upper reason
             product={productInfo}
           />

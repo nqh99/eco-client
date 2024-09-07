@@ -6,7 +6,7 @@ import AdsBanner from "@/components/elements/AdsBanner";
 import CartItem from "@/components/elements/CartItem";
 import ProductTitle from "@/components/elements/ProductTitle";
 import CompanyPolicies from "@/components/footer/CompanyPolicies";
-import StackedList from "@/components/list/StackedList";
+import StackedList from "@/components/collection/StackedList";
 import { useAppSelector } from "@/hooks/redux";
 import { ICartPayload } from "@/lib/types";
 import CartItemMdl from "@/models/products/card-item";

@@ -95,9 +95,14 @@ const convertRoutingPath = (paths: string[]) => {
   return result;
 };
 
+const copyToClipboard = (code: string) => {
+  navigator.clipboard.writeText(code);
+};
+
 export {
   generateReadableErr,
   formatCurrency,
   convertPOJOToFormData,
   convertRoutingPath,
+  copyToClipboard,
 };
