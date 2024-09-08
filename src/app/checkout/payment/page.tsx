@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Button from "@/components/elements/Button";
 import CardPayment from "./components/CardPayment";
 import CardProduct from "./components/CardProduct";
-import Input from "../components/CustomizableInput";
+import Input from "../../../components/elements/CustomizableInput";
 import BListbox from "../components/CustomizableSelect"; 
 
 type FormDataKeys = "recipientName" | "recipientPhone" | "recipientEmail" | "city" | "district" | "ward" | "houseNumber";

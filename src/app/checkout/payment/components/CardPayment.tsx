@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Radio, RadioGroup } from "@headlessui/react";
-import Input from "../../components/CustomizableInput";
+import Input from "../../../../components/elements/CustomizableInput";
 interface AccountInfo {
   name: string;
   accountNumber: string;

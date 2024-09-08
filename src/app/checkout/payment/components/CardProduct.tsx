@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/legacy/image";
 import { AiOutlineRight } from "react-icons/ai";
-import Input from "../../components/CustomizableInput";
+import Input from "../../../../components/elements/CustomizableInput";
 import Logo from "@/public/icons/logo.svg";
 import Logo_project from "@/public/icons/logo_project.svg";
 import Voucher from "@/public/icons/voucher.svg";
