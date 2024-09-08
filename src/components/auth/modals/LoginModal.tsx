@@ -2,27 +2,35 @@ import React, { useState } from "react";
 import { FaUserAlt, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import Button from "@/components/elements/Button";
 import Input from "../../elements/CustomizableInput";
-import AuthForm from "../components/AuthComponent";
+import AuthForm from "../../elements/AuthComponent";
 import ForgotPasswordModal from "./ForgotPasswordModal";
 import { FaFacebookF } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import SignInWithSmsModal from "../modals/SignInWithSmsModal";
+
 interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
+  onLoginSuccess: (username: string) => void; // Callback when login succeeds
 }
 
-export default function LoginModal({ isVisible, onClose }: ModalProps) {
+export default function LoginModal({ isVisible, onClose, onLoginSuccess }: ModalProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [forgotPasswordVisible, setForgotPasswordVisible] = useState(false);
+  const [smsLoginVisible, setSmsLoginVisible] = useState(false); // State to handle SMS login modal visibility
 
   const handleLogin = () => {
-    if (username !== "Vy Nguyen" || password !== "correctpassword") {
+    // Fake login check for demonstration purposes
+    if (username !== "Vy Nguyen" || password !== "123456") {
       setError("Tên đăng nhập hoặc mật khẩu không đúng");
     } else {
       setError("");
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("username", username); // Store username
+      onLoginSuccess(username); // Call the onLoginSuccess callback with username
     }
   };
 
@@ -33,8 +41,8 @@ export default function LoginModal({ isVisible, onClose }: ModalProps) {
 
   return (
     <>
-      {/* Hiển thị LoginModal khi forgotPasswordVisible là false */}
-      {!forgotPasswordVisible && (
+      {/* Show login modal if user is not logged in */}
+      {!forgotPasswordVisible && !smsLoginVisible && (
         <AuthForm isVisible={isVisible} onClose={onClose}>
           <h2 className="text-2xl font-semibold mb-6 text-green-800 text-center">Đăng nhập</h2>
 
@@ -82,12 +90,18 @@ export default function LoginModal({ isVisible, onClose }: ModalProps) {
           <div className="flex justify-between mt-4 text-sm">
             <a
               href="#"
-              onClick={() => setForgotPasswordVisible(true)} // Hiển thị ForgotPasswordModal
+              onClick={() => setForgotPasswordVisible(true)}
               className="text-green-700 font-medium"
             >
               Quên mật khẩu
             </a>
-            <a href="#" className="text-green-700 font-medium">Đăng nhập với SMS</a>
+            <a
+              href="#"
+              onClick={() => setSmsLoginVisible(true)} // Show SMS login modal
+              className="text-green-700 font-medium"
+            >
+              Đăng nhập với SMS
+            </a>
           </div>
 
           {/* Divider with text */}
@@ -118,9 +132,14 @@ export default function LoginModal({ isVisible, onClose }: ModalProps) {
         </AuthForm>
       )}
 
-      {/* Hiển thị ForgotPasswordModal khi forgotPasswordVisible là true */}
+      {/* Show ForgotPasswordModal if forgotPasswordVisible is true */}
       {forgotPasswordVisible && (
         <ForgotPasswordModal onClose={() => setForgotPasswordVisible(false)} />
+      )}
+
+      {/* Show SignInWithSmsModal if smsLoginVisible is true */}
+      {smsLoginVisible && (
+        <SignInWithSmsModal isVisible={smsLoginVisible} onClose={() => setSmsLoginVisible(false)} />
       )}
     </>
   );

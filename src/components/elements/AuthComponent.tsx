@@ -1,12 +1,12 @@
 import React from "react";
 import Image from "next/image";
-import logo from "./../../../../public/images/logo.png";
+import logo from "@/public/images/logo.png";
 import Button from "@/components/elements/Button";
 
 interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
-  children: React.ReactNode; // New prop to allow passing content
+  children: React.ReactNode; 
 }
 
 export default function Modal({ isVisible, onClose, children }: ModalProps) {

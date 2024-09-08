@@ -44,7 +44,7 @@ const BInput = ({
   }, [triggerValidation, value, validate]);
 
   // Handle blur event
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => { 
+  const handleBlur = (e: React.FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setTouched(true);
     const validationError = validate ? validate(e.target.value) : "";
     setError(validationError || "");

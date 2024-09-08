@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaUserAlt } from "react-icons/fa";
 import Button from "@/components/elements/Button";
 import Input from "../../elements/CustomizableInput"; 
-import AuthForm from "../components/AuthComponent";
+import AuthForm from "../../elements/AuthComponent";
 import { MdCheckCircle } from "react-icons/md";
 
 interface ForgotPasswordModalProps {
