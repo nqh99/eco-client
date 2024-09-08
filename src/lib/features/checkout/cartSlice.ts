@@ -63,16 +63,16 @@ export const cartSlice = createSlice({
           return { ...state };
         }
 
-        let newTotalQuantity =
+        const newTotalQuantity =
           state.totalQuantity - item.quantity > 0
             ? state.totalQuantity - item.quantity
             : 0;
 
-        let itemPrice = item.itemMdl.discount
+        const itemPrice = item.itemMdl.discount
           ? item.itemMdl.discount.discountPrice
           : item.itemMdl.price;
 
-        let newTotalPrice =
+        const newTotalPrice =
           state.totalPrice - itemPrice * item.quantity > 0
             ? state.totalPrice - itemPrice * item.quantity
             : 0;
@@ -97,16 +97,16 @@ export const cartSlice = createSlice({
         );
 
         if (removeItem) {
-          let newTotalQuantity =
+          const newTotalQuantity =
             state.totalQuantity - removeItem.quantity > 0
               ? state.totalQuantity - removeItem.quantity
               : 0;
 
-          let itemPrice = removeItem.itemMdl.discount
+          const itemPrice = removeItem.itemMdl.discount
             ? removeItem.itemMdl.discount.discountPrice
             : removeItem.itemMdl.price;
 
-          let newTotalPrice =
+          const newTotalPrice =
             state.totalPrice - itemPrice * removeItem.quantity > 0
               ? state.totalPrice - itemPrice * removeItem.quantity
               : 0;
@@ -125,7 +125,7 @@ export const cartSlice = createSlice({
         return { ...state };
       }
     },
-    clearCart: (state) => {
+    clearCart: () => {
       return { items: [], totalPrice: 0, totalQuantity: 0 };
     },
   },

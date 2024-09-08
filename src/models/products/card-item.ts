@@ -1,4 +1,5 @@
-import ProductDiscountMdl from "./discount";
+import BrandMdl from "../users/brand";
+import DiscountMdl from "./discount";
 import { InventoryMdl } from "./inventory";
 
 type CartItemMdl = {
@@ -8,8 +9,9 @@ type CartItemMdl = {
   imageUrl: string;
   rating?: number;
   quantitySold?: number;
-  inventory: InventoryMdl[];
-  discount?: ProductDiscountMdl;
+  inventories: InventoryMdl[];
+  discount?: DiscountMdl;
+  brand: BrandMdl;
 };
 
 export default CartItemMdl;

@@ -68,7 +68,6 @@ const ShoppingCartItem = ({
         <Checkbox
           id={cartPayload.itemMdl.id}
           value={isSelect}
-          disabled={true}
           onCheck={onSelect}
         >
           <Checkbox.Indicator />
@@ -76,7 +75,7 @@ const ShoppingCartItem = ({
         <div className="flex gap-3">
           <Image
             src={cartPayload.itemMdl.imageUrl}
-            alt={"Branch Name"}
+            alt={"Brand Name"}
             width={70}
             height={50}
             className="block rounded-md border-[0.5px] border-informal"
@@ -95,7 +94,7 @@ const ShoppingCartItem = ({
               >
                 <span className="block text-sm">
                   {selectedInventory?.variantValue ||
-                    cartPayload.itemMdl.inventory[0].variantName}
+                    cartPayload.itemMdl.inventories[0].variantName}
                 </span>
                 <BiChevronDown
                   className="pointer-events-none size-4 fill-slate-800"
@@ -110,7 +109,7 @@ const ShoppingCartItem = ({
                   "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
                 )}
               >
-                {cartPayload.itemMdl.inventory.map((inventory, index) => (
+                {cartPayload.itemMdl.inventories.map((inventory, index) => (
                   <ListboxOption
                     key={index}
                     value={inventory}

@@ -1,7 +1,7 @@
-import ProductDiscountMdl from "./discount";
+import DiscountMdl from "./discount";
 import { InventoryMdl } from "./inventory";
 import { ProductCategoryMdl } from "./category";
-import TradeMarkMdl from "../users/trademark";
+import BrandMdl from "../users/brand";
 
 interface ReviewMdl {
   id: string;
@@ -29,8 +29,8 @@ interface ProductDetailMdl {
   expirationDate: string;
   warranty: string;
   category: ProductCategoryMdl;
-  discount: ProductDiscountMdl;
-  brand: TradeMarkMdl;
+  discount: DiscountMdl;
+  brand: BrandMdl;
   inventories: InventoryMdl[];
   reviews: ReviewMdl[];
 }
