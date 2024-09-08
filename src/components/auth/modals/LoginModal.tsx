@@ -1,114 +1,93 @@
 import React, { useState } from "react";
-import { FaFacebookF, FaUserAlt, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import Image from "next/image";
-import logo from "./../../../../public/images/logo.png";
-import Input from "../../elements/CustomizableInput"; // Ensure this component handles className correctly
+import { FaUserAlt, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import Button from "@/components/elements/Button";
-
-interface LoginModalProps {
+import Input from "../../elements/CustomizableInput";
+import AuthForm from "../components/AuthComponent";
+import ForgotPasswordModal from "./ForgotPasswordModal";
+import { FaFacebookF } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
 }
 
-export default function LoginModal({ isVisible, onClose }: LoginModalProps) {
+export default function LoginModal({ isVisible, onClose }: ModalProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false); // State to toggle password visibility
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [forgotPasswordVisible, setForgotPasswordVisible] = useState(false);
 
   const handleLogin = () => {
-    // Fake error handling
     if (username !== "Vy Nguyen" || password !== "correctpassword") {
       setError("Tên đăng nhập hoặc mật khẩu không đúng");
     } else {
-      setError(""); // Clear error
+      setError("");
     }
   };
-
-  const renderInputField = (
-    icon: JSX.Element,
-    type: string,
-    placeholder: string,
-    value: string,
-    onChange: React.Dispatch<React.SetStateAction<string>>,
-    extraIcon?: JSX.Element
-  ) => (
-    <div className="relative mb-3">
-      {icon}
-      <Input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={`border ${error ? 'border-red-500' : 'border-gray-300'} rounded-[0.525rem] p-3 pl-10 w-full`}
-        showErrorIcon={false}
-      />
-      {extraIcon}
-    </div>
-  );
 
   const socialButtons = [
     { icon: <FaFacebookF />, className: "bg-blue-600", key: "facebook" },
     { icon: <FcGoogle size={24} />, className: "bg-gray-200", key: "google" },
   ];
 
-  if (!isVisible) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-xl shadow-lg relative max-w-[902px] w-full flex">
-        {/* Left Image Section */}
-        <div className="w-5/12 rounded-l-xl overflow-hidden">
-          <Image
-            src={logo}
-            alt="logo vouchers"
-            width={400}
-            height={600}
-            className="rounded-l-xl"
-          />
-        </div>
-
-        {/* Right Form Section */}
-        <div className="w-7/12 p-8 flex flex-col justify-center" style={{ height: "600px" }}>
+    <>
+      {/* Hiển thị LoginModal khi forgotPasswordVisible là false */}
+      {!forgotPasswordVisible && (
+        <AuthForm isVisible={isVisible} onClose={onClose}>
           <h2 className="text-2xl font-semibold mb-6 text-green-800 text-center">Đăng nhập</h2>
 
           {/* Username Input */}
-          {renderInputField(
-            <FaUserAlt className="absolute left-3 top-[1.5rem] transform -translate-y-1/2 text-gray-400 z-10" />,
-            "text",
-            "Email hoặc số điện thoại",
-            username,
-            setUsername
-          )}
+          <div className="relative mb-3">
+            <FaUserAlt className="absolute left-3 top-[1.5rem] transform -translate-y-1/2 text-gray-400 z-10" />
+            <Input
+              type="text"
+              placeholder="Email hoặc số điện thoại"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className={`border ${error ? 'border-red-500' : 'border-gray-300'} rounded-[0.525rem] p-3 pl-10 w-full`}
+              showErrorIcon={false}
+            />
+          </div>
 
           {/* Password Input */}
-          {renderInputField(
-            <FaLock className="absolute left-3 top-[1.5rem] transform -translate-y-1/2 text-gray-400 z-10" />,
-            passwordVisible ? "text" : "password",
-            "Mật khẩu",
-            password,
-            setPassword,
+          <div className="relative mb-3">
+            <FaLock className="absolute left-3 top-[1.5rem] transform -translate-y-1/2 text-gray-400 z-10" />
+            <Input
+              type={passwordVisible ? "text" : "password"}
+              placeholder="Mật khẩu"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={`border ${error ? 'border-red-500' : 'border-gray-300'} rounded-[0.525rem] p-3 pl-10 w-full`}
+              showErrorIcon={false}
+            />
             <span
               onClick={() => setPasswordVisible(!passwordVisible)}
               className="absolute right-3 top-[1.5rem] transform -translate-y-1/2 cursor-pointer text-gray-400 z-10"
             >
               {passwordVisible ? <FaEyeSlash /> : <FaEye />}
             </span>
-          )}
+          </div>
 
           {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
           <Button
             onClick={handleLogin}
-            className="bg-green-700 text-white py-2 px-4 rounded-[0.525rem] w-full  font-roboto font-medium"
+            className="bg-green-700 text-white py-2 px-4 rounded-[0.525rem] w-full font-medium"
           >
             Đăng nhập
           </Button>
 
           <div className="flex justify-between mt-4 text-sm">
-            <a href="#" className="text-green-700 font-roboto font-medium">Quên mật khẩu</a>
-            <a href="#" className="text-green-700 font-roboto font-medium">Đăng nhập với SMS</a>
+            <a
+              href="#"
+              onClick={() => setForgotPasswordVisible(true)} // Hiển thị ForgotPasswordModal
+              className="text-green-700 font-medium"
+            >
+              Quên mật khẩu
+            </a>
+            <a href="#" className="text-green-700 font-medium">Đăng nhập với SMS</a>
           </div>
 
           {/* Divider with text */}
@@ -136,16 +115,13 @@ export default function LoginModal({ isVisible, onClose }: LoginModalProps) {
           <p className="mt-6 text-center text-sm font-roboto font-medium">
             Bạn chưa có tài khoản? <a href="#" className="text-green-700 font-roboto font-medium">Tạo tài khoản</a>
           </p>
-        </div>
+        </AuthForm>
+      )}
 
-        {/* Close Button */}
-        <Button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
-        >
-          X
-        </Button>
-      </div>
-    </div>
+      {/* Hiển thị ForgotPasswordModal khi forgotPasswordVisible là true */}
+      {forgotPasswordVisible && (
+        <ForgotPasswordModal onClose={() => setForgotPasswordVisible(false)} />
+      )}
+    </>
   );
 }

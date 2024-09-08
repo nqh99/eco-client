@@ -21,6 +21,7 @@ export default function Login() {
           aria-label="open login menu"
           aria-haspopup="true"
           className="p-2 focus:outline-none bg-emerald-50 w-10 h-10 rounded-full flex justify-center items-center"
+          onClick={togglePopup}
         >
           <FaUser className="text-green-700 text-lg" />
         </button>
@@ -36,8 +37,8 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Sử dụng LoginModal */}
-      <LoginModal isVisible={showPopup} onClose={togglePopup} />
+      {/* Chỉ hiển thị LoginModal khi showPopup là true */}
+      {showPopup && <LoginModal isVisible={showPopup} onClose={togglePopup} />}
     </div>
   );
 }

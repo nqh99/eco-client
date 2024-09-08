@@ -14,7 +14,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   triggerValidation?: boolean;
   fullWidth?: boolean;
   textareaHeight?: string;
-  showErrorIcon?: boolean; // New prop to control whether the error icon is shown
+  showErrorIcon?: boolean; 
 }
 
 const BInput = ({
@@ -28,8 +28,8 @@ const BInput = ({
   triggerValidation = false,
   fullWidth = false,
   textareaHeight = "h-[150px]",
-  showErrorIcon = true, // Default to true if not passed
-  ...props // Spread the remaining props
+  showErrorIcon = true,
+  ...props
 }: InputProps) => {
   const [error, setError] = useState<string | undefined | null>("");
   const [touched, setTouched] = useState(false);
@@ -50,7 +50,6 @@ const BInput = ({
     setError(validationError || "");
   };
 
-  // Select between input or textarea
   const InputElement = as === "textarea" ? Textarea : Input;
 
   return (
@@ -70,7 +69,7 @@ const BInput = ({
               : "border border-gray-300 text-gray-700 placeholder-gray-400 focus:ring-green-500 focus:border-green-500"
           } ${as === "textarea" ? textareaHeight : "h-[43px]"}`}
           aria-invalid={!!error}
-          {...props} // Apply any additional props
+          {...props}
         />
 
         {/* Conditional rendering for validation icons */}
