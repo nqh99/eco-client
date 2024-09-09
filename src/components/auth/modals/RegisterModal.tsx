@@ -23,7 +23,6 @@ export default function RegisterModal({ onClose }: RegisterModalProps) {
   });
 
   const [error, setError] = useState({ field: "", message: "" });
-  const [success, setSuccess] = useState(false);
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false); 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -58,8 +57,7 @@ export default function RegisterModal({ onClose }: RegisterModalProps) {
       setError(validationError);
     } else {
       setError({ field: "", message: "" });
-      setSuccess(true);
-      setShowVerifyModal(true);
+      setShowVerifyModal(true); // Open the VerifySmsModal on successful registration
     }
   };
 
@@ -69,11 +67,6 @@ export default function RegisterModal({ onClose }: RegisterModalProps) {
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
-
-  if (success) {
-    console.log("Registration successful!");
-    return <div>Registration successful!</div>;
-  }
 
   if (showVerifyModal) {
     const { phoneNumber, email } = formData;
