@@ -32,6 +32,7 @@ export default function VerifySmsModal({ phoneNumber, email, onClose }: VerifySm
       alert("Xác thực thành công!");
       onClose();
     }
+    return <div>Error: {error}</div>;
   };
 
   const handleInputChange = (index: number, value: string) => {
@@ -50,12 +51,13 @@ export default function VerifySmsModal({ phoneNumber, email, onClose }: VerifySm
 
   return (
     <AuthForm isVisible={true} onClose={onClose}>
-      <h2 className="text-2xl font-semibold mb-6 text-green-800 text-center">Nhập mã xác minh</h2>
-      <p className="text-center mb-4">
-        Email <strong>{email}</strong> đã có tài khoản. Vui lòng xác thực để đăng nhập.
+      <h2 className="text-2xl font-semibold mb-4 text-green-700 text-center">Xác thực OTP</h2>
+
+      <p className="text-center mb-4 text-gray-700">
+        Vui lòng nhập mã số chúng tôi đã gửi cho bạn qua SĐT <strong>{phoneNumber}</strong>. Mã xác thực có giá trị trong 120s.
       </p>
 
-      {/* Mã xác minh (6 ô số) */}
+      {/* OTP Code (6 boxes) */}
       <div className="flex justify-center space-x-2 mb-6">
         {smsCode.map((code, index) => (
           <Input
@@ -64,36 +66,35 @@ export default function VerifySmsModal({ phoneNumber, email, onClose }: VerifySm
             maxLength={1}
             value={code}
             onChange={(e) => handleInputChange(index, e.target.value)}
-            className="w-10 h-12 text-center text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-12 h-12 text-center text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             showErrorIcon={false}
           />
         ))}
       </div>
 
-      {/* Thông báo lỗi */}
-      {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
-
-      {/* Nút gửi lại mã */}
-      <div className="flex justify-center items-center mb-4">
+      {/* Resend Code Button and Timer */}
+      <div className="text-center mb-4">
         {timeRemaining === 0 ? (
           <Button onClick={handleResendCode} className="text-green-700 font-medium">
             Gửi lại mã
           </Button>
         ) : (
-          <p className="text-gray-500">Gửi lại mã sau {timeRemaining}s</p>
+          <p className="text-gray-500">Gửi lại mã sau <span className="text-gray-800 font-medium">{timeRemaining}s</span></p>
         )}
       </div>
 
+      {/* Continue Button */}
       <Button
         onClick={handleVerify}
-        className="bg-green-700 text-white py-2 px-4 rounded-[0.525rem] w-full font-medium"
+        className="bg-green-700 text-white py-3 px-4 rounded-lg w-full font-medium"
       >
         Tiếp tục
       </Button>
 
-      <div className="flex justify-center mt-4 text-sm">
+      {/* Optional Email Resend */}
+      <div className="flex justify-center mt-6 text-sm text-center">
         <p className="text-gray-500">
-          Hoặc gửi mã qua số điện thoại <strong>{phoneNumber}</strong>
+          Hoặc <a href="#" className="text-green-700 font-medium">Gửi mã qua email {email}</a>
         </p>
       </div>
     </AuthForm>

@@ -7,6 +7,7 @@ import ForgotPasswordModal from "./ForgotPasswordModal";
 import { FaFacebookF } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import SignInWithSmsModal from "../modals/SignInWithSmsModal";
+import RegisterModal from "./RegisterModal"; // Import RegisterModal
 
 interface ModalProps {
   isVisible: boolean;
@@ -21,6 +22,7 @@ export default function LoginModal({ isVisible, onClose, onLoginSuccess }: Modal
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [forgotPasswordVisible, setForgotPasswordVisible] = useState(false);
   const [smsLoginVisible, setSmsLoginVisible] = useState(false); // State to handle SMS login modal visibility
+  const [registerModalVisible, setRegisterModalVisible] = useState(false); // State to handle RegisterModal visibility
 
   const handleLogin = () => {
     // Fake login check for demonstration purposes
@@ -42,12 +44,12 @@ export default function LoginModal({ isVisible, onClose, onLoginSuccess }: Modal
   return (
     <>
       {/* Show login modal if user is not logged in */}
-      {!forgotPasswordVisible && !smsLoginVisible && (
+      {!forgotPasswordVisible && !smsLoginVisible && !registerModalVisible && (
         <AuthForm isVisible={isVisible} onClose={onClose}>
           <h2 className="text-2xl font-semibold mb-6 text-green-800 text-center">Đăng nhập</h2>
 
           {/* Username Input */}
-          <div className="relative mb-3">
+          <div className="relative">
             <FaUserAlt className="absolute left-3 top-[1.5rem] transform -translate-y-1/2 text-gray-400 z-10" />
             <Input
               type="text"
@@ -60,7 +62,7 @@ export default function LoginModal({ isVisible, onClose, onLoginSuccess }: Modal
           </div>
 
           {/* Password Input */}
-          <div className="relative mb-3">
+          <div className="relative">
             <FaLock className="absolute left-3 top-[1.5rem] transform -translate-y-1/2 text-gray-400 z-10" />
             <Input
               type={passwordVisible ? "text" : "password"}
@@ -127,7 +129,14 @@ export default function LoginModal({ isVisible, onClose, onLoginSuccess }: Modal
           </div>
 
           <p className="mt-6 text-center text-sm font-roboto font-medium">
-            Bạn chưa có tài khoản? <a href="#" className="text-green-700 font-roboto font-medium">Tạo tài khoản</a>
+            Bạn chưa có tài khoản?{" "}
+            <a
+              href="#"
+              onClick={() => setRegisterModalVisible(true)} // Show RegisterModal
+              className="text-green-700 font-roboto font-medium"
+            >
+              Tạo tài khoản
+            </a>
           </p>
         </AuthForm>
       )}
@@ -140,6 +149,11 @@ export default function LoginModal({ isVisible, onClose, onLoginSuccess }: Modal
       {/* Show SignInWithSmsModal if smsLoginVisible is true */}
       {smsLoginVisible && (
         <SignInWithSmsModal isVisible={smsLoginVisible} onClose={() => setSmsLoginVisible(false)} />
+      )}
+
+      {/* Show RegisterModal if registerModalVisible is true */}
+      {registerModalVisible && (
+        <RegisterModal onClose={() => setRegisterModalVisible(false)} />
       )}
     </>
   );

@@ -3,9 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 import LoginModal from "./modals/LoginModal";
+import RegisterModal from "./modals/RegisterModal"; // Import the Register Modal
 import { AiOutlineCaretDown } from "react-icons/ai";
+
 export default function Login() {
   const [showPopup, setShowPopup] = useState(false);
+  const [isRegisterMode, setIsRegisterMode] = useState(false); // State to toggle between login/register
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState(""); 
   const [showDropdown, setShowDropdown] = useState(false);
@@ -21,8 +24,9 @@ export default function Login() {
     }
   }, []);
 
-  // Toggle login modal visibility
-  const togglePopup = () => {
+  // Toggle modal visibility
+  const togglePopup = (isRegister = false) => {
+    setIsRegisterMode(isRegister); // Set the mode for register or login
     setShowPopup(!showPopup);
   };
 
@@ -96,10 +100,10 @@ export default function Login() {
           <div className="flex items-center space-x-2">
             <FaUser className="text-green-700 text-lg" />
             <div className="flex flex-col">
-              <a href="#" className="text-black font-semibold" onClick={togglePopup}>
+              <a href="#" className="text-black font-semibold" onClick={() => togglePopup(false)}>
                 Đăng nhập/
               </a>
-              <a href="#" className="text-gray-500">
+              <a href="#" className="text-gray-500" onClick={() => togglePopup(true)}>
                 Đăng ký
               </a>
             </div>
@@ -107,13 +111,21 @@ export default function Login() {
         )}
       </div>
 
-      {/* Show LoginModal only when showPopup is true */}
+      {/* Show LoginModal or RegisterModal based on isRegisterMode */}
       {showPopup && (
-        <LoginModal
-          isVisible={showPopup}
-          onClose={togglePopup}
-          onLoginSuccess={handleLoginSuccess}
-        />
+        isRegisterMode ? (
+          <RegisterModal
+            isVisible={showPopup}
+            onClose={() => setShowPopup(false)}
+            onRegisterSuccess={handleLoginSuccess} // Handle successful registration similar to login
+          />
+        ) : (
+          <LoginModal
+            isVisible={showPopup}
+            onClose={() => setShowPopup(false)}
+            onLoginSuccess={handleLoginSuccess}
+          />
+        )
       )}
     </div>
   );
