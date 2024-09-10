@@ -4,4 +4,5 @@ export interface InventoryMdl {
     quantityAvailable: number;
     variantName: string;
     variantValue: string;
+    price: number;
 }

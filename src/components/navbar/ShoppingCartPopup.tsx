@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion as m } from "framer-motion";
 import { FaCartShopping } from "react-icons/fa6";
 import {
@@ -14,11 +14,18 @@ import { useAppSelector } from "@/hooks/redux";
 import { formatCurrency } from "@/utils/core";
 import { useRouter } from "next/navigation";
 import ShoppingCartItem from "../elements/ShoppingCartItem";
+import OrderCalculator from "@/utils/calculator";
 
-const ShoppingCartIcon = () => {
+const ShoppingCartPopup = () => {
   const cartState = useAppSelector((state) => state.cart);
 
+  const [cal, setCal] = useState<OrderCalculator>(new OrderCalculator());
+  
   const route = useRouter();
+
+  useEffect(() => {
+    setCal(new OrderCalculator(cartState.items))
+  }, [cartState.items])
 
   return (
     <Popover>
@@ -34,7 +41,7 @@ const ShoppingCartIcon = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
           >
-            {cartState.totalQuantity}
+            {cal.getTotalQty()}
           </m.span>
         )}
       </PopoverButton>
@@ -52,10 +59,10 @@ const ShoppingCartIcon = () => {
           <>
             <div className="flex items-center justify-between px-4 border-b-[0.5px] h-10">
               <h5 className="text-base font-medium">
-                ({cartState.totalQuantity}) Sản phẩm
+                ({cal.getTotalQty()}) Sản phẩm
               </h5>
               <span className="block text-base text-discount font-bold">
-                {formatCurrency(cartState.totalPrice)} đ
+                {formatCurrency(cal.getPromotionPrice())} đ
               </span>
             </div>
             <div className="overflow-y-auto max-h-52 scrollbar-primary">
@@ -100,4 +107,4 @@ const ShoppingCartIcon = () => {
   );
 };
 
-export default ShoppingCartIcon;
+export default ShoppingCartPopup;

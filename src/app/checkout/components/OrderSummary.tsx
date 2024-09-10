@@ -27,7 +27,7 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
           Tạm tính
         </span>
         <span className="inline-block text-lg">
-          {formatCurrency(cal.computeTemporaryPrice())} đ
+          {formatCurrency(cal.getTemPrice())} đ
         </span>
       </div>
       <div className="h-8 flex justify-between items-center">
@@ -35,7 +35,7 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
           Tổng giảm giá
         </span>
         <span className="inline-block text-lg text-informal">
-          - {formatCurrency(cal.computeDiscountPrice())} đ
+          - {formatCurrency(cal.getDiscountPrice())} đ
         </span>
       </div>
       <div className="h-8 flex justify-between items-center">
@@ -49,7 +49,7 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
           </span>
         ) : (
           <span className="block text-right text-xl font-medium">
-            {formatCurrency(cal.computePromotionalPrice())} đ
+            {formatCurrency(cal.getPromotionPrice())} đ
           </span>
         )}
       </div>
