@@ -7,7 +7,9 @@ import VerifySmsModal from "./VerifySmsModal";
 import { FcGoogle } from "react-icons/fc";
 
 interface RegisterModalProps {
+  isVisible?: boolean;
   onClose: () => void;
+  onRegisterSuccess?: (name: string) => void;
 }
 
 // Simulated list of registered phone numbers

@@ -21,8 +21,8 @@ export default function LoginModal({ isVisible, onClose, onLoginSuccess }: Modal
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [forgotPasswordVisible, setForgotPasswordVisible] = useState(false);
-  const [smsLoginVisible, setSmsLoginVisible] = useState(false); // State to handle SMS login modal visibility
-  const [registerModalVisible, setRegisterModalVisible] = useState(false); // State to handle RegisterModal visibility
+  const [smsLoginVisible, setSmsLoginVisible] = useState(false); 
+  const [registerModalVisible, setRegisterModalVisible] = useState(false); 
 
   const handleLogin = () => {
     // Fake login check for demonstration purposes
@@ -31,8 +31,7 @@ export default function LoginModal({ isVisible, onClose, onLoginSuccess }: Modal
     } else {
       setError("");
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("username", username); // Store username
-      onLoginSuccess(username); // Call the onLoginSuccess callback with username
+      onLoginSuccess(username);
     }
   };
 
