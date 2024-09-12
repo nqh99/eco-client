@@ -41,7 +41,7 @@ const ShoppingCartItem = ({
   const dispatch = useAppDispatch();
 
   const [selectedType, setSelectedType] = useState<InventoryMdl | string>(
-    cartPayload.itemMdl.inventories[0].variantName
+    cartPayload.itemMdl.inventories[0]?.variantName || "Loại"
   );
 
   const onConfirmDelete = () => {
@@ -192,10 +192,10 @@ const ShoppingCartItem = ({
         />
       </div>
       <div className="w-4/5 flex flex-col">
-        <h3 className="font-medium text-sm">{cartPayload.itemMdl.name}</h3>
+        <h3 className="font-medium text-base">{cartPayload.itemMdl.name}</h3>
         {/* TODO: [EW-101] enhance later */}
         <div>
-          <span className="text-default">
+          <span className="text-discount text-sm">
             {formatCurrency(cartPayload.itemMdl.price)} đ
           </span>
         </div>
