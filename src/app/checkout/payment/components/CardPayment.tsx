@@ -22,7 +22,7 @@ interface PaymentMethodProps {
 }
 
 const AccountInfoSection: React.FC<{ accountInfo: AccountInfo[] }> = ({ accountInfo }) => (
-  <div className="mt-6 flex gap-4 text-sm flex hg:grid-cols-2">
+  <div className="mt-6 flex gap-4 text-sm hg:grid-cols-2">
     {accountInfo.map((info, index) => (
       <section key={index} className="flex-1 min-w-[300px] p-4 bg-gray-100 rounded-lg">
         <p className="font-semibold">{info.name}</p>
@@ -54,7 +54,7 @@ const OrderInfo: React.FC<PaymentMethodProps> = ({ selectedMethod, onMethodChang
 
   return (
     <section className="p-4 bg-white rounded-lg shadow-md">
-      <h2 className="font-semibold font-medium mb-4">Phương thức thanh toán</h2>
+      <h2 className="font-medium mb-4">Phương thức thanh toán</h2>
       <RadioGroup
         value={selectedMethod}
         onChange={onMethodChange}
