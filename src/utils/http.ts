@@ -83,6 +83,7 @@ const isResOK = (res: number): boolean => {
  * @param url - The URL to send the request to.
  * @param data - The data to send in the request body.
  * @param T - The type of the response data.
+ * @param D - The type of the client data which will be sent to server.
  * @returns A promise that resolves to the response data or an empty `ResponseMdl` object.
  */
 const safePostRequest = async <T, D extends Record<string, unknown>>(

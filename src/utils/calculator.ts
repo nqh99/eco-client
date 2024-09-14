@@ -4,43 +4,50 @@ import BrandMdl from "@/models/users/brand";
 class OrderCalculator {
   private readonly cartItems: ICartPayload[];
 
+  private totalQty: number = 0;
+  private temPrice: number = 0;
+  private discountPrice: number = 0;
+  private promotionPrice: number = 0;
+
   constructor(cartItems: ICartPayload[] = []) {
     this.cartItems = cartItems;
+
+    this.totalQty = this.computeTotalQty();
+    this.temPrice = this.computeTemporaryPrice();
+    this.discountPrice = this.computeDiscountPrice();
+    this.promotionPrice = this.computePromotionalPrice();
   }
 
-  computeTemporaryPrice(): number {
+  private computeTemporaryPrice(): number {
     let ret = 0;
 
     this.cartItems.forEach((val) => {
-      ret += val.itemMdl.price * val.quantity;
+      ret += val.itemMdl.inventories[0].price * val.quantity;
     });
 
     return ret;
   }
 
-  computeDiscountPrice(): number {
-    let ret = 0;
+  private computeDiscountPrice(): number {
+    // TODO: [EW-101] will change later by business
+    // let ret = 0;
 
-    this.cartItems.forEach((val) => {
-      ret +=
-        val.itemMdl.price *
-        ((val.itemMdl.discount?.discountPercent || 100) / 100) *
-        val.quantity;
-    });
+    // this.cartItems.forEach((val) => {
+    //   ret +=
+    //     val.itemMdl.price *
+    //     ((val.itemMdl.discount?.discountPercent || 100) / 100) *
+    //     val.quantity;
+    // });
 
-    return ret;
+    return 0;
   }
 
-  computePromotionalPrice(): number {
-    let ret = 0;
+  private computePromotionalPrice(): number {
+    return this.temPrice - this.discountPrice;
+  }
 
-    this.cartItems.forEach((val) => {
-      ret +=
-        (val.itemMdl.discount?.discountPrice || val.itemMdl.price) *
-        val.quantity;
-    });
-
-    return ret;
+  private computeTotalQty(): number {
+    return this.cartItems.reduce((total, val) => total + val.quantity, 0);
   }
 
   /**
@@ -79,6 +86,22 @@ class OrderCalculator {
     });
 
     return ret;
+  }
+
+  getTemPrice(): number {
+    return this.temPrice;
+  }
+
+  getDiscountPrice(): number {
+    return this.discountPrice;
+  }
+
+  getPromotionPrice(): number {
+    return this.promotionPrice;
+  }
+
+  getTotalQty(): number {
+    return this.totalQty;
   }
 }
 
