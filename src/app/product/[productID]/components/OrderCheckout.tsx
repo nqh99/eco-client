@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { motion as m } from "framer-motion";
 import { Button } from "@headlessui/react";
@@ -14,6 +14,7 @@ import { useAppDispatch } from "@/hooks/redux";
 import { addCartItem } from "@/lib/features/checkout/cartSlice";
 import CartItemMdl from "@/models/products/card-item";
 import { useRouter } from "next/navigation";
+import OrderCalculator from "@/utils/calculator";
 
 interface OrderCheckoutProps {
   brandLogo: string;
@@ -21,13 +22,33 @@ interface OrderCheckoutProps {
   product: CartItemMdl;
 }
 
-const OrderCheckout = ({ ...props }: OrderCheckoutProps) => {
-  const [orderQuantity, setOrderQuantity] = useState(1);
+const OrderCheckout = ({
+  brandLogo,
+  brandName,
+  product,
+}: OrderCheckoutProps) => {
   const dispatch = useAppDispatch();
+
+  const [calculator, setCalculator] = useState<OrderCalculator>(
+    new OrderCalculator()
+  );
+
+  const [orderQuantity, setOrderQuantity] = useState(1);
+
   const route = useRouter();
+
+  useEffect(() => {
+    setCalculator(new OrderCalculator([{ itemMdl: product, quantity: 1 }]));
+  }, [product]);
 
   const handleOrderQuantityChange = (val: number) => {
     setOrderQuantity(val);
+  };
+
+  const handleClickBuyNowBtn = () => {
+    dispatch(addCartItem({ itemMdl: product, quantity: orderQuantity }));
+
+    route.push("/checkout");
   };
 
   return (
@@ -35,14 +56,10 @@ const OrderCheckout = ({ ...props }: OrderCheckoutProps) => {
       <div className="py-2.5 border-b-[0.5px] border-slate-300">
         <div className="w-fit cursor-pointer justify-start items-center gap-5 inline-flex">
           <div className="rounded-full overflow-hidden w-10 h-10 relative border-[0.5px]">
-            <Image
-              src={props.brandLogo}
-              alt="Brand Logo Icon"
-              fill={true}
-            ></Image>
+            <Image src={brandLogo} alt="Brand Logo Icon" fill={true}></Image>
           </div>
           <span className="block text-xl font-semibold font-serif select-none">
-            {props.brandName}
+            {brandName}
           </span>
         </div>
       </div>
@@ -53,11 +70,7 @@ const OrderCheckout = ({ ...props }: OrderCheckoutProps) => {
       <div>
         <span className="block text-lg select-none">Tạm tính</span>
         <span className="block font-bold text-2xl font-sans">
-          {formatCurrency(
-            (props.product.discount?.discountPrice ?? props.product.price) *
-              orderQuantity
-          )}{" "}
-          đ
+          {formatCurrency(calculator.getPromotionPrice())} đ
         </span>
       </div>
       <div className="flex flex-row justify-between gap-3 items-center mt-2">
@@ -68,9 +81,7 @@ const OrderCheckout = ({ ...props }: OrderCheckoutProps) => {
             transition: { duration: 0.1, ease: "easeInOut" },
           }}
           className="w-full h-10 py-2 text-center text-white text-base font-medium rounded-lg  bg-discount"
-          onClick={() => {
-            route.push("/checkout");
-          }}
+          onClick={handleClickBuyNowBtn}
         >
           Mua ngay
         </Button>
@@ -83,7 +94,7 @@ const OrderCheckout = ({ ...props }: OrderCheckoutProps) => {
           className="w-full h-10 py-2 rounded-lg border text-lime-800 border-lime-800 flex-col justify-center items-center gap-2.5 inline-flex"
           onClick={() => {
             dispatch(
-              addCartItem({ itemMdl: props.product, quantity: orderQuantity })
+              addCartItem({ itemMdl: product, quantity: orderQuantity })
             );
           }}
         >
