@@ -37,16 +37,17 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
           className="pointer-events-none"
         ></Image>
 
-        {itemMdl.discount ? (
+        {/* TODO: [EW-101] enhance later */}
+        {/* {itemMdl.discount ? (
           <span className="block absolute top-2 left-2 bg-discount px-1 py-[2px] rounded text-white text-sm">
             Giảm {itemMdl.discount.discountPercent}%
           </span>
-        ) : null}
+        ) : null} */}
       </div>
       <div className="p-2">
         <h3 className="text-sm h-12">{itemMdl.name}</h3>
         <div className="flex justify-between items-end pb-2 border-b border-emerald-600">
-          {itemMdl.rating && itemMdl.rating <= 5 && (
+          {itemMdl.rating !== undefined && itemMdl.rating <= 5 && (
             <Rating
               avgRating={itemMdl.rating}
               className="text-yellow-400 size-5"
@@ -56,23 +57,27 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
             Đã bán {itemMdl.quantitySold}
           </span>
         </div>
-        <div className="flex content-center justify-around gap-3 items-center mt-2">
-          {itemMdl.discount ? (
+        <div className="flex content-center justify-between items-center px-2 mt-2 text-discount">
+          {/* TODO: [EW-101] enhance later */}
+          {/* {itemMdl.discount ? (
             <>
-              <p className="text-base font-medium text-discount">
-                {formatCurrency(itemMdl.discount.discountPrice)}
+              <p className="text-base font-medium">
+                {formatCurrency(itemMdl.discount.discountPrice)}{" "}
                 <span className="underline underline-offset-2">đ</span>
               </p>
               <p className="text-xs text-gray-400">
-                <s>{formatCurrency(itemMdl.price)}</s>
+                <s>{formatCurrency(itemMdl.price)} </s>
                 <span className="underline underline-offset-2">đ</span>
               </p>
             </>
-          ) : (
+          ) : ( */}
             <>
-              <p className="text-lg">{formatCurrency(itemMdl.price)}</p>
+              <p className="text-lg font-semibold">
+              {formatCurrency(itemMdl.price)}{" "}
+              <span className="underline underline-offset-2">đ</span>
+              </p>
             </>
-          )}
+          {/* )} */}
           <CustomButton
             className="border border-primary rounded p-[3px]"
             onClick={(e) => {

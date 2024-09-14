@@ -4,14 +4,10 @@ import { RootState } from "@/lib/store";
 
 interface CartState {
   items: ICartPayload[];
-  totalQuantity: number;
-  totalPrice: number;
 }
 
 const initialState: CartState = {
   items: [],
-  totalQuantity: 0,
-  totalPrice: 0,
 };
 
 export const cartSlice = createSlice({
@@ -25,14 +21,6 @@ export const cartSlice = createSlice({
           (it) => it.itemMdl.id === item.itemMdl.id
         );
 
-        const newTotalQuantity = state.totalQuantity + item.quantity;
-        const newTotalPrice =
-          state.totalPrice +
-          (item.itemMdl.discount
-            ? item.itemMdl.discount.discountPrice
-            : item.itemMdl.price) *
-            item.quantity;
-
         const newItems = [...state.items];
 
         if (indexOfItem !== -1) {
@@ -44,8 +32,6 @@ export const cartSlice = createSlice({
 
         return {
           items: newItems,
-          totalPrice: newTotalPrice,
-          totalQuantity: newTotalQuantity,
         };
       } else {
         return { ...state };
@@ -63,20 +49,6 @@ export const cartSlice = createSlice({
           return { ...state };
         }
 
-        const newTotalQuantity =
-          state.totalQuantity - item.quantity > 0
-            ? state.totalQuantity - item.quantity
-            : 0;
-
-        const itemPrice = item.itemMdl.discount
-          ? item.itemMdl.discount.discountPrice
-          : item.itemMdl.price;
-
-        const newTotalPrice =
-          state.totalPrice - itemPrice * item.quantity > 0
-            ? state.totalPrice - itemPrice * item.quantity
-            : 0;
-
         let newItems = [...state.items];
         const newItemQuantity = newItems[indexOfItem].quantity - item.quantity;
 
@@ -88,8 +60,6 @@ export const cartSlice = createSlice({
 
         return {
           items: newItems,
-          totalPrice: newTotalPrice,
-          totalQuantity: newTotalQuantity,
         };
       } else if (item.quantity === -1) {
         const removeItem = state.items.find(
@@ -97,28 +67,12 @@ export const cartSlice = createSlice({
         );
 
         if (removeItem) {
-          const newTotalQuantity =
-            state.totalQuantity - removeItem.quantity > 0
-              ? state.totalQuantity - removeItem.quantity
-              : 0;
-
-          const itemPrice = removeItem.itemMdl.discount
-            ? removeItem.itemMdl.discount.discountPrice
-            : removeItem.itemMdl.price;
-
-          const newTotalPrice =
-            state.totalPrice - itemPrice * removeItem.quantity > 0
-              ? state.totalPrice - itemPrice * removeItem.quantity
-              : 0;
-
           const newItems = state.items.filter(
             (it) => it.itemMdl.id !== removeItem.itemMdl.id
           );
 
           return {
             items: newItems,
-            totalPrice: newTotalPrice,
-            totalQuantity: newTotalQuantity,
           };
         }
 

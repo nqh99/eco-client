@@ -13,9 +13,12 @@ import CartItemMdl from "@/models/products/card-item";
 import React, { useEffect, useState } from "react";
 import OrderSummary from "./components/OrderSummary";
 import EmptyCart from "./components/EmptyCart";
+import OrderCalculator from "@/utils/calculator";
 
 const ShoppingCartPage = () => {
   const cartState = useAppSelector((state) => state.cart);
+
+  const [cal, setCal] = useState<OrderCalculator>(new OrderCalculator());
 
   const [topDealProducts, setTopDealProducts] = useState<CartItemMdl[]>();
 
@@ -27,9 +30,13 @@ const ShoppingCartPage = () => {
     });
   }, []);
 
+  useEffect(() => {
+    setCal(new OrderCalculator(cartState.items))
+  }, [cartState.items])
+
   return (
     <main className="px-default gap-3 flex flex-col h-fit">
-      {cartState.totalQuantity > 0 ? (
+      {cal.getTotalQty() > 0 ? (
         <>
           {/* Shopping Cart section with user orders */}
           <h2 className="text-xl font-semibold mt-6 select-none hover:text-primary h-fit w-fit">
@@ -39,7 +46,7 @@ const ShoppingCartPage = () => {
             {/* Shopping products cart */}
             <div className="w-3/4 min-w-[800px] flex flex-col gap-3 text-sm">
               <ShoppingCart
-                onChecked={(val) => {
+                onCheckedItems={(val) => {
                   setCheckedItems(val);
                 }}
               />

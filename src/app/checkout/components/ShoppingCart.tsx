@@ -18,9 +18,10 @@ import BrandMdl from "@/models/users/brand";
 import VoucherPopup from "@/components/popup/VoucherPopup";
 import DiscountMdl from "@/models/products/discount";
 import { getDiscountByProduct } from "@/apis/product";
+import { InventoryMdl } from "@/models/products/inventory";
 
 type ShoppingCartProp = {
-  onChecked?: (products: ICartPayload[]) => void;
+  onCheckedItems?: (products: ICartPayload[]) => void;
 };
 
 type ShoppingCartHeaderProps = {
@@ -28,18 +29,18 @@ type ShoppingCartHeaderProps = {
   onCheckAll: (val: boolean) => void;
 };
 
-const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
+const ShoppingCart = ({ onCheckedItems }: ShoppingCartProp) => {
   const cartState = useAppSelector((state) => state.cart);
 
-  const [isCheckedAllBox, setIsCheckedAllBox] = useState(false);
+  const [isCheckedAllBox, setIsCheckedAllBox] = useState(true);
 
   const [checkedBrand, setCheckedBrand] = useState<Map<string, boolean>>(
     new Map()
   );
 
-  const [checkedProducts, setCheckedProducts] = useState<Map<string, boolean>>(
-    new Map()
-  );
+  const [checkedProducts, setCheckedProducts] = useState<
+    Map<string, ICartPayload | null>
+  >(new Map());
 
   const [productsByBrand, setProductsByBrand] = useState<
     Map<
@@ -55,7 +56,6 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
     const newProductsByBrand = new OrderCalculator(
       cartState.items
     ).sortItemsByBrand();
-
     setProductsByBrand(newProductsByBrand);
 
     setCheckedBrand((prev) => {
@@ -63,45 +63,35 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
 
       newProductsByBrand.forEach((_, key) => {
         if (!newVal.has(key)) {
-          newVal.set(key, false);
+          newVal.set(key, true);
         }
       });
 
       return newVal;
     });
 
-    setCheckedProducts((prev) => {
-      const newVal = new Map(prev);
-
-      cartState.items.forEach((payload) => {
-        const itemID = payload.itemMdl.id;
-        if (!newVal.has(itemID)) {
-          newVal.set(itemID, false);
+    const newCheckedItems = new Map<string, ICartPayload | null>(
+      cartState.items.map((val) => [val.itemMdl.id, val])
+    );
+    checkedProducts.forEach((val, key) => {
+      if (newCheckedItems.has(key)) {
+        if (val === null) {
+          newCheckedItems.set(key, null);
         }
-      });
-
-      return newVal;
+      } else {
+        newCheckedItems.delete(key);
+      }
     });
+    setCheckedProducts(newCheckedItems);
+
+    if (onCheckedItems)
+      onCheckedItems([...newCheckedItems.values()].filter((e) => e !== null));
   }, [cartState.items]);
 
   useEffect(() => {
-    if (onChecked) {
-      const checkedItems: ICartPayload[] = [];
+    if (!onCheckedItems) return;
 
-      checkedProducts.forEach((value, key) => {
-        if (value) {
-          const cartPayload = cartState.items.find(
-            (item) => item?.itemMdl.id === key
-          );
-
-          if (cartPayload) {
-            checkedItems.push(cartPayload);
-          }
-        }
-      });
-
-      onChecked(checkedItems);
-    }
+    onCheckedItems([...checkedProducts.values()].filter((e) => e !== null));
   }, [checkedProducts]);
 
   const onSelectAllItems = (val: boolean) => {
@@ -115,13 +105,11 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
       return newVal;
     });
 
-    setCheckedProducts((prev) => {
-      const newVal = new Map(prev);
-
-      newVal.forEach((_, key) => newVal.set(key, val));
-
-      return newVal;
-    });
+    setCheckedProducts(
+      new Map(
+        cartState.items.map((item) => [item.itemMdl.id, val ? item : null])
+      )
+    );
   };
 
   const onSelectBrand = (val: boolean, id: string) => {
@@ -137,7 +125,11 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
       const newVal = new Map(prev);
 
       productsByBrand?.get(id)?.products.forEach((item) => {
-        newVal.set(item.itemMdl.id, val);
+        if (val) {
+          newVal.set(item.itemMdl.id, item);
+        } else {
+          newVal.set(item.itemMdl.id, null);
+        }
       });
 
       return newVal;
@@ -148,11 +140,19 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
     }
   };
 
-  const onSelectItem = (val: boolean, itemID: string, brandID: string) => {
+  const onSelectItem = (
+    val: boolean,
+    payload: ICartPayload,
+    brand: BrandMdl
+  ) => {
     setCheckedProducts((prev) => {
       const newVal = new Map(prev);
 
-      newVal.set(itemID, val);
+      if (val) {
+        newVal.set(payload.itemMdl.id, payload);
+      } else {
+        newVal.set(payload.itemMdl.id, null);
+      }
 
       return newVal;
     });
@@ -161,13 +161,39 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
       setCheckedBrand((prev) => {
         const newVal = new Map(prev);
 
-        newVal.set(brandID, false);
+        newVal.set(brand.id, false);
 
         return newVal;
       });
 
       setIsCheckedAllBox(false);
     }
+  };
+
+  const handleChangeItemInventory = (
+    val: InventoryMdl | undefined,
+    payload: ICartPayload
+  ) => {
+    if (!val) return;
+
+    setCheckedProducts((prev) => {
+      const newVal = new Map(prev);
+
+      const item = newVal.get(payload.itemMdl.id);
+      if (item) {
+        const newItemMdl = {
+          ...item.itemMdl,
+          inventories: [val],
+        };
+
+        newVal.set(item.itemMdl.id, {
+          ...item,
+          itemMdl: newItemMdl,
+        });
+      }
+
+      return newVal;
+    });
   };
 
   return (
@@ -183,9 +209,7 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
             <div className="border-b-[0.5px] flex gap-3 py-2 items-center">
               <Checkbox
                 id={data.brand?.id || ""}
-                value={
-                  checkedBrand.get(data.brand?.id || "") || isCheckedAllBox
-                }
+                value={checkedBrand.get(data.brand?.id || "")}
                 onCheck={(val) => {
                   onSelectBrand(val, data.brand?.id || "");
                 }}
@@ -213,15 +237,13 @@ const ShoppingCart = ({ onChecked }: ShoppingCartProp) => {
                   item="shopping-cart"
                   cartPayload={cartPayload}
                   isSelect={
-                    checkedProducts.get(cartPayload.itemMdl.id) || false
+                    checkedProducts.has(cartPayload.itemMdl.id) &&
+                    checkedProducts.get(cartPayload.itemMdl.id) !== null
                   }
-                  onSelect={(val) =>
-                    onSelectItem(
-                      val,
-                      cartPayload.itemMdl.id,
-                      data.brand?.id || ""
-                    )
-                  }
+                  onSelect={(val) => onSelectItem(val, cartPayload, data.brand)}
+                  onChangeInventory={(val) => {
+                    handleChangeItemInventory(val, cartPayload);
+                  }}
                 />
               );
             })}
@@ -242,7 +264,13 @@ const ShoppingCartHeader = ({
 
   const cartState = useAppSelector((state) => state.cart);
 
+  const [cal, setCal] = useState<OrderCalculator>(new OrderCalculator());
+
   const [showDeleteAllPop, setShowDeleteAllPop] = useState(false);
+
+  useEffect(() => {
+    setCal(new OrderCalculator(cartState.items));
+  }, [cartState.items]);
 
   const onConfirmDeleteAll = () => {
     dispatch(clearCart());
@@ -259,7 +287,7 @@ const ShoppingCartHeader = ({
         >
           <Checkbox.Indicator />
           <Checkbox.Label className="text-informal select-none ml-2">
-            Tất cả ({cartState.totalQuantity} sản phẩm)
+            Tất cả ({cal.getTotalQty()} sản phẩm)
           </Checkbox.Label>
         </Checkbox>
       </div>
@@ -341,7 +369,7 @@ const DiscountVoucher = () => {
           <div className="inline-flex items-center rounded-[5px] justify-center px-5 py-[2px] border border-orange-500 text-orange-500 bg-[#fff5e8] relative">
             <span className="font-medium">
               {/* TODO: enhance later */}
-              Đã giảm {" "}
+              Đã giảm{" "}
             </span>
             <div className="absolute -left-[0.05rem] top-1/2 transform -translate-y-1/2 bg-[#fff5e8] w-2 h-3 rounded-r-full border border-orange-500 border-l-0"></div>
             <div className="absolute -right-[0.08rem] top-1/2 transform -translate-y-1/2 bg-[#fff5e8] w-2 h-3 rounded-l-full border border-orange-500 border-r-0"></div>

@@ -26,6 +26,7 @@ type ShoppingCartItemProps = {
   item: "shopping-cart" | "icon";
   isSelect?: boolean;
   onSelect?: (val: boolean) => void;
+  onChangeInventory?: (val: InventoryMdl | undefined) => void;
 };
 
 const ShoppingCartItem = ({
@@ -33,12 +34,15 @@ const ShoppingCartItem = ({
   item,
   isSelect,
   onSelect,
+  onChangeInventory,
 }: ShoppingCartItemProps) => {
   const [showDeletePop, setShowDeletePop] = useState(false);
 
   const dispatch = useAppDispatch();
 
-  const [selectedInventory, setSelectedInventory] = useState<InventoryMdl>();
+  const [selectedType, setSelectedType] = useState<InventoryMdl | string>(
+    cartPayload.itemMdl.inventories[0]?.variantName || "Loại"
+  );
 
   const onConfirmDelete = () => {
     dispatch(removeCartItem({ ...cartPayload, quantity: -1 }));
@@ -60,6 +64,15 @@ const ShoppingCartItem = ({
         removeCartItem({ ...cartPayload, quantity: Math.abs(changedNum) })
       );
     }
+  };
+
+  const handleChangeInventory = (val: InventoryMdl) => {
+    if (!onChangeInventory) return;
+
+    if (!val) return onChangeInventory(undefined);
+
+    setSelectedType(val);
+    onChangeInventory(val);
   };
 
   return item === "shopping-cart" ? (
@@ -84,7 +97,7 @@ const ShoppingCartItem = ({
             <h2 className="text-base font-normal">
               {cartPayload.itemMdl.name}
             </h2>
-            <Listbox value={selectedInventory} onChange={setSelectedInventory}>
+            <Listbox value={selectedType} onChange={handleChangeInventory}>
               <ListboxButton
                 aria-placeholder="Product Characteristic"
                 className={clsx(
@@ -93,8 +106,9 @@ const ShoppingCartItem = ({
                 )}
               >
                 <span className="block text-sm">
-                  {selectedInventory?.variantValue ||
-                    cartPayload.itemMdl.inventories[0].variantName}
+                  {(typeof selectedType !== "string" &&
+                    selectedType?.variantValue) ||
+                    selectedType.toString()}
                 </span>
                 <BiChevronDown
                   className="pointer-events-none size-4 fill-slate-800"
@@ -113,7 +127,7 @@ const ShoppingCartItem = ({
                   <ListboxOption
                     key={index}
                     value={inventory}
-                    className="group flex items-center gap-2 py-1 px-2 text-base justify-between select-none hover:bg-green-50 hover:cursor-pointer data-[selected]:text-primary"
+                    className="group flex items-center gap-2 py-1 px-2 text-sm justify-between select-none hover:bg-green-50 hover:cursor-pointer data-[selected]:text-primary"
                   >
                     <div className="flex gap-2 items-center">
                       <span className="invisible block border-l h-5 border-l-informal group-data-[focus]:visible"></span>
@@ -130,7 +144,7 @@ const ShoppingCartItem = ({
       <div className="grid grid-cols-12 col-span-6 gap-1 items-center justify-items-center">
         <span className="col-span-3 text-base block">
           {formatCurrency(
-            cartPayload.itemMdl.discount?.discountPrice ||
+            (typeof selectedType !== "string" && selectedType?.price) ||
               cartPayload.itemMdl.price
           )}{" "}
           <u>đ</u>
@@ -146,8 +160,9 @@ const ShoppingCartItem = ({
         </div>
         <span className="col-span-3 text-base text-discount block">
           {formatCurrency(
-            (cartPayload.itemMdl.discount?.discountPrice ||
-              cartPayload.itemMdl.price) * cartPayload.quantity
+            (typeof selectedType !== "string"
+              ? selectedType.price
+              : cartPayload.itemMdl.price) * cartPayload.quantity
           )}{" "}
           <u>đ</u>
         </span>
@@ -177,8 +192,14 @@ const ShoppingCartItem = ({
         />
       </div>
       <div className="w-4/5 flex flex-col">
-        <h3 className="font-medium text-sm">{cartPayload.itemMdl.name}</h3>
-        {cartPayload.itemMdl.discount ? (
+        <h3 className="font-medium text-base">{cartPayload.itemMdl.name}</h3>
+        {/* TODO: [EW-101] enhance later */}
+        <div>
+          <span className="text-discount text-sm">
+            {formatCurrency(cartPayload.itemMdl.price)} đ
+          </span>
+        </div>
+        {/* {cartPayload.itemMdl.discount ? (
           <div className="flex text-sm gap-2 items-center">
             <span className="text-discount">
               {formatCurrency(cartPayload.itemMdl.discount.discountPrice)} đ
@@ -193,7 +214,7 @@ const ShoppingCartItem = ({
               {formatCurrency(cartPayload.itemMdl.price)} đ
             </span>
           </div>
-        )}
+        )} */}
         <div className="flex justify-between">
           <div className="flex flex-row gap-2 items-center justify-start w-full h-full">
             <NumberInput

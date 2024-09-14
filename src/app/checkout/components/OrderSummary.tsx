@@ -6,6 +6,9 @@ import { formatCurrency } from "@/utils/core";
 import OrderCalculator from "@/utils/calculator";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useSessionStorage } from "usehooks-ts";
+import { StoredKey } from "@/constants/client-storage/keys";
+import { CoreError } from "@/constants/error/core";
 
 type OrderSummaryProps = {
   items: ICartPayload[];
@@ -16,9 +19,26 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
 
   const [cal, setCalculator] = useState<OrderCalculator>(new OrderCalculator());
 
+  const [payload, setPayload] = useSessionStorage<ICartPayload[] | undefined>(
+    StoredKey.UserOrder,
+    items
+  );
+
   useEffect(() => {
+    if (!items) return;
+
     setCalculator(new OrderCalculator(items));
+    setPayload(items);
   }, [items]);
+
+  const handleClickBuyBtn = () => {
+    if (payload === undefined) {
+      console.log(CoreError.SystemErr);
+      return;
+    }
+    setPayload(items);
+    router.push("/checkout/payment");
+  };
 
   return (
     <div className="flex flex-col gap-1.5 px-4 pt-2 pb-4 bg-white rounded-lg min-h-52">
@@ -27,7 +47,7 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
           Tạm tính
         </span>
         <span className="inline-block text-lg">
-          {formatCurrency(cal.computeTemporaryPrice())} đ
+          {formatCurrency(cal.getTemPrice())} đ
         </span>
       </div>
       <div className="h-8 flex justify-between items-center">
@@ -35,7 +55,7 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
           Tổng giảm giá
         </span>
         <span className="inline-block text-lg text-informal">
-          - {formatCurrency(cal.computeDiscountPrice())} đ
+          - {formatCurrency(cal.getDiscountPrice())} đ
         </span>
       </div>
       <div className="h-8 flex justify-between items-center">
@@ -49,7 +69,7 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
           </span>
         ) : (
           <span className="block text-right text-xl font-medium">
-            {formatCurrency(cal.computePromotionalPrice())} đ
+            {formatCurrency(cal.getPromotionPrice())} đ
           </span>
         )}
       </div>
@@ -59,7 +79,7 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
         </span>
       </div>
       <Button
-        onClick={() => router.push("/checkout/payment")}
+        onClick={() => handleClickBuyBtn()}
         className="bg-discount text-white text-center rounded-md px-3 py-1 mt-3 w-full"
       >
         Mua hàng
