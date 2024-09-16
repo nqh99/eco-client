@@ -3,17 +3,7 @@
 import React from "react";
 import { Radio, RadioGroup } from "@headlessui/react";
 import Input from "../../components/CustomizableInput";
-interface AccountInfo {
-  name: string;
-  accountNumber: string;
-  bankBranch: string;
-}
-
-interface PaymentMethod {
-  value: string;
-  label: string;
-  accountInfo?: AccountInfo[];
-}
+import { BankAccountMdl, PaymentMethodMdl } from "@/models/users/bank";
 
 interface PaymentMethodProps {
   selectedMethod: string;
@@ -21,19 +11,32 @@ interface PaymentMethodProps {
   paymentMethods: PaymentMethod[];
 }
 
-const AccountInfoSection: React.FC<{ accountInfo: AccountInfo[] }> = ({ accountInfo }) => (
+type PaymentMethodOptionProps = {
+  method: PaymentMethodMdl;
+  checked: boolean;
+};
+
+const AccountInfoSection: React.FC<{ accountInfo: BankAccountMdl[] }> = ({
+  accountInfo,
+}) => (
   <div className="mt-6 flex gap-4 text-sm hg:grid-cols-2">
     {accountInfo.map((info, index) => (
-      <section key={index} className="flex-1 min-w-[300px] p-4 bg-gray-100 rounded-lg">
+      <section
+        key={index}
+        className="flex-1 min-w-[300px] p-4 bg-gray-100 rounded-lg"
+      >
         <p className="font-semibold">{info.name}</p>
         <p>Số tài khoản: {info.accountNumber}</p>
-        <p>Ngân hàng: {info.bankBranch}</p>
+        <p>Ngân hàng: {info.bankBranch.name}</p>
       </section>
     ))}
   </div>
 );
 
-const PaymentMethodOption: React.FC<{ value: string; label: string; checked: boolean }> = ({ value, label, checked }) => (
+const PaymentMethodOption: React.FC<PaymentMethodOptionProps> = ({
+  method,
+  checked,
+}) => (
   <div className="flex items-center">
     <span
       className={`${
@@ -42,12 +45,16 @@ const PaymentMethodOption: React.FC<{ value: string; label: string; checked: boo
     >
       {checked && <span className="h-2 w-2 bg-white rounded-full" />}
     </span>
-    <span className="ml-2 text-sm">{label}</span>
-    <Input type="hidden" value={value} />
+    <span className="ml-2 text-sm">{method.name}</span>
+    <Input type="hidden" value={method.id} />
   </div>
 );
 
-const OrderInfo: React.FC<PaymentMethodProps> = ({ selectedMethod, onMethodChange, paymentMethods }) => {
+const OrderInfo: React.FC<PaymentMethodProps> = ({
+  selectedMethod,
+  onMethodChange,
+  paymentMethods,
+}) => {
   const selectedPaymentMethod = paymentMethods.find(
     (method) => method.value === selectedMethod
   );
@@ -60,11 +67,14 @@ const OrderInfo: React.FC<PaymentMethodProps> = ({ selectedMethod, onMethodChang
         onChange={onMethodChange}
         className="space-y-4 grid"
       >
-
         {paymentMethods.map(({ value, label }) => (
           <Radio key={value} value={value} as="button">
             {({ checked }) => (
-              <PaymentMethodOption value={value} label={label} checked={checked} />
+              <PaymentMethodOption
+                value={value}
+                label={label}
+                checked={checked}
+              />
             )}
           </Radio>
         ))}
