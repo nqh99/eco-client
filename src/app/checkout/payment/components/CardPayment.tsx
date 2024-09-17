@@ -1,18 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Radio, RadioGroup } from "@headlessui/react";
 import Input from "../../components/CustomizableInput";
-import { BankAccountMdl, PaymentMethodMdl } from "@/models/users/bank";
+import { BankAccountMdl } from "@/models/users/bank";
+import {
+  getDataMappingWithPaymentMethod,
+  getDisplayMethodMsg,
+  PaymentMethod,
+} from "@/constants/transaction/payment-method";
 
 interface PaymentMethodProps {
-  selectedMethod: string;
-  onMethodChange: (method: string) => void;
-  paymentMethods: PaymentMethod[];
+  onMethodChange: (method: PaymentMethod) => void;
 }
 
 type PaymentMethodOptionProps = {
-  method: PaymentMethodMdl;
+  method: PaymentMethod;
   checked: boolean;
 };
 
@@ -27,7 +30,9 @@ const AccountInfoSection: React.FC<{ accountInfo: BankAccountMdl[] }> = ({
       >
         <p className="font-semibold">{info.name}</p>
         <p>Số tài khoản: {info.accountNumber}</p>
-        <p>Ngân hàng: {info.bankBranch.name}</p>
+        <p>
+          Ngân hàng: {info.bankBranch.nickname} - {info.bankBranch.name}
+        </p>
       </section>
     ))}
   </div>
@@ -45,46 +50,69 @@ const PaymentMethodOption: React.FC<PaymentMethodOptionProps> = ({
     >
       {checked && <span className="h-2 w-2 bg-white rounded-full" />}
     </span>
-    <span className="ml-2 text-sm">{method.name}</span>
-    <Input type="hidden" value={method.id} />
+    <span className="ml-2 text-sm">{getDisplayMethodMsg(method)}</span>
+    <Input type="hidden" value={method} />
   </div>
 );
 
-const OrderInfo: React.FC<PaymentMethodProps> = ({
-  selectedMethod,
-  onMethodChange,
-  paymentMethods,
-}) => {
-  const selectedPaymentMethod = paymentMethods.find(
-    (method) => method.value === selectedMethod
+/**
+ * CartPayment component allows users to select a payment method.
+ *
+ * @component
+ * @param {PaymentMethodProps} props - The props for the component.
+ * @param {function} props.onMethodChange - Callback function to handle payment method change.
+ *
+ * @returns {JSX.Element} The rendered component.
+ *
+ * @example
+ * <CartPayment onMethodChange={handlePaymentMethodChange} />
+ *
+ * @remarks
+ * This component uses a RadioGroup to display available payment methods.
+ * When the payment method is changed, it updates the state and calls the onMethodChange callback.
+ * If the selected payment method is BankTransfer, it displays the AccountInfoSection with the relevant account information.
+ */
+const CartPayment: React.FC<PaymentMethodProps> = ({ onMethodChange }) => {
+  const [method, setPaymentMethod] = useState<PaymentMethod>(
+    PaymentMethod.Cash
   );
+
+  const handleMethodChange = (val: PaymentMethod) => {
+    if (onMethodChange) {
+      onMethodChange(val);
+    }
+
+    setPaymentMethod(val);
+  };
 
   return (
     <section className="p-4 bg-white rounded-lg shadow-md">
       <h2 className="font-medium mb-4">Phương thức thanh toán</h2>
       <RadioGroup
-        value={selectedMethod}
-        onChange={onMethodChange}
+        value={method}
+        onChange={handleMethodChange}
         className="space-y-4 grid"
       >
-        {paymentMethods.map(({ value, label }) => (
-          <Radio key={value} value={value} as="button">
+        {Object.values(PaymentMethod).map((method) => (
+          <Radio key={method} value={method} as="button">
             {({ checked }) => (
-              <PaymentMethodOption
-                value={value}
-                label={label}
-                checked={checked}
-              />
+              <PaymentMethodOption method={method} checked={checked} />
             )}
           </Radio>
         ))}
       </RadioGroup>
 
-      {selectedPaymentMethod?.accountInfo && (
-        <AccountInfoSection accountInfo={selectedPaymentMethod.accountInfo} />
+      {method === PaymentMethod.BankTransfer && (
+        <AccountInfoSection
+          accountInfo={
+            getDataMappingWithPaymentMethod(
+              PaymentMethod.BankTransfer
+            ) as BankAccountMdl[]
+          }
+        />
       )}
     </section>
   );
 };
 
-export default OrderInfo;
+export default CartPayment;

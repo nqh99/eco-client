@@ -2,6 +2,7 @@ type BankMdl = {
   id: string;
   name: string;
   accountNumber: string;
+  nickname: string,
   location: string;
   logo: string;
 };
