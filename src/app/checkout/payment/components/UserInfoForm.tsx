@@ -19,7 +19,8 @@ const UserInfoForm = () => {
         HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
       >
     ) => {
-      setSubmitData((prevData) => ({ ...prevData, [field]: e.target.value }));
+        
+    //   setSubmitData((prevData) => ({ ...prevData, [field]: e.target.value }));
     };
 
   return (
@@ -32,7 +33,7 @@ const UserInfoForm = () => {
           key={FormDataKeys.RecipientName}
           type={"text"}
           placeholder={getPlaceHolderOfFormKeys(FormDataKeys.RecipientName)}
-          value={formData[key as FormDataKeys]}
+          value={submitData[key as FormDataKeys]}
           onChange={handleInputChange(key as FormDataKeys)}
           validate={validateInput[key as FormDataKeys]}
           triggerValidation={triggerValidation}

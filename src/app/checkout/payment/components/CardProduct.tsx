@@ -6,18 +6,16 @@ import { AiOutlineRight } from "react-icons/ai";
 import Input from "../../components/CustomizableInput";
 import Voucher from "@/public/icons/voucher.svg";
 import { ICartPayload } from "@/lib/types";
-import { useSessionStorage } from "usehooks-ts";
-import { StoredKey } from "@/constants/client-storage/keys";
 import OrderCalculator from "@/utils/calculator";
 import BrandMdl from "@/models/users/brand";
 import { formatCurrency } from "@/utils/core";
 
-const CardProduct = () => {
-  const [payload] = useSessionStorage<ICartPayload[] | undefined>(
-    StoredKey.UserOrder,
-    []
-  );
+type CardProductProps = {
+  calculator: OrderCalculator;
+  onNoted?: (val: Map<string, string>) => void;
+};
 
+const CardProduct = ({ calculator, onNoted }: CardProductProps) => {
   const [productsByBrand, setProductsByBrand] = useState<
     Map<
       string,
@@ -28,39 +26,55 @@ const CardProduct = () => {
     >
   >();
 
+  const [noteOnBrand, setNoteOnBrand] = useState<Map<string, string>>(
+    new Map()
+  );
+
   useEffect(() => {
-    const calculator = new OrderCalculator(payload);
     setProductsByBrand(calculator.sortItemsByBrand());
-  }, [payload]);
+  }, [calculator]);
 
   const [voucher] = useState({ title: "Mã ưu đãi của Shop", icon: Voucher });
+
+  const handleOnUserNotes = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    brand: BrandMdl
+  ) => {
+    const newNote: Map<string, string> = { ...noteOnBrand };
+    newNote.set(brand.id, event.currentTarget.value);
+    setNoteOnBrand(newNote);
+
+    if (onNoted) {
+      onNoted(newNote);
+    }
+  };
 
   return (
     <div className="p-4 mt-2 bg-white rounded-xl shadow-lg border border-gray-200">
       <h1 className="font-bold text-gray-800 mb-2">Sản phẩm</h1>
 
-      {[...(productsByBrand?.values() ?? [])].map((val) => (
+      {[...(productsByBrand?.values() ?? [])].map((data) => (
         <div
-          key={val.brand.id}
+          key={data.brand.id}
           className="mx-auto mt-2 bg-white rounded-xl border border-gray-100"
         >
           {/* Header */}
           <div className="px-6 py-2 border-b border-gray-100 flex items-center">
             <Image
-              src={val.brand.avatarUrl}
+              src={data.brand.avatarUrl}
               alt="Logo shop"
               className="rounded-full mr-4"
               width={30}
               height={30}
             />
-            <p className="font-medium text-gray-900">{val.brand.name}</p>
+            <p className="font-medium text-gray-900">{data.brand.name}</p>
             <AiOutlineRight className="ml-2" />
           </div>
 
           {/* Body */}
           <div className="px-6 py-4">
             {/* List of Products */}
-            {val.products.map((cartItem) => (
+            {data.products.map((cartItem) => (
               <div
                 className="flex items-center justify-between mb-6"
                 key={cartItem.itemMdl.id}
@@ -117,7 +131,13 @@ const CardProduct = () => {
               <label htmlFor="note" className="text-sm block mb-2">
                 Ghi chú cho người bán
               </label>
-              <Input as="textarea" placeholder="Ghi chú..." />
+              <Input
+                as="textarea"
+                placeholder="Ghi chú..."
+                onChange={(event) => {
+                  handleOnUserNotes(event, data.brand);
+                }}
+              />
             </div>
           </div>
         </div>

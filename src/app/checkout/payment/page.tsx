@@ -1,12 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@/components/elements/Button";
 import CardPayment from "./components/CardPayment";
 import CardProduct from "./components/CardProduct";
 import Input from "../components/CustomizableInput";
 import BListbox from "../components/CustomizableSelect";
 import { PaymentMethod } from "@/constants/transaction/payment-method";
+import { useSessionStorage } from "usehooks-ts";
+import { ICartPayload } from "@/lib/types";
+import { StoredKey } from "@/constants/client-storage/keys";
+import OrderCalculator from "@/utils/calculator";
+import { formAddress, formatCurrency } from "@/utils/core";
+import { UserOrderMdl } from "@/models/users/order";
 
 type FormDataKeys =
   | "recipientName"
@@ -79,6 +85,15 @@ const validateInput = {
 };
 
 const PaymentPage: React.FC = () => {
+  const [cartPayload] = useSessionStorage<ICartPayload[]>(
+    StoredKey.UserOrder,
+    []
+  );
+
+  const [orderCal, setOrderCalculator] = useState<OrderCalculator>(
+    new OrderCalculator()
+  );
+
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<PaymentMethod>();
 
@@ -91,7 +106,41 @@ const PaymentPage: React.FC = () => {
     ward: "",
     houseNumber: "",
   });
+
+  const [userOrderForm, setUserOrderForm] = useState<UserOrderMdl>({
+    orderInfoList: [],
+    note: "",
+    shippingAddress: "",
+    discountCode: "",
+    phoneNumber: "",
+    email: "",
+    customerName: "",
+    subTotalPrice: 0,
+    shippingPrice: 10000,
+    discountPrice: 0,
+    totalPrice: 0,
+  });
+
+  const [userNotes, setUserNotes] = useState<Map<string, string>>(new Map());
+
   const [triggerValidation, setTriggerValidation] = useState(false);
+
+  useEffect(() => {
+    setOrderCalculator(new OrderCalculator(cartPayload));
+
+    setUserOrderForm((prev) => {
+      return {
+        ...prev,
+        orderInfoList: cartPayload.map((item) => {
+          return {
+            productId: item.itemMdl.id,
+            quantity: item.quantity,
+            productInventoryId: item.itemMdl.inventories.at(0)?.id || "",
+          };
+        }),
+      };
+    });
+  }, [cartPayload]);
 
   const handleInputChange =
     (field: FormDataKeys) =>
@@ -122,7 +171,26 @@ const PaymentPage: React.FC = () => {
     const hasErrors = Object.values(errors).some((error) => error !== "");
 
     if (!hasErrors) {
-      console.log("Form is valid! Proceed with submission:", formData);
+      const shippingAddress = formAddress([
+        formData.houseNumber,
+        formData.ward,
+        formData.district,
+        formData.city,
+      ]);
+      
+      let formedUserData: UserOrderMdl = {
+        ...userOrderForm,
+        // get all user notes by brand
+        note: [...userNotes.entries()]
+          .map(([key, value]) => `${key}: ${value}`)
+          .join(", "),
+        shippingAddress: shippingAddress,
+
+      };
+
+      if (selectedPaymentMethod === PaymentMethod.BankTransfer) {
+        // TODO: enhance later
+      }
     } else {
       console.log("Form contains errors.");
     }
@@ -132,7 +200,7 @@ const PaymentPage: React.FC = () => {
     <div className="p-6 rounded-lg shadow-md grid grid-cols-12 gap-6 bg-[#f9f9f9]">
       <div className="col-span-8 lg:col-span-8 sm:col-span-12">
         <CardPayment onMethodChange={setSelectedPaymentMethod} />
-        <CardProduct />
+        <CardProduct calculator={orderCal} onNoted={setUserNotes} />
       </div>
 
       <div className="col-span-4 lg:col-span-12">
@@ -191,16 +259,22 @@ const PaymentPage: React.FC = () => {
         <div className="p-4 bg-white rounded-lg shadow-md mt-4">
           <div className="flex justify-between mb-3">
             <span className="text-sm">Tạm tính</span>
-            <span className="text-sm">5.208.000 đ</span>
+            <span className="text-sm">
+              {formatCurrency(orderCal.getTemPrice())} đ
+            </span>
           </div>
           <div className="flex justify-between mb-3">
             <span className="text-sm">Tổng giảm giá</span>
-            <span className="text-sm">-100.000 ₫</span>
+            <span className="text-sm">
+              -{formatCurrency(orderCal.getDiscountPrice())} ₫
+            </span>
           </div>
           <div className="flex justify-between mb-3">
             <span className="text-sm">Tổng tiền</span>
             <div className="flex flex-col items-end">
-              <span className="text-sm text-[#ffaa00]">5.152.000 ₫</span>
+              <span className="text-sm text-[#ffaa00]">
+                {formatCurrency(orderCal.getPromotionPrice())} ₫
+              </span>
               <span className="text-xs text-informal mb-3">
                 (Đã bao gồm VAT nếu có)
               </span>

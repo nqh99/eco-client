@@ -4,6 +4,7 @@ type UserOrderMdl = {
     quantity: number;
     productInventoryId: string;
   }[];
+  note: string;
   shippingAddress: string;
   discountCode: string;
   phoneNumber: string;
@@ -15,4 +16,4 @@ type UserOrderMdl = {
   totalPrice: number;
 };
 
-export type {UserOrderMdl}
+export type { UserOrderMdl };

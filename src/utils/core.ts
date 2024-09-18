@@ -99,16 +99,18 @@ const copyToClipboard = (code: string) => {
   navigator.clipboard.writeText(code);
 };
 
-const formAddress = (data: string[]) => {
-  return data.map((item, index, data) => {
-    const ret = item.trim();
+const formAddress = (data: string[]): string => {
+  let ret = "";
+
+  data.map((item, index, data) => {
+    ret = item.trim();
 
     if (data.length - 1 !== index) {
       ret.concat(", ");
     }
-
-    return ret;
   });
+
+  return ret;
 };
 
 export {
