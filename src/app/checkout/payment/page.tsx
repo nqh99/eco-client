@@ -13,6 +13,8 @@ import { StoredKey } from "@/constants/client-storage/keys";
 import OrderCalculator from "@/utils/calculator";
 import { formAddress, formatCurrency } from "@/utils/core";
 import { UserOrderMdl } from "@/models/users/order";
+import { postUserOrder } from "@/apis/product";
+import { getShippingPriceByAddress } from "@/apis/user";
 
 type FormDataKeys =
   | "recipientName"
@@ -165,7 +167,7 @@ const PaymentPage: React.FC = () => {
     );
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setTriggerValidation(true);
     const errors = validateForm();
     const hasErrors = Object.values(errors).some((error) => error !== "");
@@ -177,20 +179,39 @@ const PaymentPage: React.FC = () => {
         formData.district,
         formData.city,
       ]);
-      
-      let formedUserData: UserOrderMdl = {
+
+      console.log(formData);
+
+      const formedUserData: UserOrderMdl = {
         ...userOrderForm,
         // get all user notes by brand
         note: [...userNotes.entries()]
           .map(([key, value]) => `${key}: ${value}`)
           .join(", "),
         shippingAddress: shippingAddress,
-
+        discountCode: "",
+        phoneNumber: formData.recipientPhone,
+        email: formData.recipientEmail,
+        customerName: formData.recipientName,
+        subTotalPrice: orderCal.getTemPrice(),
+        shippingPrice: 10000,
+        discountPrice: orderCal.getDiscountPrice(),
+        totalPrice: orderCal.getPromotionPrice() + 10000,
       };
 
       if (selectedPaymentMethod === PaymentMethod.BankTransfer) {
         // TODO: enhance later
       }
+
+      console.log(formedUserData);
+
+      postUserOrder(formedUserData).then((res) => {
+        if (res === "success") {
+          console.log("Create order success");
+        } else {
+          console.log("Create order fail");
+        }
+      });
     } else {
       console.log("Form contains errors.");
     }

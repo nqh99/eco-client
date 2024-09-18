@@ -100,17 +100,7 @@ const copyToClipboard = (code: string) => {
 };
 
 const formAddress = (data: string[]): string => {
-  let ret = "";
-
-  data.map((item, index, data) => {
-    ret = item.trim();
-
-    if (data.length - 1 !== index) {
-      ret.concat(", ");
-    }
-  });
-
-  return ret;
+  return data.map((item) => item.trim()).join(", ");
 };
 
 export {

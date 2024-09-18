@@ -40,7 +40,7 @@ const CardProduct = ({ calculator, onNoted }: CardProductProps) => {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     brand: BrandMdl
   ) => {
-    const newNote: Map<string, string> = { ...noteOnBrand };
+    const newNote: Map<string, string> = new Map(noteOnBrand);
     newNote.set(brand.id, event.currentTarget.value);
     setNoteOnBrand(newNote);
 
