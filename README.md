@@ -26,17 +26,25 @@ The project follows a standard directory structure, as shown below:
 ## Description
 
 - `src`: This directory contains all the source code for the project.
-    - `apis`: contains fetch api resources.
-    - `app`: only contains pages of application (use app routes)
-    - `components`: contains reusable components used throughout the application.
-    - `configs`: contains additional configs for web app.
-    - `models`: contains the entity model which mapping with back-end response data.
-    - `styles`: contains reusable styles (use css, scss) used throughout the application.
-    - `utils`: contains utility functions and helper files.
+
+  - `apis`: contains fetch api resources.
+  - `app`: only contains pages of application (use app routes)
+    - `page.tsx`: Unique UI of a route and make routes publicly accessible
+    - `/component`: Unique components of a page
+    - `layout.tsx`: Shared UI for a segment and its children
+    - `loading.tsx`: Loading UI for a segment and its children
+    - `not-found`: Not found UI for a segment and its children
+    - `error.tsx`: Error UI for a segment and its children
+    - `global-error.tsx`: Global Error UI
+  - `components`: contains reusable components used throughout the application.
+  - `configs`: contains additional configs for web app.
+  - `models`: contains the entity model which mapping with back-end response data.
+  - `styles`: contains reusable styles (use css, scss) used throughout the application.
+  - `utils`: contains utility functions and helper files.
 
 - `public`: This directory contains static assets and the HTML file for the application.
-    - `icons`: contains custom icons of designer in case heroicons framework was not support.
-    - `images`: contains images asset of the application.
+  - `icons`: contains custom icons of designer in case react-icon framework was not support.
+  - `images`: contains images asset of the application.
 
 ## Usage
 
@@ -44,8 +52,8 @@ To start the project, follow these steps:
 
 1. Clone the repository.
 2. Install the dependencies by running `npm install`.
-2. Build optimized production by running `npm run build`.
-3. Start the application by running `npm start`.
+3. Build optimized production by running `npm run build`.
+4. Start the application by running `npm start`.
 
 ## Conclusion
 
