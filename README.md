@@ -13,6 +13,7 @@ The project follows a standard directory structure, as shown below:
 ├── src
 │   ├── apis
 │   ├── app
+        ├── components
 │   ├── components
 │   ├── configs
 │   ├── models
