@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 236, 253, 245;
+  --background-end-rgb: 236, 241, 245;
+  --primary-color: rgb(30, 107, 10);
+  --default-padding: 1rem;
+  --default-color: #0c0a09;
+  --discount-color: #ff1212;
+  --informal-color: #6b6b7b;
+}
+
+/* TODO: Need dark mode config */
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+} */
+
+@media (min-width: 640px) {
+  :root {
+    --default-padding: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --default-padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --default-padding: 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --default-padding: 3rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --default-padding: 4rem;
+    font-size: 18px;
+  }
+}
+
+html {
+  box-sizing: border-box;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+html::-webkit-scrollbar {
+  width: 0px;
+}
+body {
+  text-wrap: pretty;
+  min-width: 305px;
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  font-size: 16px;
+  font-family: "Roboto", sans-serif, monospace;
+  color: #0c0a09;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  /* width: 0px; */
+}
+
+/* Remove the up/down increment/decrement buttons on number inputs using CSS */
+/* Chrome, Safari, Edge, Opera */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: pretty;
+  }
+}
+
+/* Custom */
+.scrollbar-primary::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.scrollbar-primary::-webkit-scrollbar-track {
+  background: #c9c7c7;
+  border-radius: 5px;
+}
+
+/* Handle */
+.scrollbar-primary::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 5px;
+  scrollbar-width: thin;
+}
+
+/* Handle on hover */
+.scrollbar-primary::-webkit-scrollbar-thumb:hover {
+  background: #268002;
+  cursor: pointer;
+}
+
+@layer customScrollbar {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-none::-webkit-scrollbar-button {
+    display: none;
+  }
+  
+  .scrollbar-rounded {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) #f1f1f1;
+  }
+  
+  .scrollbar-rounded::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .scrollbar-rounded::-webkit-scrollbar-track {
+    background: var(--primary-color);
+    border-radius: 9999px;
+  }
+  
+  .scrollbar-rounded::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 9999px;
+  }
+  
+  .hover-bg-primary:hover {
+    background-color: var(--primary-color);
+  }
+  
+  .hover-text-primary:hover {
+    color: var(--primary-color);
+  }
+}

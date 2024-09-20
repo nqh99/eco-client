@@ -1,0 +1,10 @@
+# nextjs
+node_modules
+.vscode
+.next
+
+# platform
+.DS_Store
+.env.local
+
+package-lock.json
