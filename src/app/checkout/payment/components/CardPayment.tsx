@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Radio, RadioGroup } from "@headlessui/react";
-import Input from "../../components/CustomizableInput";
+import Input from "../../../../components/elements/Input";
 import { BankAccountMdl } from "@/models/users/bank";
 import {
   getDataMappingWithPaymentMethod,

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import BInput from "../../components/CustomizableInput";
+import BInput from "../../../../components/elements/Input";
 import BListbox from "../../components/CustomizableSelect";
 import { UserOrderMdl } from "@/models/users/order";
 import {

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/legacy/image";
 import { AiOutlineRight } from "react-icons/ai";
-import Input from "../../components/CustomizableInput";
+import Input from "../../../../components/elements/Input";
 import Voucher from "@/public/icons/voucher.svg";
 import { ICartPayload } from "@/lib/types";
 import OrderCalculator from "@/utils/calculator";

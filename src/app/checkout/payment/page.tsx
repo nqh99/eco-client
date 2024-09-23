@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Button from "@/components/elements/Button";
 import CardPayment from "./components/CardPayment";
 import CardProduct from "./components/CardProduct";
-import Input from "../components/CustomizableInput";
+import Input from "../../../components/elements/Input";
 import BListbox from "../components/CustomizableSelect";
 import { PaymentMethod } from "@/constants/transaction/payment-method";
 import { useSessionStorage } from "usehooks-ts";
