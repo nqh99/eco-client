@@ -2,6 +2,12 @@ import ResponseMdl from '@/models/https/response';
 import { revalidatePath } from 'next/cache';
 import { generateReadableErr } from './core';
 import { ClientError } from '@/models/errors/client-err';
+import { refresh } from '@/apis/auth';
+import { AppDispatch } from '@/lib/store';
+import { authSlice, AuthState } from '@/lib/features/auth/authSlice';
+
+import { Response } from '@/models/Response';
+import { LoginResponse } from '@/models/auth/LoginResponse';
 
 /**
  * Converts a string to a URL-friendly format.
@@ -119,6 +125,69 @@ const safePostRequest = async <T, D extends Record<string, unknown>>(
   }
 
   return ret.data;
+};
+
+export const sendRequest = async <D, T, E>(
+  url: string,
+  data: D,
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' = 'POST',
+  cache: RequestCache = 'no-cache',
+  needRevalidate: boolean = false
+) => {
+  if (needRevalidate) {
+    revalidatePath(url);
+  }
+  const res = await fetch(url, {
+    method: method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: cache,
+    credentials: 'include',
+    body: JSON.stringify(data),
+  });
+
+  const bodyRaw = await res.text();
+  const body = !bodyRaw ? undefined : bodyRaw;
+
+  if (res.ok) {
+    return {
+      data: body ? (JSON.parse(body) as T) : undefined,
+      status: res.status,
+      ok: true,
+    } as Response<T | undefined>;
+  } else {
+    return {
+      data: body ? (JSON.parse(body) as E) : undefined,
+      status: res.status,
+      ok: false,
+    } as Response<E | undefined>;
+  }
+};
+
+export const sendAuthenticatedRequest = async <D, T, E>(
+  url: string,
+  data: D,
+  authState: AuthState,
+  dispatch: AppDispatch,
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' = 'POST',
+  cache: RequestCache = 'no-cache',
+  needRevalidate: boolean = false
+) => {
+  const now = new Date();
+  const authenticated =
+    authState.accessTokenExpiry && new Date(authState.accessTokenExpiry) > now;
+  const canRefresh =
+    authState.refreshTokenExpiry &&
+    new Date(authState.refreshTokenExpiry) > now;
+  if (!authenticated && canRefresh) {
+    const res = await refresh();
+    if (!res.ok) {
+      return res as Response<E>;
+    }
+    dispatch(authSlice.actions.authenticate(res.data as LoginResponse));
+  }
+  return await sendRequest<D, T, E>(url, data, method, cache, needRevalidate);
 };
 
 export { convertToURL, safeDataFetching, isResOK, safePostRequest };
