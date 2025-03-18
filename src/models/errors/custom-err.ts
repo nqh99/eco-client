@@ -2,7 +2,7 @@ class CustomError extends Error {
   code;
   data;
 
-  constructor(code: number, message: string, cause?: string, data?: any) {
+  constructor(code: number, message: string, cause?: string, data?: unknown) {
     super(message);
 
     this.name = code.toString();
@@ -12,8 +12,8 @@ class CustomError extends Error {
   }
 }
 
-const isCustomError = (candidate: any): candidate is CustomError => {
-  return candidate instanceof CustomError || 'code' in candidate;
+const isCustomError = (candidate: unknown): candidate is CustomError => {
+  return candidate instanceof CustomError;
 };
 
 export { CustomError, isCustomError };

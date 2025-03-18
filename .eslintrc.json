@@ -1,3 +1,5 @@
+// Refercences: https://typescript-eslint.io/packages/typescript-eslint/
+// Refercences: https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/
 {
   "env": {
     "browser": true,
@@ -6,15 +8,19 @@
   "extends": [
     "prettier",
     "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
-    "prettier"
+    "prettier",
+    "no-loops"
   ],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "no-console": "warn",
+    "no-loops/no-loops": 2
   },
   "overrides": [
     {

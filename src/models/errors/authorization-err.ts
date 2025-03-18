@@ -2,7 +2,7 @@ import { HttpStatusCodes, HttpStatusMessages } from '@/constants/https/codes';
 import { CustomError } from './custom-err';
 
 class AuthorizationError extends CustomError {
-  constructor(cause?: string, data?: any) {
+  constructor(cause?: string, data?: unknown) {
     super(
       HttpStatusCodes.FORBIDDEN,
       HttpStatusMessages[HttpStatusCodes.FORBIDDEN],
@@ -13,10 +13,10 @@ class AuthorizationError extends CustomError {
 }
 
 const isAuthorizationError = (
-  candidate: any
+  candidate: unknown
 ): candidate is AuthorizationError => {
   return (
-    candidate instanceof AuthorizationError ||
+    candidate instanceof AuthorizationError &&
     candidate?.code === HttpStatusCodes.FORBIDDEN
   );
 };

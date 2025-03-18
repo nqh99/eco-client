@@ -1,6 +1,9 @@
+import { CoreError } from '@/constants/error/core';
+import { HttpStatusCodes } from '@/constants/https/codes';
 import { AuthenticationError } from '@/models/errors/authentication-err';
 import { AuthorizationError } from '@/models/errors/authorization-err';
 import { ClientError } from '@/models/errors/client-err';
+import { CustomError } from '@/models/errors/custom-err';
 import { NotFoundError } from '@/models/errors/not-found-err';
 import { ServiceError } from '@/models/errors/service-err';
 import { ValidationError } from '@/models/errors/validation-err';
@@ -15,33 +18,28 @@ import { ValidationError } from '@/models/errors/validation-err';
  */
 const generateReadableErr = (
   status: number,
-  err?: { msg: string; info: string }
+  err?: CustomError | { msg: string; info: string }
 ) => {
   if (!status) {
-    return new ServiceError('Invalid HTTP response status!');
+    return new ServiceError(CoreError.INVALID_HTTP_STATUS);
   }
 
-  if (status > 500) {
-    return new ServiceError(
-      err?.msg || 'Please refresh and try again, or contact the support team!',
-      err?.info
-    );
+  if (status > HttpStatusCodes.INTERNAL_SERVICE_ERROR) {
+    return err as ServiceError;
   }
 
   switch (status) {
-    case 404:
-      return new NotFoundError(err?.msg);
-    case 500:
-      return new ServiceError(err?.msg);
-    case 401:
-      return new AuthenticationError(err?.msg);
-    case 403:
-      return new AuthorizationError(err?.msg);
-    case 409:
-    case 422:
-      return new ValidationError(err?.msg);
+    case HttpStatusCodes.NOT_FOUND:
+      return err as NotFoundError;
+    case HttpStatusCodes.UNAUTHORIZED:
+      return err as AuthenticationError;
+    case HttpStatusCodes.FORBIDDEN:
+      return err as AuthorizationError;
+    case HttpStatusCodes.CONFLICT:
+    case HttpStatusCodes.UNPROCESSABLE_CONTENT:
+      return err as ValidationError;
     default:
-      return new ClientError(err?.msg);
+      return err as ClientError;
   }
 };
 

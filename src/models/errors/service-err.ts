@@ -2,7 +2,7 @@ import { HttpStatusCodes, HttpStatusMessages } from '@/constants/https/codes';
 import { CustomError } from './custom-err';
 
 class ServiceError extends CustomError {
-  constructor(cause?: string, data?: any) {
+  constructor(cause?: string, data?: unknown) {
     super(
       HttpStatusCodes.INTERNAL_SERVICE_ERROR,
       HttpStatusMessages[HttpStatusCodes.INTERNAL_SERVICE_ERROR],
@@ -12,9 +12,9 @@ class ServiceError extends CustomError {
   }
 }
 
-const isServiceError = (candidate: any): candidate is ServiceError => {
+const isServiceError = (candidate: unknown): candidate is ServiceError => {
   return (
-    candidate instanceof ServiceError ||
+    candidate instanceof ServiceError &&
     candidate?.code === HttpStatusCodes.INTERNAL_SERVICE_ERROR
   );
 };

@@ -2,7 +2,7 @@ import { HttpStatusCodes, HttpStatusMessages } from '@/constants/https/codes';
 import { CustomError } from './custom-err';
 
 class ValidationError extends CustomError {
-  constructor(cause?: string, data?: any) {
+  constructor(cause?: string, data?: unknown) {
     super(
       HttpStatusCodes.CONFLICT || HttpStatusCodes.UNPROCESSABLE_CONTENT,
       HttpStatusMessages[HttpStatusCodes.CONFLICT] ||
@@ -13,11 +13,13 @@ class ValidationError extends CustomError {
   }
 }
 
-const isValidationError = (candidate: any): candidate is ValidationError => {
+const isValidationError = (
+  candidate: unknown
+): candidate is ValidationError => {
   return (
-    candidate instanceof ValidationError ||
-    candidate?.code === HttpStatusCodes.CONFLICT ||
-    candidate?.code === HttpStatusCodes.UNPROCESSABLE_CONTENT
+    candidate instanceof ValidationError &&
+    (candidate?.code === HttpStatusCodes.CONFLICT ||
+      candidate?.code === HttpStatusCodes.UNPROCESSABLE_CONTENT)
   );
 };
 

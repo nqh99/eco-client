@@ -12,18 +12,15 @@ enum HttpStatusCodes {
 const HttpStatusMessages: { [key in HttpStatusCodes]: string } = {
   [HttpStatusCodes.OK]: 'Fetch data successfully!',
   [HttpStatusCodes.BAD_REQ]:
-    'The server cannot or will not process the request due to something that is perceived to be a client error!',
+    'Cannot not process the request due to something that is perceived to be a client error!',
   [HttpStatusCodes.UNAUTHORIZED]:
-    'The client must authenticate itself to get the requested response!',
-  [HttpStatusCodes.FORBIDDEN]:
-    'The client does not have access rights to the content!',
-  [HttpStatusCodes.NOT_FOUND]: 'The server cannot find the requested resource!',
-  [HttpStatusCodes.CONFLICT]:
-    'This response is sent when a request conflicts with the current state of the server!',
+    'Must authenticate yourself to get the requested response!',
+  [HttpStatusCodes.FORBIDDEN]: 'Does not have access rights to the content!',
+  [HttpStatusCodes.NOT_FOUND]: 'Cannot find the requested resource!',
+  [HttpStatusCodes.CONFLICT]: 'Conflicts with the current state of the server!',
   [HttpStatusCodes.UNPROCESSABLE_CONTENT]:
-    'The request was well-formed but was unable to be followed due to semantic errors!',
-  [HttpStatusCodes.INTERNAL_SERVICE_ERROR]:
-    'The server has encountered a situation it does not know how to handle!',
+    'The request faces some semantic errors!',
+  [HttpStatusCodes.INTERNAL_SERVICE_ERROR]: 'Internal service error!',
 };
 
 export { HttpStatusCodes, HttpStatusMessages };

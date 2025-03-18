@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useSessionStorage } from 'usehooks-ts';
 import { StoredKey } from '@/constants/client-storage/keys';
-import { CoreError } from '@/constants/error/core';
 
 type OrderSummaryProps = {
   items: ICartPayload[];
@@ -33,7 +32,6 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
 
   const handleClickBuyBtn = () => {
     if (payload === undefined) {
-      console.log(CoreError.SystemErr);
       return;
     }
     setPayload(items);

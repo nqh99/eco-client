@@ -1,5 +1,6 @@
 enum CoreError {
-  SystemErr = 'Oops! Có vấn đề rồi',
+  SYSTEM_ERROR = 'Oops! Try again',
+  INVALID_HTTP_STATUS = 'Invalid HTTP response status',
 }
 
 export { CoreError };
