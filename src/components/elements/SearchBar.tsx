@@ -1,9 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { GoSearch } from 'react-icons/go';
 import { CiSearch } from 'react-icons/ci';
 
 export default function SearchBar() {

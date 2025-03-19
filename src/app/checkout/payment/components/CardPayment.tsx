@@ -3,6 +3,7 @@
 import React from 'react';
 import { Radio, RadioGroup } from '@headlessui/react';
 import Input from '../../components/CustomizableInput';
+
 interface AccountInfo {
   name: string;
   accountNumber: string;

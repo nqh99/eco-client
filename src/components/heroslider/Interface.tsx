@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slides from '../elements/Slides';
 import Pagination from '@/components/elements/Pagination';
 
