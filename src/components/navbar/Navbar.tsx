@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchBar from '@/components/elements/SearchBar';
 import MiniNavbar from '@/components/navbar/MiniNavbar';
-import Login from '@/components/elements/Login';
+import LoginBtn from '@/components/elements/LoginBtn';
 import ShoppingCartPopup from './ShoppingCartPopup';
 import Language from '@/components/elements/Language';
 import Notification from '@/components/elements/Notification';
@@ -44,7 +44,7 @@ const Navbar = async () => {
                 <Link href={''}>Đặt hàng thành công</Link>
               </Notification>
               <ShoppingCartPopup />
-              <Login />
+              <LoginBtn />
               <Language />
             </div>
           </div>
