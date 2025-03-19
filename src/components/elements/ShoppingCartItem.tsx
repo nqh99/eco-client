@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Checkbox from "./Checkbox";
-import DeletePopup from "../popup/DeletePopup";
-import Button from "./Button";
-import { GoTrash } from "react-icons/go";
-import { ICartPayload } from "@/lib/types";
-import { useAppDispatch } from "@/hooks/redux";
-import { addCartItem, removeCartItem } from "@/lib/features/checkout/cartSlice";
-import NumberInput from "./NumberInput";
-import Image from "next/image";
-import { formatCurrency } from "@/utils/core";
+import React, { useState } from 'react';
+import Checkbox from './Checkbox';
+import DeletePopup from '../popup/DeletePopup';
+import Button from './Button';
+import { GoTrash } from 'react-icons/go';
+import { ICartPayload } from '@/lib/types';
+import { useAppDispatch } from '@/hooks/redux';
+import { addCartItem, removeCartItem } from '@/lib/features/checkout/cartSlice';
+import NumberInput from './NumberInput';
+import Image from 'next/image';
+import { formatCurrency } from '@/utils/core';
 import {
   Listbox,
   ListboxButton,
   ListboxOption,
   ListboxOptions,
-} from "@headlessui/react";
-import { InventoryMdl } from "@/models/products/inventory";
-import clsx from "clsx";
-import { BiCheckCircle, BiChevronDown } from "react-icons/bi";
+} from '@headlessui/react';
+import { InventoryMdl } from '@/models/products/inventory';
+import clsx from 'clsx';
+import { BiCheckCircle, BiChevronDown } from 'react-icons/bi';
 
 type ShoppingCartItemProps = {
   cartPayload: ICartPayload;
-  item: "shopping-cart" | "icon";
+  item: 'shopping-cart' | 'icon';
   isSelect?: boolean;
   onSelect?: (val: boolean) => void;
   onChangeInventory?: (val: InventoryMdl | undefined) => void;
@@ -41,7 +41,7 @@ const ShoppingCartItem = ({
   const dispatch = useAppDispatch();
 
   const [selectedType, setSelectedType] = useState<InventoryMdl | string>(
-    cartPayload.itemMdl.inventories[0]?.variantName || "Loại"
+    cartPayload.itemMdl.inventories[0]?.variantName || 'Loại'
   );
 
   const onConfirmDelete = () => {
@@ -75,9 +75,9 @@ const ShoppingCartItem = ({
     onChangeInventory(val);
   };
 
-  return item === "shopping-cart" ? (
+  return item === 'shopping-cart' ? (
     <div key={cartPayload.itemMdl.id} className="grid grid-cols-12 gap-3 py-4">
-      <div className="col-span-6 flex gap-4 max-h-20">
+      <div className="col-span-6 flex max-h-20 gap-4">
         <Checkbox
           id={cartPayload.itemMdl.id}
           value={isSelect}
@@ -88,7 +88,7 @@ const ShoppingCartItem = ({
         <div className="flex gap-3">
           <Image
             src={cartPayload.itemMdl.imageUrl}
-            alt={"Brand Name"}
+            alt={'Brand Name'}
             width={70}
             height={50}
             className="block rounded-md border-[0.5px] border-informal"
@@ -101,12 +101,12 @@ const ShoppingCartItem = ({
               <ListboxButton
                 aria-placeholder="Product Characteristic"
                 className={clsx(
-                  "relative flex items-center justify-between w-28 rounded-md bg-white py-1.5 px-2 text-left text-sm/6 border-[0.5px] border-informal",
-                  "focus:outline-none"
+                  'relative flex w-28 items-center justify-between rounded-md border-[0.5px] border-informal bg-white px-2 py-1.5 text-left text-sm/6',
+                  'focus:outline-none'
                 )}
               >
                 <span className="block text-sm">
-                  {(typeof selectedType !== "string" &&
+                  {(typeof selectedType !== 'string' &&
                     selectedType?.variantValue) ||
                     selectedType.toString()}
                 </span>
@@ -116,21 +116,21 @@ const ShoppingCartItem = ({
                 />
               </ListboxButton>
               <ListboxOptions
-                anchor={{ to: "bottom start", gap: 2 }}
+                anchor={{ to: 'bottom start', gap: 2 }}
                 transition
                 className={clsx(
-                  "w-36 flex flex-col gap-1 bg-white rounded-md shadow-inner border border-informal py-1 focus:outline-none",
-                  "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
+                  'flex w-36 flex-col gap-1 rounded-md border border-informal bg-white py-1 shadow-inner focus:outline-none',
+                  'transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0'
                 )}
               >
                 {cartPayload.itemMdl.inventories.map((inventory, index) => (
                   <ListboxOption
                     key={index}
                     value={inventory}
-                    className="group flex items-center gap-2 py-1 px-2 text-sm justify-between select-none hover:bg-green-50 hover:cursor-pointer data-[selected]:text-primary"
+                    className="group flex select-none items-center justify-between gap-2 px-2 py-1 text-sm hover:cursor-pointer hover:bg-green-50 data-[selected]:text-primary"
                   >
-                    <div className="flex gap-2 items-center">
-                      <span className="invisible block border-l h-5 border-l-informal group-data-[focus]:visible"></span>
+                    <div className="flex items-center gap-2">
+                      <span className="invisible block h-5 border-l border-l-informal group-data-[focus]:visible"></span>
                       <span>{inventory.variantValue}</span>
                     </div>
                     <BiCheckCircle className="invisible size-4 fill-black group-data-[selected]:visible group-data-[selected]:fill-primary" />
@@ -141,12 +141,12 @@ const ShoppingCartItem = ({
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-12 col-span-6 gap-1 items-center justify-items-center">
-        <span className="col-span-3 text-base block">
+      <div className="col-span-6 grid grid-cols-12 items-center justify-items-center gap-1">
+        <span className="col-span-3 block text-base">
           {formatCurrency(
-            (typeof selectedType !== "string" && selectedType?.price) ||
+            (typeof selectedType !== 'string' && selectedType?.price) ||
               cartPayload.itemMdl.price
-          )}{" "}
+          )}{' '}
           <u>đ</u>
         </span>
         <div className="col-span-5">
@@ -158,18 +158,18 @@ const ShoppingCartItem = ({
             }}
           />
         </div>
-        <span className="col-span-3 text-base text-discount block">
+        <span className="col-span-3 block text-base text-discount">
           {formatCurrency(
-            (typeof selectedType !== "string"
+            (typeof selectedType !== 'string'
               ? selectedType.price
               : cartPayload.itemMdl.price) * cartPayload.quantity
-          )}{" "}
+          )}{' '}
           <u>đ</u>
         </span>
         <div className="col-span-1 justify-self-end">
           <Button
             onClick={() => setShowDeletePop(true)}
-            className="group border rounded-md bg-[#ebf1f5] p-1 hover:border-primary"
+            className="group rounded-md border bg-[#ebf1f5] p-1 hover:border-primary"
           >
             <GoTrash className="size-4 text-informal group-hover:text-primary" />
           </Button>
@@ -182,8 +182,8 @@ const ShoppingCartItem = ({
       </div>
     </div>
   ) : (
-    <div className="flex gap-3 overflow-hidden mx-4 py-2">
-      <div className="w-1/5 relative">
+    <div className="mx-4 flex gap-3 overflow-hidden py-2">
+      <div className="relative w-1/5">
         <Image
           src={cartPayload.itemMdl.imageUrl}
           alt={cartPayload.itemMdl.name}
@@ -191,11 +191,11 @@ const ShoppingCartItem = ({
           className="rounded-md"
         />
       </div>
-      <div className="w-4/5 flex flex-col">
-        <h3 className="font-medium text-base">{cartPayload.itemMdl.name}</h3>
+      <div className="flex w-4/5 flex-col">
+        <h3 className="text-base font-medium">{cartPayload.itemMdl.name}</h3>
         {/* TODO: [EW-101] enhance later */}
         <div>
-          <span className="text-discount text-sm">
+          <span className="text-sm text-discount">
             {formatCurrency(cartPayload.itemMdl.price)} đ
           </span>
         </div>
@@ -216,7 +216,7 @@ const ShoppingCartItem = ({
           </div>
         )} */}
         <div className="flex justify-between">
-          <div className="flex flex-row gap-2 items-center justify-start w-full h-full">
+          <div className="flex h-full w-full flex-row items-center justify-start gap-2">
             <NumberInput
               size="small"
               value={cartPayload.quantity}
@@ -227,7 +227,7 @@ const ShoppingCartItem = ({
           </div>
           <Button
             onClick={() => setShowDeletePop(true)}
-            className="bg-slate-100 rounded w-8 h-7 min-w-7 min-h-5 flex items-center justify-center data-[hover]:bg-slate-200 data-[hover]:text-green-900 shadow-inner"
+            className="flex h-7 min-h-5 w-8 min-w-7 items-center justify-center rounded bg-slate-100 shadow-inner data-[hover]:bg-slate-200 data-[hover]:text-green-900"
           >
             <GoTrash />
           </Button>

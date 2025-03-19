@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 
 type Props = {
   currentPage: number;
@@ -25,14 +25,14 @@ function Pagination({
 
   return (
     <motion.div
-      className="lg:hidden flex justify-center absolute bottom-4 xl:bottom-10 bg-black/20 backdrop-blur-md p-0.5 px-1 shadow-[inset_0_0px_12px_rgba(0,0,0,0.1)] rounded-full border border-neutral-300/40 antialiased"
+      className="absolute bottom-4 flex justify-center rounded-full border border-neutral-300/40 bg-black/20 p-0.5 px-1 antialiased shadow-[inset_0_0px_12px_rgba(0,0,0,0.1)] backdrop-blur-md xl:bottom-10 lg:hidden"
       layout
     >
       <button
         role="navigation"
         aria-label={`play/pause autoslide functionality, Status true means on. Status: ${autoSlide}`}
         onClick={() => PlayStop()}
-        className="border-r mr-0.5 pr-0.5 border-neutral-300/40"
+        className="mr-0.5 border-r border-neutral-300/40 pr-0.5"
       >
         {autoSlide ? (
           <svg
@@ -82,15 +82,15 @@ type DotProps = {
 
 function Dot({ isSelected, onClick }: DotProps) {
   return (
-    <div className="p-1 cursor-pointer" onClick={onClick}>
+    <div className="cursor-pointer p-1" onClick={onClick}>
       <div
-        className={`bg-neutral-400 shadow-[inset_0_0px_3px_rgba(0,0,0,0.2)] rounded-full relative w-2 h-2`}
+        className={`relative h-2 w-2 rounded-full bg-neutral-400 shadow-[inset_0_0px_3px_rgba(0,0,0,0.2)]`}
       >
         {isSelected && (
           // By setting layoutId, when this component is removed and a new one
           // is added elsewhere, the new component will animate out from the old one.
           <motion.div
-            className="bg-gradient-to-b from-green-2 to-green-4 rounded-full w-2 h-2 absolute"
+            className="from-green-2 to-green-4 absolute h-2 w-2 rounded-full bg-gradient-to-b"
             layoutId="highlight"
           />
         )}

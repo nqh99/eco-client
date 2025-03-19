@@ -1,7 +1,7 @@
-import { SERVER_ALIAS } from "@/constants/app";
+import { SERVER_ALIAS } from '@/constants/app';
 
-import { ProductCategoryMdl } from "@/models/products/category";
-import { safeDataFetching } from "@/utils/http";
+import { ProductCategoryMdl } from '@/models/products/category';
+import { safeDataFetching } from '@/utils/http';
 
 const getProductCategories = async () => {
   return safeDataFetching<ProductCategoryMdl[]>(

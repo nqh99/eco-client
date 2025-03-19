@@ -1,7 +1,7 @@
-import DiscountMdl from "./discount";
-import { InventoryMdl } from "./inventory";
-import { ProductCategoryMdl } from "./category";
-import BrandMdl from "../users/brand";
+import DiscountMdl from './discount';
+import { InventoryMdl } from './inventory';
+import { ProductCategoryMdl } from './category';
+import BrandMdl from '../users/brand';
 
 interface ReviewMdl {
   id: string;

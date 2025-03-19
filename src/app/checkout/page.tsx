@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { getTopDealProducts } from "@/apis/product";
-import ShoppingCart from "./components/ShoppingCart";
-import AdsBanner from "@/components/elements/AdsBanner";
-import CartItem from "@/components/elements/CartItem";
-import ProductTitle from "@/components/elements/ProductTitle";
-import CompanyPolicies from "@/components/footer/CompanyPolicies";
-import StackedList from "@/components/collection/StackedList";
-import { useAppSelector } from "@/hooks/redux";
-import { ICartPayload } from "@/lib/types";
-import CartItemMdl from "@/models/products/card-item";
-import React, { useEffect, useState } from "react";
-import OrderSummary from "./components/OrderSummary";
-import EmptyCart from "./components/EmptyCart";
-import OrderCalculator from "@/utils/calculator";
+import { getTopDealProducts } from '@/apis/product';
+import ShoppingCart from './components/ShoppingCart';
+import AdsBanner from '@/components/elements/AdsBanner';
+import CartItem from '@/components/elements/CartItem';
+import ProductTitle from '@/components/elements/ProductTitle';
+import CompanyPolicies from '@/components/footer/CompanyPolicies';
+import StackedList from '@/components/collection/StackedList';
+import { useAppSelector } from '@/hooks/redux';
+import { ICartPayload } from '@/lib/types';
+import CartItemMdl from '@/models/products/card-item';
+import React, { useEffect, useState } from 'react';
+import OrderSummary from './components/OrderSummary';
+import EmptyCart from './components/EmptyCart';
+import OrderCalculator from '@/utils/calculator';
 
 const ShoppingCartPage = () => {
   const cartState = useAppSelector((state) => state.cart);
@@ -31,20 +31,20 @@ const ShoppingCartPage = () => {
   }, []);
 
   useEffect(() => {
-    setCal(new OrderCalculator(cartState.items))
-  }, [cartState.items])
+    setCal(new OrderCalculator(cartState.items));
+  }, [cartState.items]);
 
   return (
-    <main className="px-default gap-3 flex flex-col h-fit">
+    <main className="flex h-fit flex-col gap-3 px-default">
       {cal.getTotalQty() > 0 ? (
         <>
           {/* Shopping Cart section with user orders */}
-          <h2 className="text-xl font-semibold mt-6 select-none hover:text-primary h-fit w-fit">
+          <h2 className="mt-6 h-fit w-fit select-none text-xl font-semibold hover:text-primary">
             Giỏ hàng của bạn
           </h2>
-          <div className="flex flex-row gap-4 mt-3 overflow-visible">
+          <div className="mt-3 flex flex-row gap-4 overflow-visible">
             {/* Shopping products cart */}
-            <div className="w-3/4 min-w-[800px] flex flex-col gap-3 text-sm">
+            <div className="flex w-3/4 min-w-[800px] flex-col gap-3 text-sm">
               <ShoppingCart
                 onCheckedItems={(val) => {
                   setCheckedItems(val);
@@ -52,12 +52,12 @@ const ShoppingCartPage = () => {
               />
             </div>
             {/* Order Summary */}
-            <div className="w-1/4 min-w-80 min-h-72 h-fit flex flex-col gap-4 sticky top-0">
+            <div className="sticky top-0 flex h-fit min-h-72 w-1/4 min-w-80 flex-col gap-4">
               <OrderSummary items={checkedItems || []} />
               <AdsBanner
                 imgURL="/images/tea-ads.png"
                 position="full"
-                className="w-full h-40 select-none pointer-events-none"
+                className="pointer-events-none h-40 w-full select-none"
               />
             </div>
           </div>
@@ -67,7 +67,7 @@ const ShoppingCartPage = () => {
           {/* Shopping Cart section without user orders */}
           <EmptyCart />
           {/* Top Selling Products section */}
-          <div className="bg-white rounded-lg p-4 shadow-inner">
+          <div className="rounded-lg bg-white p-4 shadow-inner">
             <ProductTitle title="Sản phẩm bán chạy" style="normal" href="" />
             <StackedList>
               {topDealProducts &&
@@ -81,7 +81,7 @@ const ShoppingCartPage = () => {
             </StackedList>
           </div>
           {/* Relative Products section */}
-          <div className="bg-white rounded-lg p-4 shadow-inner">
+          <div className="rounded-lg bg-white p-4 shadow-inner">
             <ProductTitle title="Sản phẩm liên quan" style="normal" href="" />
             <StackedList>
               {topDealProducts &&

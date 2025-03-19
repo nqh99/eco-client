@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 type LinkItemProps = {
   children: React.ReactNode;
@@ -19,9 +19,9 @@ const LinkItem = ({ children, href, className }: LinkItemProps) => {
       href={`${href}`}
       className={
         `${
-          className ? className + " " : ""
-        } flex items-center px-2 h-full hover:border-[#B95A30] hover:border-b-2 hover:text-[#B95A30]  hover:shadow-sm` +
-        (isActive ? "text-[#B95A30] border-b-2 border-[#B95A30]" : "")
+          className ? className + ' ' : ''
+        } flex h-full items-center px-2 hover:border-b-2 hover:border-[#B95A30] hover:text-[#B95A30] hover:shadow-sm` +
+        (isActive ? 'border-b-2 border-[#B95A30] text-[#B95A30]' : '')
       }
       passHref
     >

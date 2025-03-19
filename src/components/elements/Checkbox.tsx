@@ -1,13 +1,9 @@
-"use client";
+'use client';
 
-import {
-  ReactNode,
-  createContext,
-  useContext,
-} from "react";
-import { motion as m, MotionProps } from "framer-motion";
-import { Field, Label, LabelProps } from "@headlessui/react";
-import { Checkbox as ICheckbox } from "@headlessui/react";
+import { ReactNode, createContext, useContext } from 'react';
+import { motion as m, MotionProps } from 'framer-motion';
+import { Field, Label, LabelProps } from '@headlessui/react';
+import { Checkbox as ICheckbox } from '@headlessui/react';
 
 const tickVariants = {
   checked: {
@@ -35,7 +31,7 @@ interface CheckboxContextProps {
 }
 
 const CheckboxContext = createContext<CheckboxContextProps>({
-  id: "",
+  id: '',
   isChecked: false,
 });
 
@@ -47,7 +43,13 @@ interface CheckboxProps {
   onCheck?: (val: boolean) => void;
 }
 
-const Checkbox = ({ children, id, value, disabled, onCheck }: CheckboxProps) => {
+const Checkbox = ({
+  children,
+  id,
+  value,
+  disabled,
+  onCheck,
+}: CheckboxProps) => {
   return (
     <Field className="flex items-center gap-2">
       <CheckboxContext.Provider
@@ -75,7 +77,7 @@ const CheckboxIndicator = ({ className }: { className?: string }) => {
       onChange={onCheck}
       className={`${
         className ||
-        "group flex items-center justify-center border-blue-gray-200 h-5 w-5 min-h-5 min-w-5 cursor-pointer appearance-none rounded-md border transition-all duration-500 data-[checked]:border-blue-500 data-[checked]:bg-[#e5e9ec]"
+        'border-blue-gray-200 group flex h-5 min-h-5 w-5 min-w-5 cursor-pointer appearance-none items-center justify-center rounded-md border transition-all duration-500 data-[checked]:border-blue-500 data-[checked]:bg-[#e5e9ec]'
       }`}
     >
       <m.svg
@@ -86,7 +88,7 @@ const CheckboxIndicator = ({ className }: { className?: string }) => {
         stroke="currentColor"
         className="h-3.5 w-3.5"
         initial={false}
-        animate={isChecked ? "checked" : "unchecked"}
+        animate={isChecked ? 'checked' : 'unchecked'}
       >
         <m.path
           strokeLinecap="round"
@@ -115,7 +117,7 @@ const CheckboxLabel = ({
     <Label
       as={m.span}
       className={`${
-        className ?? "relative ml-1 overflow-hidden text-base cursor-pointer"
+        className ?? 'relative ml-1 cursor-pointer overflow-hidden text-base'
       }`}
       animate={{
         x: isChecked ? [0, -4, 0] : [0, 4, 0],
@@ -123,7 +125,7 @@ const CheckboxLabel = ({
       initial={false}
       transition={{
         duration: 0.3,
-        ease: "easeOut",
+        ease: 'easeOut',
       }}
       {...props}
     >

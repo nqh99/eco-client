@@ -1,36 +1,36 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import React from "react";
-import { useRouter } from "next/navigation";
-import { GoSearch } from "react-icons/go";
-import { CiSearch } from "react-icons/ci";
+import { useState, useRef, useEffect } from 'react';
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import { GoSearch } from 'react-icons/go';
+import { CiSearch } from 'react-icons/ci';
 
 export default function SearchBar() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
   const searchBarRef = useRef<HTMLInputElement>(null);
   // handle event: click item search -> router push -> show results
   const handleSearch = () => {
     router.push(`/search?/${searchTerm}`);
-    setSearchTerm("");
+    setSearchTerm('');
   };
   // handle event: key press -> handle function handleSearch
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleSearch();
     }
   };
 
   return (
     <div
-      className={`relative h-[60%] flex items-center justify-center w-[60%] rounded-l-sm xl:my-3 xl:mx-0 min-w-[15rem]`}
+      className={`relative flex h-[60%] w-[60%] min-w-[15rem] items-center justify-center rounded-l-sm xl:mx-0 xl:my-3`}
     >
       <div
         role="search"
-        className="relative flex flex-row w-full h-full items-center border bg-white border-black/10 rounded-xl text-gray-600 text-sm"
+        className="relative flex h-full w-full flex-row items-center rounded-xl border border-black/10 bg-white text-sm text-gray-600"
       >
-        <CiSearch className="size-7 ml-2"/>
+        <CiSearch className="ml-2 size-7" />
         <input
           aria-label="Tìm kiếm sản phẩm tươi ngon"
           name="search-bar"
@@ -39,7 +39,7 @@ export default function SearchBar() {
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={handleKeyPress}
           spellCheck="false"
-          className="relative flex w-full pl-2 pr-4 placeholder:text-sm outline-none decoration-none rounded-r-xl"
+          className="decoration-none relative flex w-full rounded-r-xl pl-2 pr-4 outline-none placeholder:text-sm"
           placeholder="Tìm kiếm sản phẩm tươi ngon"
         />
       </div>

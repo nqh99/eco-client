@@ -1,5 +1,5 @@
-import { HttpStatusCodes, HttpStatusMessages } from "@/constants/https/codes";
-import { CustomError } from "./custom-err";
+import { HttpStatusCodes, HttpStatusMessages } from '@/constants/https/codes';
+import { CustomError } from './custom-err';
 
 class ValidationError extends CustomError {
   constructor(cause?: string, data?: any) {

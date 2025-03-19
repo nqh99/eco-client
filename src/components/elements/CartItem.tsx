@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import CartItemMdl from "@/models/products/card-item";
-import { useRouter } from "next/navigation";
-import Rating from "./Rating";
-import { formatCurrency } from "@/utils/core";
-import CustomButton from "./Button";
-import { useAppDispatch } from "@/hooks/redux";
-import { addCartItem } from "@/lib/features/checkout/cartSlice";
+import React from 'react';
+import Image from 'next/image';
+import CartItemMdl from '@/models/products/card-item';
+import { useRouter } from 'next/navigation';
+import Rating from './Rating';
+import { formatCurrency } from '@/utils/core';
+import CustomButton from './Button';
+import { useAppDispatch } from '@/hooks/redux';
+import { addCartItem } from '@/lib/features/checkout/cartSlice';
 
 interface CartItemProps {
   itemMdl: CartItemMdl;
@@ -25,9 +25,9 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
       onClick={() => {
         router.push(props.href);
       }}
-      className="w-56 h-80 min-w-60 max-h-80 rounded-lg box-border border-2 border-slate-50 cursor-pointer shadow-sm overflow-hidden"
+      className="box-border h-80 max-h-80 w-56 min-w-60 cursor-pointer overflow-hidden rounded-lg border-2 border-slate-50 shadow-sm"
     >
-      <div className="relative w-full h-48">
+      <div className="relative h-48 w-full">
         <Image
           src={itemMdl.imageUrl}
           alt={itemMdl.name}
@@ -45,19 +45,19 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
         ) : null} */}
       </div>
       <div className="p-2">
-        <h3 className="text-sm h-12">{itemMdl.name}</h3>
-        <div className="flex justify-between items-end pb-2 border-b border-emerald-600">
+        <h3 className="h-12 text-sm">{itemMdl.name}</h3>
+        <div className="flex items-end justify-between border-b border-emerald-600 pb-2">
           {itemMdl.rating !== undefined && itemMdl.rating <= 5 && (
             <Rating
               avgRating={itemMdl.rating}
-              className="text-yellow-400 size-5"
+              className="size-5 text-yellow-400"
             />
           )}
-          <span className="block text-gray-500 font-light text-xs">
+          <span className="block text-xs font-light text-gray-500">
             Đã bán {itemMdl.quantitySold}
           </span>
         </div>
-        <div className="flex content-center justify-between items-center px-2 mt-2 text-discount">
+        <div className="mt-2 flex content-center items-center justify-between px-2 text-discount">
           {/* TODO: [EW-101] enhance later */}
           {/* {itemMdl.discount ? (
             <>
@@ -71,15 +71,15 @@ const CartItem = ({ itemMdl, ...props }: CartItemProps) => {
               </p>
             </>
           ) : ( */}
-            <>
-              <p className="text-lg font-semibold">
-              {formatCurrency(itemMdl.price)}{" "}
+          <>
+            <p className="text-lg font-semibold">
+              {formatCurrency(itemMdl.price)}{' '}
               <span className="underline underline-offset-2">đ</span>
-              </p>
-            </>
+            </p>
+          </>
           {/* )} */}
           <CustomButton
-            className="border border-primary rounded p-[3px]"
+            className="rounded border border-primary p-[3px]"
             onClick={(e) => {
               e.stopPropagation();
               dispatch(addCartItem({ itemMdl: itemMdl, quantity: 1 }));

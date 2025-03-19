@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion as m, MotionProps } from "framer-motion";
-import { Button as IButton, ButtonProps } from "@headlessui/react";
+import React from 'react';
+import { motion as m, MotionProps } from 'framer-motion';
+import { Button as IButton, ButtonProps } from '@headlessui/react';
 
 type CustomProps = MotionProps & ButtonProps;
 
@@ -26,11 +26,11 @@ const Button = ({ children, className, ...props }: CustomProps) => {
       as={m.button}
       whileTap={{
         scale: 0.95,
-        transition: { duration: 0.1, ease: "easeInOut" },
+        transition: { duration: 0.1, ease: 'easeInOut' },
       }}
       animate={{
         scale: 1,
-        transition: { duration: 0.3, ease: "easeInOut" },
+        transition: { duration: 0.3, ease: 'easeInOut' },
       }}
       className={className}
       {...props}

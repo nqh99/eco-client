@@ -4,11 +4,11 @@
  * @returns The input string with the first letter of each word capitalized.
  */
 const capitalizeWords = (str: string): string => {
-  const words = str.replace(/-/g, " ").split(" ");
+  const words = str.replace(/-/g, ' ').split(' ');
   const capitalizedWords = words.map((word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   });
-  const capitalizedJoined = capitalizedWords.join(" ");
+  const capitalizedJoined = capitalizedWords.join(' ');
   return capitalizedJoined;
 };
 

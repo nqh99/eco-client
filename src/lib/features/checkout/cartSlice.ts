@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction, Reducer } from "@reduxjs/toolkit";
-import { ICartPayload } from "@/lib/types";
-import { RootState } from "@/lib/store";
+import { createSlice, PayloadAction, Reducer } from '@reduxjs/toolkit';
+import { ICartPayload } from '@/lib/types';
+import { RootState } from '@/lib/store';
 
 interface CartState {
   items: ICartPayload[];
@@ -11,7 +11,7 @@ const initialState: CartState = {
 };
 
 export const cartSlice = createSlice({
-  name: "cart",
+  name: 'cart',
   initialState,
   reducers: {
     addCartItem: (state, action: PayloadAction<ICartPayload>) => {

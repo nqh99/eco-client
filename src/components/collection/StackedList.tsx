@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useState } from "react";
-import { motion as m } from "framer-motion";
+import React, { useEffect, useRef, useState } from 'react';
+import { motion as m } from 'framer-motion';
 
 interface StackedListProps {
   children: React.ReactNode;
-  direction?: "vertical" | "horizontal";
+  direction?: 'vertical' | 'horizontal';
   className?: string;
 }
 
@@ -20,7 +20,7 @@ interface StackedListProps {
  */
 const StackedList = ({
   children,
-  direction = "horizontal",
+  direction = 'horizontal',
   className,
 }: StackedListProps) => {
   const childrenArr = React.Children.toArray(children);
@@ -38,16 +38,14 @@ const StackedList = ({
   return (
     <m.div
       ref={carousel}
-      whileTap={{ cursor: "grabbing" }}
-      className={`bg-white mt-2 ${
-        className || ""
-      } cursor-grab overflow-hidden`}
+      whileTap={{ cursor: 'grabbing' }}
+      className={`mt-2 bg-white ${className || ''} cursor-grab overflow-hidden`}
     >
       <m.ul
         drag="x"
         dragConstraints={{ right: 0, left: -width }}
         className={`flex flex-nowrap ${
-          direction == "horizontal" ? "flex-row" : "flex-col"
+          direction == 'horizontal' ? 'flex-row' : 'flex-col'
         } gap-5`}
       >
         {childrenArr.map((element, index) => {

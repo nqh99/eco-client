@@ -15,4 +15,4 @@ type UserOrderMdl = {
   totalPrice: number;
 };
 
-export type {UserOrderMdl}
+export type { UserOrderMdl };

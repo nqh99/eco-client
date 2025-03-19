@@ -1,6 +1,6 @@
 /**
  * Returns the decimal part of a number.
- * 
+ *
  * @param num - The number to get the decimal part from.
  * @returns The decimal part of the number.
  */

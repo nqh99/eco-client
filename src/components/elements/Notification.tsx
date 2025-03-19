@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 
 import {
   CloseButton,
   Popover,
   PopoverButton,
   PopoverPanel,
-} from "@headlessui/react";
-import { IoMdNotifications } from "react-icons/io";
-import Link from "next/link";
-import { GrFormClose } from "react-icons/gr";
-import { motion as m } from "framer-motion";
+} from '@headlessui/react';
+import { IoMdNotifications } from 'react-icons/io';
+import Link from 'next/link';
+import { GrFormClose } from 'react-icons/gr';
+import { motion as m } from 'framer-motion';
 
 export default function Notification({
   children,
@@ -20,16 +20,16 @@ export default function Notification({
 }) {
   return (
     <Popover>
-      <PopoverButton className="p-2 focus:outline-none bg-emerald-50 w-10 h-10 rounded-full flex justify-center items-center data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white">
-        <IoMdNotifications className="text-primary size-6" />
+      <PopoverButton className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 p-2 focus:outline-none data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white">
+        <IoMdNotifications className="size-6 text-primary" />
       </PopoverButton>
       <PopoverPanel
         transition
         anchor="bottom"
-        className="flex flex-col w-96 pt-3 px-3 gap-3 rounded-md bg-green-50 text-black text-sm/6 transition duration-200 ease-in-out [--anchor-gap:12px] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+        className="flex w-96 flex-col gap-3 rounded-md bg-green-50 px-3 pt-3 text-sm/6 text-black transition duration-200 ease-in-out [--anchor-gap:12px] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
       >
-        <div className="flex flex-row justify-between px-2 items-center text-red-700">
-          <p className="text-gray-400 text-base font-light text-left select-none">
+        <div className="flex flex-row items-center justify-between px-2 text-red-700">
+          <p className="select-none text-left text-base font-light text-gray-400">
             Thông báo mới nhận
           </p>
           <CloseButton
@@ -41,18 +41,18 @@ export default function Notification({
             }}
             whileTap={{ scale: 0.9 }}
             whileInView={{ opacity: 1 }}
-            className="rounded-full bg-white hover:border-solid hover:border cursor-pointer"
+            className="cursor-pointer rounded-full bg-white hover:border hover:border-solid"
           >
             <GrFormClose className="size-5" />
           </CloseButton>
         </div>
         {children}
         <Link
-          href={""}
+          href={''}
           passHref
-          className="border-solid border-t border-slate-200 hover:text-green-800"
+          className="border-t border-solid border-slate-200 hover:text-green-800"
         >
-          <p className="text-center p-2">Xem tất cả</p>
+          <p className="p-2 text-center">Xem tất cả</p>
         </Link>
       </PopoverPanel>
     </Popover>

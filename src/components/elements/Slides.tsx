@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image, { StaticImageData } from "next/image";
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image, { StaticImageData } from 'next/image';
 
 //import banner slide
-import bannerSlide from "@/public/images/banner.png";
+import bannerSlide from '@/public/images/banner.png';
 //type
 type Props = {
   currentPage: number;
@@ -17,7 +17,7 @@ type Props = {
 const variants = {
   initial: (direction: number) => {
     return {
-      x: direction > 0 ? "95%" : "-95%",
+      x: direction > 0 ? '95%' : '-95%',
     };
   },
   animate: {
@@ -25,12 +25,12 @@ const variants = {
   },
   exit: (direction: number) => {
     return {
-      x: direction < 0 ? "95%" : "-95%",
+      x: direction < 0 ? '95%' : '-95%',
     };
   },
 };
 
-const imagesAlts = ["1", "2", "3", "4", "5", "6", "7"];
+const imagesAlts = ['1', '2', '3', '4', '5', '6', '7'];
 // TEST : list slide
 const listSlide: Array<string | StaticImageData> = [];
 
@@ -45,12 +45,12 @@ function Slides({ currentPage, direction, pages, setPage }: Props) {
   // });
 
   return (
-    <div className="w-full relative aspect-[3/1.3] flex items-center">
+    <div className="relative flex aspect-[3/1.3] w-full items-center">
       {/* ARROW BUTTONS */}
       <button
         role="navigation"
         aria-label="previous slide"
-        className="absolute active:scale-75 group-hover:opacity-100 opacity-0 transition duration-300 left-0 xl:opacity-100 py-10 px-5 lg:px-3 sm:px-0 z-10"
+        className="absolute left-0 z-10 px-5 py-10 opacity-0 transition duration-300 active:scale-75 group-hover:opacity-100 xl:opacity-100 lg:px-3 sm:px-0"
         onClick={() => {
           if (currentPage === 0) {
             setPage(pages.length - 1, -1);
@@ -63,7 +63,7 @@ function Slides({ currentPage, direction, pages, setPage }: Props) {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="rounded-full h-12 w-12 xxl:h-12 xl:h-10 lg:h-8 md:h-6 xxs:h-5 xxs:w-5 text-white/90 drop-shadow-[0_3px_3px_rgb(0,0,0,.2)]"
+          className="h-12 w-12 rounded-full text-white/90 drop-shadow-[0_3px_3px_rgb(0,0,0,.2)] xxl:h-12 xl:h-10 lg:h-8 md:h-6 xxs:h-5 xxs:w-5"
         >
           <path
             fillRule="evenodd"
@@ -75,7 +75,7 @@ function Slides({ currentPage, direction, pages, setPage }: Props) {
       <button
         role="navigation"
         aria-label="next slide"
-        className="absolute active:scale-75 group-hover:opacity-100 opacity-0 transition duration-300 right-0 xl:opacity-100 py-10 px-5 lg:px-3 sm:px-0 z-10"
+        className="absolute right-0 z-10 px-5 py-10 opacity-0 transition duration-300 active:scale-75 group-hover:opacity-100 xl:opacity-100 lg:px-3 sm:px-0"
         onClick={() => {
           if (currentPage === pages.length - 1) {
             setPage(0, 1);
@@ -88,7 +88,7 @@ function Slides({ currentPage, direction, pages, setPage }: Props) {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="rounded-full h-12 w-12 xxl:h-12 xl:h-10 lg:h-8 md:h-6 xxs:h-5 xxs:w-5 text-white/90 drop-shadow-[0_3px_3px_rgb(0,0,0,.2)]"
+          className="h-12 w-12 rounded-full text-white/90 drop-shadow-[0_3px_3px_rgb(0,0,0,.2)] xxl:h-12 xl:h-10 lg:h-8 md:h-6 xxs:h-5 xxs:w-5"
         >
           <path
             fillRule="evenodd"
@@ -100,20 +100,20 @@ function Slides({ currentPage, direction, pages, setPage }: Props) {
       {/* SLIDES */}
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
-          className="w-full absolute top-0"
+          className="absolute top-0 w-full"
           variants={variants}
           key={currentPage}
           data-page={currentPage}
-          initial={"initial"}
-          animate={"animate"}
-          transition={{ type: "none" }}
-          exit={"exit"}
+          initial={'initial'}
+          animate={'animate'}
+          transition={{ type: 'none' }}
+          exit={'exit'}
           custom={direction}
         >
           <Image
             src={listSlide[currentPage]}
             alt={imagesAlts[currentPage]}
-            className="w-full slides"
+            className="slides w-full"
             width={1920}
             height={1080}
             priority

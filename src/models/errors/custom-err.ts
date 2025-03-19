@@ -12,7 +12,7 @@ class CustomError extends Error {
 }
 
 const isCustomError = (candidate: any): candidate is CustomError => {
-  return candidate instanceof CustomError || "code" in candidate;
+  return candidate instanceof CustomError || 'code' in candidate;
 };
 
 export { CustomError, isCustomError };

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import Image from "next/image";
-import React from "react";
+import clsx from 'clsx';
+import Image from 'next/image';
+import React from 'react';
 
 type AdsBannerProps = {
   imgURL: string;
   imgWidth?: number;
   imgHeight?: number;
-  position: "top left" | "top right" | "bottom left" | "bottom right" | "full";
+  position: 'top left' | 'top right' | 'bottom left' | 'bottom right' | 'full';
   children?: React.ReactNode;
   className?: string;
 };
@@ -16,22 +16,22 @@ type AdsBannerProps = {
 const AdsBanner = ({ className, ...props }: AdsBannerProps) => {
   return (
     <div
-      className={`relative rounded-lg overflow-hidden shadow-inner min-h-32 min-w-36 ${
-        className || ""
+      className={`relative min-h-32 min-w-36 overflow-hidden rounded-lg shadow-inner ${
+        className || ''
       }`}
     >
       <Image
         src={props.imgURL}
         alt="Advertisement banner"
-        width={props.position != "full" ? props.imgWidth : undefined}
-        height={props.position != "full" ? props.imgHeight : undefined}
-        fill={props.position == "full" ? true : false}
-        className={clsx("absolute", {
-          "top-2 left-2": props.position == "top left",
-          "top-2 right-2": props.position == "top right",
-          "bottom-2 left-2": props.position == "bottom left",
-          "bottom-2 right-2": props.position == "bottom right",
-          "": props.position == "full",
+        width={props.position != 'full' ? props.imgWidth : undefined}
+        height={props.position != 'full' ? props.imgHeight : undefined}
+        fill={props.position == 'full' ? true : false}
+        className={clsx('absolute', {
+          'left-2 top-2': props.position == 'top left',
+          'right-2 top-2': props.position == 'top right',
+          'bottom-2 left-2': props.position == 'bottom left',
+          'bottom-2 right-2': props.position == 'bottom right',
+          '': props.position == 'full',
         })}
       />
       {props.children}

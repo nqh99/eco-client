@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { motion as m } from "framer-motion";
-import Link from "next/link";
+import { motion as m } from 'framer-motion';
+import Link from 'next/link';
 
 export default function Error() {
   return (
-    <div className="h-screen justify-center items-center flex flex-col">
+    <div className="flex h-screen flex-col items-center justify-center">
       <center className="m-auto block">
         <m.svg
           className="relative"
@@ -104,11 +104,11 @@ export default function Error() {
             strokeWidth="8"
           />
         </m.svg>
-        <div className="tracking-widest mt-4 font-serif">
-          <span className="text-gray-500 text-6xl block font-semibold">
+        <div className="mt-4 font-serif tracking-widest">
+          <span className="block text-6xl font-semibold text-gray-500">
             <span>O o p s !</span>
           </span>
-          <span className="text-gray-500 text-2xl block mt-3">
+          <span className="mt-3 block text-2xl text-gray-500">
             Something went wrong!
           </span>
         </div>
@@ -116,7 +116,7 @@ export default function Error() {
       <center className="mb-36">
         <Link
           href="/"
-          className="text-gray-500 font-mono text-xl bg-gray-200 p-3 rounded-md hover:shadow-md shadow-inner"
+          className="rounded-md bg-gray-200 p-3 font-mono text-xl text-gray-500 shadow-inner hover:shadow-md"
         >
           Go back to Home Page
         </Link>
