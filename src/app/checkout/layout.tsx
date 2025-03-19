@@ -1,6 +1,6 @@
-import React, { Suspense } from "react";
+import React, { Suspense } from 'react';
 
-import PageLoading from "@/components/skeleton/PageLoading";
+import PageLoading from '@/components/skeleton/PageLoading';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

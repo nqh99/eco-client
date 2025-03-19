@@ -1,18 +1,18 @@
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link';
+import React from 'react';
 
 interface ProductTitleProps {
   title: string;
-  style: "hot" | "normal";
+  style: 'hot' | 'normal';
   href: string;
 }
 
 const ProductTitle = ({ title, style, href }: ProductTitleProps) => {
   return (
-    <div className="flex justify-between items-center select-none">
+    <div className="flex select-none items-center justify-between">
       <h2
         className={`text-xl font-semibold ${
-          style == "hot" ? "text-red-500" : "text-slate-800"
+          style == 'hot' ? 'text-red-500' : 'text-slate-800'
         }`}
       >
         {title}

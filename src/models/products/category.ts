@@ -1,5 +1,5 @@
 export type ProductCategoryMdl = {
-    id: string,
-    name: string,
-    iconUrl: string,
-}
+  id: string;
+  name: string;
+  iconUrl: string;
+};

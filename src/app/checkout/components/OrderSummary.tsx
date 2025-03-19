@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import Button from "@/components/elements/Button";
-import { ICartPayload } from "@/lib/types";
-import { formatCurrency } from "@/utils/core";
-import OrderCalculator from "@/utils/calculator";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useSessionStorage } from "usehooks-ts";
-import { StoredKey } from "@/constants/client-storage/keys";
-import { CoreError } from "@/constants/error/core";
+import Button from '@/components/elements/Button';
+import { ICartPayload } from '@/lib/types';
+import { formatCurrency } from '@/utils/core';
+import OrderCalculator from '@/utils/calculator';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useSessionStorage } from 'usehooks-ts';
+import { StoredKey } from '@/constants/client-storage/keys';
+import { CoreError } from '@/constants/error/core';
 
 type OrderSummaryProps = {
   items: ICartPayload[];
@@ -37,34 +37,34 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
       return;
     }
     setPayload(items);
-    router.push("/checkout/payment");
+    router.push('/checkout/payment');
   };
 
   return (
-    <div className="flex flex-col gap-1.5 px-4 pt-2 pb-4 bg-white rounded-lg min-h-52">
-      <div className="h-8 flex justify-between items-center">
-        <span className="inline-block w-2/5 text-informal text-sm">
+    <div className="flex min-h-52 flex-col gap-1.5 rounded-lg bg-white px-4 pb-4 pt-2">
+      <div className="flex h-8 items-center justify-between">
+        <span className="inline-block w-2/5 text-sm text-informal">
           Tạm tính
         </span>
         <span className="inline-block text-lg">
           {formatCurrency(cal.getTemPrice())} đ
         </span>
       </div>
-      <div className="h-8 flex justify-between items-center">
-        <span className="inline-block w-2/5 text-informal text-sm">
+      <div className="flex h-8 items-center justify-between">
+        <span className="inline-block w-2/5 text-sm text-informal">
           Tổng giảm giá
         </span>
         <span className="inline-block text-lg text-informal">
           - {formatCurrency(cal.getDiscountPrice())} đ
         </span>
       </div>
-      <div className="h-8 flex justify-between items-center">
-        <span className="inline-block w-2/5 text-informal text-sm">
+      <div className="flex h-8 items-center justify-between">
+        <span className="inline-block w-2/5 text-sm text-informal">
           Tổng tiền
         </span>
 
         {items.length === 0 ? (
-          <span className="text-right block text-sm font-medium text-[#ffaa00]">
+          <span className="block text-right text-sm font-medium text-[#ffaa00]">
             Vui lòng chọn sản phẩm
           </span>
         ) : (
@@ -74,13 +74,13 @@ const OrderSummary = ({ items }: OrderSummaryProps) => {
         )}
       </div>
       <div className="flex justify-end">
-        <span className="text-right block text-xs text-informal">
+        <span className="block text-right text-xs text-informal">
           (Đã bao gồm VAT nếu có)
         </span>
       </div>
       <Button
         onClick={() => handleClickBuyBtn()}
-        className="bg-discount text-white text-center rounded-md px-3 py-1 mt-3 w-full"
+        className="mt-3 w-full rounded-md bg-discount px-3 py-1 text-center text-white"
       >
         Mua hàng
       </Button>

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 
-import { FaUser } from "react-icons/fa";
+import { FaUser } from 'react-icons/fa';
 
 export default function Login() {
   return (
@@ -10,9 +10,9 @@ export default function Login() {
       id="basic-button"
       aria-label="open login menu"
       aria-haspopup="true"
-      className="p-2 focus:outline-none bg-emerald-50 w-10 h-10 rounded-full flex justify-center items-center"
+      className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 p-2 focus:outline-none"
     >
-      <FaUser className="text-primary size-5" />
+      <FaUser className="size-5 text-primary" />
     </button>
   );
 }

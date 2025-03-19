@@ -1,10 +1,10 @@
-import { SERVER_ALIAS } from "@/constants/app";
+import { SERVER_ALIAS } from '@/constants/app';
 
-import CartItemMdl from "@/models/products/card-item";
-import DiscountMdl from "@/models/products/discount";
-import ProductDetailMdl from "@/models/products/product-detail";
-import { UserOrderMdl } from "@/models/users/order";
-import { safeDataFetching, safePostRequest } from "@/utils/http";
+import CartItemMdl from '@/models/products/card-item';
+import DiscountMdl from '@/models/products/discount';
+import ProductDetailMdl from '@/models/products/product-detail';
+import { UserOrderMdl } from '@/models/users/order';
+import { safeDataFetching, safePostRequest } from '@/utils/http';
 
 const getTopDealProducts = (needRevalidate: boolean) => {
   return safeDataFetching<CartItemMdl[]>(
@@ -55,5 +55,5 @@ export {
   getRelativeProductsByCategory,
   getProductDetailsByID,
   getDiscountByProduct,
-  postUserOrder
+  postUserOrder,
 };

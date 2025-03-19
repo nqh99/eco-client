@@ -1,5 +1,5 @@
-import { ICartPayload } from "@/lib/types";
-import BrandMdl from "@/models/users/brand";
+import { ICartPayload } from '@/lib/types';
+import BrandMdl from '@/models/users/brand';
 
 class OrderCalculator {
   private readonly cartItems: ICartPayload[];

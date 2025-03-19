@@ -1,9 +1,9 @@
-import { AuthenticationError } from "@/models/errors/authentication-err";
-import { AuthorizationError } from "@/models/errors/authorization-err";
-import { ClientError } from "@/models/errors/client-err";
-import { NotFoundError } from "@/models/errors/not-found-err";
-import { ServiceError } from "@/models/errors/service-err";
-import { ValidationError } from "@/models/errors/validation-err";
+import { AuthenticationError } from '@/models/errors/authentication-err';
+import { AuthorizationError } from '@/models/errors/authorization-err';
+import { ClientError } from '@/models/errors/client-err';
+import { NotFoundError } from '@/models/errors/not-found-err';
+import { ServiceError } from '@/models/errors/service-err';
+import { ValidationError } from '@/models/errors/validation-err';
 
 /**
  * Specify the readable errors for client rendering based on the provided status.
@@ -18,12 +18,12 @@ const generateReadableErr = (
   err?: { msg: string; info: string }
 ) => {
   if (!status) {
-    return new ServiceError("Invalid HTTP response status!");
+    return new ServiceError('Invalid HTTP response status!');
   }
 
   if (status > 500) {
     return new ServiceError(
-      err?.msg || "Please refresh and try again, or contact the support team!",
+      err?.msg || 'Please refresh and try again, or contact the support team!',
       err?.info
     );
   }
@@ -47,7 +47,7 @@ const generateReadableErr = (
 
 // TODO: enhance later to mapping with VND, DOLLAR
 const formatCurrency = (number: number): string => {
-  return number.toLocaleString("it-IT");
+  return number.toLocaleString('it-IT');
 };
 
 /**
@@ -70,7 +70,7 @@ const convertPOJOToFormData = (
       const formKey = namespace ? `${namespace}[${property}]` : property;
 
       if (
-        typeof obj[property] === "object" &&
+        typeof obj[property] === 'object' &&
         !(obj[property] instanceof File)
       ) {
         convertPOJOToFormData(obj[property], formData, formKey);
@@ -85,7 +85,7 @@ const convertPOJOToFormData = (
 
 const convertRoutingPath = (paths: string[]) => {
   const result: string[] = [];
-  let currentPath = "";
+  let currentPath = '';
 
   for (const path of paths) {
     currentPath += `/${path}`;

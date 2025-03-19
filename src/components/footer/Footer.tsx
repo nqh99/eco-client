@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import Image from "next/image";
-import Button from "@/components/elements/Button";
+import Image from 'next/image';
+import Button from '@/components/elements/Button';
 
 const Footer: React.FC = () => {
   return (
     <footer>
-      <div className="px-8 bg-lime-50 flex justify-between pt-6">
+      <div className="flex justify-between bg-lime-50 px-8 pt-6">
         <div>
           <h5 className="text-xs font-semibold">
             CÔNG TY TNHH ĐẦU TƯ THƯƠNG MẠI & <br /> DỊCH VỤ QUỐC TẾ ECO-HHB
           </h5>
-          <div className="flex items-center mt-1">
+          <div className="mt-1 flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
               />
             </svg>
 
-            <p className="text-xs leading-6 ml-2">
+            <p className="ml-2 text-xs leading-6">
               Địa chỉ: Ấp An Bình, xã Bình An, Long Thành, Đồng Nai
             </p>
           </div>
@@ -52,7 +52,7 @@ const Footer: React.FC = () => {
               />
             </svg>
 
-            <p className="text-xs leading-6 ml-2">ecohhb27@gmail.com</p>
+            <p className="ml-2 text-xs leading-6">ecohhb27@gmail.com</p>
           </div>
           <div className="flex items-center">
             <svg
@@ -70,7 +70,7 @@ const Footer: React.FC = () => {
               />
             </svg>
 
-            <p className="text-xs leading-6 ml-2">Hotline: 0908 265 127</p>
+            <p className="ml-2 text-xs leading-6">Hotline: 0908 265 127</p>
           </div>
           <div className="flex items-center">
             <svg
@@ -88,7 +88,7 @@ const Footer: React.FC = () => {
               />
             </svg>
 
-            <p className="text-xs leading-6 ml-2">
+            <p className="ml-2 text-xs leading-6">
               Website: https://ehbmart.vn/
             </p>
           </div>
@@ -108,26 +108,26 @@ const Footer: React.FC = () => {
               />
             </svg>
 
-            <p className="text-xs leading-6 ml-2">
+            <p className="ml-2 text-xs leading-6">
               Website: https://ehbmart.com/
             </p>
           </div>
         </div>
         <div>
           <h5 className="text-sm font-semibold">Thông tin hỗ trợ</h5>
-          <p className="text-xs  mt-1">Trung tâm trợ giúp</p>
+          <p className="mt-1 text-xs">Trung tâm trợ giúp</p>
           <p className="text-xs">Câu hỏi thường gặp</p>
           <h5 className="text-sm font-semibold">Liên hệ chúng tôi</h5>
-          <div className="flex items-center mt-1">
+          <div className="mt-1 flex items-center">
             <Image
-              src={"/icons/facebook.svg"}
+              src={'/icons/facebook.svg'}
               alt="facebook-icon"
               width={28}
               height={28}
               className="mr-2"
             ></Image>
             <Image
-              src={"/icons/zalo.svg"}
+              src={'/icons/zalo.svg'}
               alt="zalo-icon"
               width={28}
               height={28}
@@ -136,13 +136,13 @@ const Footer: React.FC = () => {
         </div>
         <div>
           <h5 className="text-sm font-semibold">Chính sách</h5>
-          <p className="text-xs  mt-1">Chính sách đổi trả</p>
+          <p className="mt-1 text-xs">Chính sách đổi trả</p>
           <p className="text-xs">Chính sách giao hàng</p>
           <p className="text-xs">Chính sách thanh toán</p>
           <p className="text-xs">Chính sách vận chuyển</p>
         </div>
       </div>
-      <div className="px-8 bg-green-800 h-10 text-center text-white text-xs">
+      <div className="h-10 bg-green-800 px-8 text-center text-xs text-white">
         <p className="leading-10">Copyright &copy;2023 ECO - HHB</p>
       </div>
     </footer>

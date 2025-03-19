@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import PageLoading from "@/components/skeleton/PageLoading";
-import React from "react";
+import PageLoading from '@/components/skeleton/PageLoading';
+import React from 'react';
 
 const Loading: React.FC = () => {
   return <PageLoading />;

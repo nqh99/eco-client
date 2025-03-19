@@ -1,22 +1,22 @@
-import React from "react";
+import React from 'react';
 
-import AdsBanner from "@/components/elements/AdsBanner";
-import Article from "@/components/elements/Article";
-import ProductTitle from "@/components/elements/ProductTitle";
-import StackedList from "@/components/collection/StackedList";
-import Image from "next/image";
+import AdsBanner from '@/components/elements/AdsBanner';
+import Article from '@/components/elements/Article';
+import ProductTitle from '@/components/elements/ProductTitle';
+import StackedList from '@/components/collection/StackedList';
+import Image from 'next/image';
 
 import {
   getProductDetailsByID,
   getRelativeProductsByCategory,
-} from "@/apis/product";
-import Error from "@/app/error";
-import Link from "next/link";
-import CartItem from "@/components/elements/CartItem";
-import CartItemMdl from "@/models/products/card-item";
-import Rating from "@/components/elements/Rating";
-import { formatCurrency } from "@/utils/core";
-import OrderCheckout from "./components/OrderCheckout";
+} from '@/apis/product';
+import Error from '@/app/checkout/error';
+import Link from 'next/link';
+import CartItem from '@/components/elements/CartItem';
+import CartItemMdl from '@/models/products/card-item';
+import Rating from '@/components/elements/Rating';
+import { formatCurrency } from '@/utils/core';
+import OrderCheckout from './components/OrderCheckout';
 
 const ProductDetailPage = async ({
   searchParams,
@@ -47,32 +47,32 @@ const ProductDetailPage = async ({
   );
 
   const relativeProducts = await getRelativeProductsByCategory(
-    productData?.category.id || ""
+    productData?.category.id || ''
   );
 
   // TODO: enhance later by upper reason
   if (productData === undefined || productInfo === undefined) return <Error />;
 
   return (
-    <main className="px-default gap-3 flex flex-col">
+    <main className="flex flex-col gap-3 px-default">
       {/* Sub Navigation section */}
-      <div className="flex items-center gap-2 mt-5 text-start text-[#5f5f5f] text-sm font-light">
-        <Link href={"/"} className="hover:text-green-900 hover:cursor-pointer">
+      <div className="mt-5 flex items-center gap-2 text-start text-sm font-light text-[#5f5f5f]">
+        <Link href={'/'} className="hover:cursor-pointer hover:text-green-900">
           Trang chủ
         </Link>
         <span className="font-extralight">/</span>
-        <Link href={"/"} className="hover:text-green-900 hover:cursor-pointer">
+        <Link href={'/'} className="hover:cursor-pointer hover:text-green-900">
           {productData.category.name}
         </Link>
         <span className="font-extralight">/</span>
         <span className="text-[#B95A30]">{productData.name}</span>
       </div>
-      <div className="flex flex-row gap-3 mt-4 overflow-visible">
+      <div className="mt-4 flex flex-row gap-3 overflow-visible">
         {/* Product Information section */}
-        <div className="w-3/4 flex flex-col gap-3">
-          <div className="flex justify-start items-start gap-4 bg-white shadow-inner p-5 rounded-xl">
-            <div className="flex flex-col w-2/5">
-              <div className="relative w-full h-72">
+        <div className="flex w-3/4 flex-col gap-3">
+          <div className="flex items-start justify-start gap-4 rounded-xl bg-white p-5 shadow-inner">
+            <div className="flex w-2/5 flex-col">
+              <div className="relative h-72 w-full">
                 <Image src={productData.imageUrl} alt="" fill={true} />
               </div>
               <StackedList>
@@ -90,25 +90,25 @@ const ProductDetailPage = async ({
                 })}
               </StackedList>
             </div>
-            <div className="w-3/5 flex flex-col justify-start items-start gap-3">
-              <div className="w-full flex flex-col gap-1">
-                <div className="self-stretch flex flex-row justify-between items-center">
-                  <h2 className="text-2xl text-stone-950 font-medium">
+            <div className="flex w-3/5 flex-col items-start justify-start gap-3">
+              <div className="flex w-full flex-col gap-1">
+                <div className="flex flex-row items-center justify-between self-stretch">
+                  <h2 className="text-2xl font-medium text-stone-950">
                     {productData.name}
                   </h2>
                   {productData.discount && (
-                    <span className="block px-1 py-1 bg-discount rounded text-white text-xs font-normal">
+                    <span className="block rounded bg-discount px-1 py-1 text-xs font-normal text-white">
                       Giảm {productData.discount.discountPercent}%
                     </span>
                   )}
                 </div>
                 {productData.discount ? (
-                  <div className="flex flex-row gap-4 items-center">
-                    <span className="text-discount text-xl font-bold">
-                      {formatCurrency(productData.discount.discountPrice)}{" "}
+                  <div className="flex flex-row items-center gap-4">
+                    <span className="text-xl font-bold text-discount">
+                      {formatCurrency(productData.discount.discountPrice)}{' '}
                       <u>đ</u>
                     </span>
-                    <span className="text-informal text-base line-through">
+                    <span className="text-base text-informal line-through">
                       {formatCurrency(productData.price)} đ
                     </span>
                   </div>
@@ -117,41 +117,41 @@ const ProductDetailPage = async ({
                     {formatCurrency(productData.price)} <u>đ</u>
                   </span>
                 )}
-                <div className="inline-flex flex-row mt-2 gap-3 items-center">
+                <div className="mt-2 inline-flex flex-row items-center gap-3">
                   <Rating
                     avgRating={productData.averageRating}
-                    className="text-yellow-400 size-5"
+                    className="size-5 text-yellow-400"
                   />
                   <div className="relative flex gap-6">
-                    <span className="text-lime-800 text-sm font-normal font-[Inter] leading-normal">
+                    <span className="font-[Inter] text-sm font-normal leading-normal text-lime-800">
                       (Đánh giá {productData.quantityAvailable})
                     </span>
-                    <span className="relative top-[2px] w-[0.5px] block border-l-[0.5px] border-gray-500 h-4"></span>
-                    <span className="text-informal text-sm font-normal font-[Inter] leading-normal">
+                    <span className="relative top-[2px] block h-4 w-[0.5px] border-l-[0.5px] border-gray-500"></span>
+                    <span className="font-[Inter] text-sm font-normal leading-normal text-informal">
                       Đã bán {productData.quantitySold}
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col mt-2 w-full">
+              <div className="mt-2 flex w-full flex-col">
                 <h6 className="text-xl font-medium">Thông tin chi tiết</h6>
-                <div className="items-center gap-2 inline-flex">
+                <div className="inline-flex items-center gap-2">
                   <span className="block w-2/6 text-informal">Thương hiệu</span>
                   <span>{productData.origin}</span>
                 </div>
-                <div className="items-center gap-2 inline-flex">
+                <div className="inline-flex items-center gap-2">
                   <span className="block w-2/6 text-informal">Xuất sứ</span>
                   <span>{productData.origin}</span>
                 </div>
-                <div className="items-center gap-2 inline-flex ">
+                <div className="inline-flex items-center gap-2">
                   <span className="block w-2/6 text-informal">Thành phần</span>
                   <span>{productData.ingredient}</span>
                 </div>
-                <div className="items-center gap-2 inline-flex">
+                <div className="inline-flex items-center gap-2">
                   <span className="block w-2/6 text-informal">Hạn sử dụng</span>
                   <span>{productData.expirationDate}</span>
                 </div>
-                <div className="items-center gap-2 inline-flex">
+                <div className="inline-flex items-center gap-2">
                   <span className="block w-2/6 text-informal">Bảo hành</span>
                   <span>{productData.warranty}</span>
                 </div>
@@ -203,19 +203,19 @@ const ProductDetailPage = async ({
             </div>
           </div>
           {/* Review and Rating section */}
-          <div className="bg-white shadow-inner h-96 p-5 rounded-xl justify-center items-center flex">
-            <div className="flex-col justify-center items-center gap-6 flex">
+          <div className="flex h-96 items-center justify-center rounded-xl bg-white p-5 shadow-inner">
+            <div className="flex flex-col items-center justify-center gap-6">
               <Image
-                src={"/images/rating.png"}
+                src={'/images/rating.png'}
                 alt="Rating Image"
                 width={100}
                 height={100}
               />
-              <div className="self-stretch h-[53px] flex-col justify-start items-center gap-2 flex">
+              <div className="flex h-[53px] flex-col items-center justify-start gap-2 self-stretch">
                 <span className="text-center text-xl font-medium">
                   Chưa có thông tin đánh giá
                 </span>
-                <span className="text-[#6b6b7c] text-base font-normal leading-snug">
+                <span className="text-base font-normal leading-snug text-[#6b6b7c]">
                   Chọn mua sản phẩm để trở thành người đầu tiên đánh giá sản
                   phẩm
                 </span>
@@ -224,7 +224,7 @@ const ProductDetailPage = async ({
           </div>
         </div>
         {/* User Order Information section */}
-        <div className="w-1/4 inline-flex flex-col gap-4 sticky h-fit top-0 right-0">
+        <div className="sticky right-0 top-0 inline-flex h-fit w-1/4 flex-col gap-4">
           <OrderCheckout
             brandLogo={productData.brand.avatarUrl}
             brandName={productData.brand.name}
@@ -234,12 +234,12 @@ const ProductDetailPage = async ({
           <AdsBanner
             imgURL="/images/tea-ads.png"
             position="full"
-            className="w-full h-40"
+            className="h-40 w-full"
           />
         </div>
       </div>
       {/* Relative Products section */}
-      <div className="p-2 bg-white rounded-xl shadow-inner">
+      <div className="rounded-xl bg-white p-2 shadow-inner">
         <ProductTitle title="Sản phẩm liên quan" style="normal" href="" />
         <StackedList>
           {relativeProducts &&

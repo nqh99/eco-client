@@ -1,6 +1,6 @@
-import { getDecimalPart, roundNumberToNearestHalf } from "@/utils/num";
-import React from "react";
-import { TiStarFullOutline, TiStarHalfOutline } from "react-icons/ti";
+import { getDecimalPart, roundNumberToNearestHalf } from '@/utils/num';
+import React from 'react';
+import { TiStarFullOutline, TiStarHalfOutline } from 'react-icons/ti';
 
 const Rating = ({
   avgRating,
@@ -12,7 +12,7 @@ const Rating = ({
   const haftRating = getDecimalPart(roundNumberToNearestHalf(avgRating));
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex items-center justify-center">
       {Array.from({ length: Math.floor(avgRating) }).map((_, index) => (
         <TiStarFullOutline key={index} className={className} />
       ))}

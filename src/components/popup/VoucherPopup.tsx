@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { FiInfo } from "react-icons/fi";
-import { FaRegCopy } from "react-icons/fa";
-import { AiOutlineClose } from "react-icons/ai";
-import Image from "next/image";
-import noVouchers from "@/public/images/vouchers.png";
-import DiscountMdl from "@/models/products/discount";
-import { isOutdated } from "@/utils/datetime";
-import { copyToClipboard } from "@/utils/core";
-import { Input } from "@headlessui/react";
+import { useEffect, useState } from 'react';
+import { FiInfo } from 'react-icons/fi';
+import { FaRegCopy } from 'react-icons/fa';
+import { AiOutlineClose } from 'react-icons/ai';
+import Image from 'next/image';
+import noVouchers from '@/public/images/vouchers.png';
+import DiscountMdl from '@/models/products/discount';
+import { isOutdated } from '@/utils/datetime';
+import { copyToClipboard } from '@/utils/core';
+import { Input } from '@headlessui/react';
 
 type VoucherPopupProps = {
   onClose: () => void;
   onApply: (voucher: DiscountMdl[]) => void;
   vouchers: DiscountMdl[];
-}
+};
 
 type VoucherItemProps = {
   info: DiscountMdl;
@@ -32,11 +32,11 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({
     new Set()
   );
 
-  const [activeTab, setActiveTab] = useState<"all" | "shipping" | "others">(
-    "all"
+  const [activeTab, setActiveTab] = useState<'all' | 'shipping' | 'others'>(
+    'all'
   );
 
-  const [searchedVoucherCode, setSearchedVoucherCode] = useState<string>("");
+  const [searchedVoucherCode, setSearchedVoucherCode] = useState<string>('');
 
   const [discountsByCategory, setDiscountsByCategory] = useState<
     Map<string, DiscountMdl[]>
@@ -62,12 +62,12 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({
     const selectedVoucher = vouchers.filter((voucher) =>
       selectedVouchers.has(voucher.id)
     );
-    
+
     if (selectedVoucher) {
       onApply(selectedVoucher);
       onClose();
     } else {
-      alert("Vui lòng chọn một mã ưu đãi hợp lệ.");
+      alert('Vui lòng chọn một mã ưu đãi hợp lệ.');
     }
   };
 
@@ -120,9 +120,9 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg w-full max-w-md shadow-lg">
-        <div className="flex justify-between items-center p-3">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+      <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
+        <div className="flex items-center justify-between p-3">
           <h2 className="text-lg font-semibold">Mã ưu đãi từ gia dụng ABC</h2>
           <button
             onClick={onClose}
@@ -131,22 +131,22 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({
             <AiOutlineClose />
           </button>
         </div>
-        <div className="px-3 mb-4 flex space-x-2">
+        <div className="mb-4 flex space-x-2 px-3">
           <input
             type="text"
             placeholder="Nhập mã ưu đãi"
-            className="flex-grow p-2 border border-primary rounded"
+            className="flex-grow rounded border border-primary p-2"
             value={searchedVoucherCode}
             onChange={(e) => setSearchedVoucherCode(e.target.value)}
           />
           <button
-            className={`px-4 py-2 rounded ${
+            className={`rounded px-4 py-2 ${
               searchedVoucherCode &&
               vouchers.some(
                 (voucher) => voucher.discountCode === searchedVoucherCode
               )
-                ? "bg-primary text-white"
-                : "bg-gray-100 text-zinc-400"
+                ? 'bg-primary text-white'
+                : 'bg-gray-100 text-zinc-400'
             }`}
             onClick={handleApplyVoucher}
             disabled={!searchedVoucherCode}
@@ -155,55 +155,55 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({
           </button>
         </div>
         <div className="mb-6">
-          <div className="flex justify-between text-gray-600 text-sm mb-2 border-b">
+          <div className="mb-2 flex justify-between border-b text-sm text-gray-600">
             <button
               className={`flex-1 pb-2 ${
-                activeTab === "all"
-                  ? "text-primary border-b-2 border-primary"
-                  : "text-gray-500"
+                activeTab === 'all'
+                  ? 'border-b-2 border-primary text-primary'
+                  : 'text-gray-500'
               }`}
-              onClick={() => setActiveTab("all")}
+              onClick={() => setActiveTab('all')}
             >
               Tất cả
             </button>
             <button
               className={`flex-1 pb-2 ${
-                activeTab === "shipping"
-                  ? "text-primary border-b-2 border-primary"
-                  : "text-gray-500"
+                activeTab === 'shipping'
+                  ? 'border-b-2 border-primary text-primary'
+                  : 'text-gray-500'
               }`}
-              onClick={() => setActiveTab("shipping")}
+              onClick={() => setActiveTab('shipping')}
             >
               Vận chuyển
             </button>
             <button
               className={`flex-1 pb-2 ${
-                activeTab === "others"
-                  ? "text-primary border-b-2 border-primary"
-                  : "text-gray-500"
+                activeTab === 'others'
+                  ? 'border-b-2 border-primary text-primary'
+                  : 'text-gray-500'
               }`}
-              onClick={() => setActiveTab("others")}
+              onClick={() => setActiveTab('others')}
             >
               Ưu đãi khác
             </button>
           </div>
-          <ul className="divide-y divide-gray-200 overflow-y-auto h-64 p-3 scrollbar-rounded scrollbar-thin scrollbar-none">
+          <ul className="scrollbar-rounded scrollbar-thin scrollbar-none h-64 divide-y divide-gray-200 overflow-y-auto p-3">
             {renderVouchers(activeTab)}
           </ul>
         </div>
-        <div className="flex justify-between items-center border-t pt-4 px-3 pb-2">
-          <p className="text-sm text-gray-700 grid">
-            Tiết kiệm{" "}
+        <div className="flex items-center justify-between border-t px-3 pb-2 pt-4">
+          <p className="grid text-sm text-gray-700">
+            Tiết kiệm{' '}
             <span className="text-red-500">
               {selectedVouchers.size * 25000}đ
             </span>
           </p>
           <button
             onClick={handleApplyVoucher}
-            className={`px-4 py-2 rounded ${
+            className={`rounded px-4 py-2 ${
               selectedVouchers.size > 0
-                ? "bg-primary text-white"
-                : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                ? 'bg-primary text-white'
+                : 'cursor-not-allowed bg-gray-100 text-gray-400'
             }`}
             disabled={selectedVouchers.size === 0}
           >
@@ -218,18 +218,18 @@ const VoucherPopup: React.FC<VoucherPopupProps> = ({
 const VoucherItem = ({ info, isChecked, onChecked }: VoucherItemProps) => {
   const [tooltipVisible, setTooltipVisible] = useState<boolean>(false);
 
-  const isExpired = isOutdated(info.expiredDate || "");
+  const isExpired = isOutdated(info.expiredDate || '');
 
   const baseClass = isChecked
-    ? "bg-green-50 border-green-500 border-primary"
-    : "bg-gray-50 border-gray-300";
-  const textClass = isExpired ? "text-gray-400" : "text-orange-500";
+    ? 'bg-green-50 border-green-500 border-primary'
+    : 'bg-gray-50 border-gray-300';
+  const textClass = isExpired ? 'text-gray-400' : 'text-orange-500';
 
   return (
     <li
       key={info.id}
-      className={`flex items-center justify-between py-2 relative ${
-        isExpired ? "opacity-50" : ""
+      className={`relative flex items-center justify-between py-2 ${
+        isExpired ? 'opacity-50' : ''
       }`}
     >
       <Input
@@ -242,15 +242,15 @@ const VoucherItem = ({ info, isChecked, onChecked }: VoucherItemProps) => {
       />
       <label
         htmlFor={`voucher-checkbox-${info.id}`}
-        className={`flex items-center justify-center w-5 h-5 rounded-sm border-2 mr-2 ${
+        className={`mr-2 flex h-5 w-5 items-center justify-center rounded-sm border-2 ${
           isChecked
-            ? "bg-primary border-primary"
-            : "bg-gray-100 border-gray-300"
+            ? 'border-primary bg-primary'
+            : 'border-gray-300 bg-gray-100'
         } cursor-pointer`}
       >
         {isChecked && (
           <svg
-            className="w-4 h-4 text-white"
+            className="h-4 w-4 text-white"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -267,18 +267,18 @@ const VoucherItem = ({ info, isChecked, onChecked }: VoucherItemProps) => {
       </label>
 
       <div
-        className={`flex items-center w-full relative rounded-lg overflow-hidden`}
+        className={`relative flex w-full items-center overflow-hidden rounded-lg`}
       >
         <div
-          className={`flex-grow p-3 ${baseClass} border-r-0 rounded-l-lg relative border`}
+          className={`flex-grow p-3 ${baseClass} relative rounded-l-lg border border-r-0`}
         >
           <span
             className={`text-sm font-semibold ${textClass} flex items-center`}
           >
-            Giảm {info.discountPercent} tới đa {info.maxDiscountPrice} đơn từ{" "}
+            Giảm {info.discountPercent} tới đa {info.maxDiscountPrice} đơn từ{' '}
             {info.minOrderPrice}
             <span
-              className="ml-2 cursor-pointer relative"
+              className="relative ml-2 cursor-pointer"
               onMouseEnter={() => setTooltipVisible(true)}
               onMouseLeave={() => setTooltipVisible(false)}
             >
@@ -286,30 +286,30 @@ const VoucherItem = ({ info, isChecked, onChecked }: VoucherItemProps) => {
             </span>
           </span>
           <p className="text-xs text-gray-500">
-            HSD: {info.expiredDate}{" "}
+            HSD: {info.expiredDate}{' '}
             {isExpired && <span className="text-red-500">Mã đã hết hạn</span>}
           </p>
         </div>
         <div
-          className={`w-8 h-16 ${baseClass} border-2 border-l-0 rounded-r-lg flex items-center justify-between relative`}
+          className={`h-16 w-8 ${baseClass} relative flex items-center justify-between rounded-r-lg border-2 border-l-0`}
         >
           <div
-            className={`absolute top-[-0.625rem] left-[-0.625rem] w-5 h-5 ${baseClass} border-2 rounded-full`}
+            className={`absolute left-[-0.625rem] top-[-0.625rem] h-5 w-5 ${baseClass} rounded-full border-2`}
           />
           <div className={`h-10 border-l-2 border-dotted ${baseClass}`} />
           <div
-            className={`absolute bottom-[-0.625rem] left-[-0.625rem] w-5 h-5 ${baseClass} border-2 rounded-full`}
+            className={`absolute bottom-[-0.625rem] left-[-0.625rem] h-5 w-5 ${baseClass} rounded-full border-2`}
           />
         </div>
       </div>
 
       {tooltipVisible && (
         <div
-          className="fixed w-64 p-4 bg-white border boder-primary rounded shadow-lg z-50 top-1 left-1"
+          className="boder-primary fixed left-1 top-1 z-50 w-64 rounded border bg-white p-4 shadow-lg"
           onMouseEnter={() => setTooltipVisible(true)}
           onMouseLeave={() => setTooltipVisible(false)}
         >
-          <p className="font-bold flex items-center">
+          <p className="flex items-center font-bold">
             Mã: {info.discountCode}
             <button
               onClick={() => copyToClipboard(info.discountCode)}
@@ -319,7 +319,7 @@ const VoucherItem = ({ info, isChecked, onChecked }: VoucherItemProps) => {
             </button>
           </p>
           <p>Hạn sử dụng: {info.expiredDate}</p>
-          <ul className="mt-2 list-disc list-inside text-sm text-gray-600">
+          <ul className="mt-2 list-inside list-disc text-sm text-gray-600">
             {info.discountCons?.map((condition, index) => (
               <li key={index}>{condition}</li>
             ))}
@@ -332,13 +332,13 @@ const VoucherItem = ({ info, isChecked, onChecked }: VoucherItemProps) => {
 
 const EmptyVoucherSection = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-40">
-      <div className="mb-4 p-2 bg-blue-100 text-blue-600 rounded-lg flex items-center">
+    <div className="flex h-40 flex-col items-center justify-center">
+      <div className="mb-4 flex items-center rounded-lg bg-blue-100 p-2 text-blue-600">
         <FiInfo className="mr-2" />
         <p>Vui lòng chọn sản phẩm trong giỏ hàng trước khi chọn mã giảm giá</p>
       </div>
-      <Image src={noVouchers} alt="logo vouchers" className="w-16 h-16 mb-4" />
-      <p className="text-gray-500 text-center">Chưa có mã giảm giá của Shop</p>
+      <Image src={noVouchers} alt="logo vouchers" className="mb-4 h-16 w-16" />
+      <p className="text-center text-gray-500">Chưa có mã giảm giá của Shop</p>
     </div>
   );
 };

@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import Image from "next/image";
-import Button from "../elements/Button";
+import Image from 'next/image';
+import Button from '../elements/Button';
 
 const SubFooter: React.FC = () => {
   return (
-    <div className="px-8 bg-amber-500 flex items-center justify-between select-none">
+    <div className="flex select-none items-center justify-between bg-amber-500 px-8">
       <div className="flex items-center">
         <Image
           src="/images/supermarket.png"
@@ -14,7 +14,7 @@ const SubFooter: React.FC = () => {
           height={100}
         ></Image>
         <div className="ms-10">
-          <p className="text-white font-semibold">
+          <p className="font-semibold text-white">
             Đăng ký ngay để nhận ưu đãi thành <br /> viên từ ECO - HHB
           </p>
         </div>
@@ -22,7 +22,7 @@ const SubFooter: React.FC = () => {
       <div className="">
         <Button
           type="button"
-          className="bg-white hover:bg-gray-100 font-semibold py-2 px-4 rounded shadow text-green-700"
+          className="rounded bg-white px-4 py-2 font-semibold text-green-700 shadow hover:bg-gray-100"
         >
           Đăng ký ngay
         </Button>

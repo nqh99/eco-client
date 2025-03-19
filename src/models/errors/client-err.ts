@@ -1,5 +1,5 @@
-import { HttpStatusCodes, HttpStatusMessages } from "@/constants/https/codes";
-import { CustomError } from "./custom-err";
+import { HttpStatusCodes, HttpStatusMessages } from '@/constants/https/codes';
+import { CustomError } from './custom-err';
 
 class ClientError extends CustomError {
   constructor(cause?: string, data?: any) {
@@ -14,7 +14,8 @@ class ClientError extends CustomError {
 
 const isClientError = (candidate: any): candidate is ClientError => {
   return (
-    candidate instanceof ClientError || candidate?.code === HttpStatusCodes.BAD_REQ
+    candidate instanceof ClientError ||
+    candidate?.code === HttpStatusCodes.BAD_REQ
   );
 };
 

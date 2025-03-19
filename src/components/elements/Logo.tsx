@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import logoHHB from "@/public/images/logo-hhb.png";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import React from 'react';
+import Image from 'next/image';
+import logoHHB from '@/public/images/logo-hhb.png';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Logo = () => {
   const route = useRouter();
@@ -14,8 +14,8 @@ const Logo = () => {
       <Link
         aria-label="logo hhb, click to go to the homepage"
         href="/"
-        className={`flex items-center justify-center h-full`}
-        onClick={() => route.push("/")}
+        className={`flex h-full items-center justify-center`}
+        onClick={() => route.push('/')}
       >
         <Image src={logoHHB} alt="logo HHB"></Image>
       </Link>

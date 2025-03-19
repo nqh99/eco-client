@@ -1,7 +1,7 @@
-import ResponseMdl from "@/models/https/response";
-import { revalidatePath } from "next/cache";
-import { generateReadableErr } from "./core";
-import { ClientError } from "@/models/errors/client-err";
+import ResponseMdl from '@/models/https/response';
+import { revalidatePath } from 'next/cache';
+import { generateReadableErr } from './core';
+import { ClientError } from '@/models/errors/client-err';
 
 /**
  * Converts a string to a URL-friendly format.
@@ -10,14 +10,14 @@ import { ClientError } from "@/models/errors/client-err";
  * @returns The converted URL string.
  */
 const convertToURL = (str: string): string => {
-  const stringWithHyphens = str.toLocaleLowerCase().replace(/\s+/g, "-");
+  const stringWithHyphens = str.toLocaleLowerCase().replace(/\s+/g, '-');
   const stringWithoutSpecialCharacters = stringWithHyphens
-    .replace(/(?<![a-zA-Z])[0-9%]+/g, "")
-    .replace(/-+/g, "-")
-    .replace("&", "and");
+    .replace(/(?<![a-zA-Z])[0-9%]+/g, '')
+    .replace(/-+/g, '-')
+    .replace('&', 'and');
 
   const url =
-    stringWithoutSpecialCharacters.charAt(0) === "-"
+    stringWithoutSpecialCharacters.charAt(0) === '-'
       ? stringWithoutSpecialCharacters.substring(1)
       : stringWithoutSpecialCharacters;
 
@@ -40,7 +40,7 @@ const safeDataFetching = async <T>(
   }
   const ret: ResponseMdl<T> = await fetch(url, {
     headers: {
-      "ConTent-Type": "application/json",
+      'ConTent-Type': 'application/json',
     },
   })
     .then(async (res) => {
@@ -91,9 +91,9 @@ const safePostRequest = async <T, D extends Record<string, unknown>>(
   data: D
 ): Promise<T | undefined> => {
   const ret: ResponseMdl<T> = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
   })

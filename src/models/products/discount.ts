@@ -1,4 +1,4 @@
-import { DateTime } from "next-auth/providers/kakao";
+import { DateTime } from 'next-auth/providers/kakao';
 
 type DiscountMdl = {
   id: string;

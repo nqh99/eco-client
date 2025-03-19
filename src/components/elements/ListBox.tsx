@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Listbox as IListbox,
@@ -8,37 +8,37 @@ import {
   ListboxSelectedOption,
   ListboxOptionProps,
   ListboxProps,
-} from "@headlessui/react";
-import clsx from "clsx";
-import { Fragment, ReactElement } from "react";
+} from '@headlessui/react';
+import clsx from 'clsx';
+import { Fragment, ReactElement } from 'react';
 
 type ListBoxProps = {
   children?: React.ReactNode;
   placeholder?: string;
-  anchor?: "bottom end" | "bottom start" | "top end" | "top start";
+  anchor?: 'bottom end' | 'bottom start' | 'top end' | 'top start';
 } & ListboxProps;
 
 const ListBox = ({
   placeholder,
   children,
-  anchor = "bottom end",
+  anchor = 'bottom end',
   ...props
 }: ListBoxProps) => {
   return (
     <IListbox {...props}>
-      <ListboxButton className="bg-red-700 relative block w-full rounded-lg bg-white/5">
+      <ListboxButton className="relative block w-full rounded-lg bg-red-700 bg-white/5">
         <ListboxSelectedOption
           options={children}
           placeholder={<span className="opacity-50">{placeholder}</span>}
         />
-        {"ButtonValue"}
+        {'ButtonValue'}
       </ListboxButton>
       <ListboxOptions
         anchor={anchor}
         transition
         className={clsx(
-          "bg-yellow-400",
-          "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
+          'bg-yellow-400',
+          'transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0'
         )}
       >
         {children}

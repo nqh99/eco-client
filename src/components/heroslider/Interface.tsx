@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useState, useEffect } from "react";
-import Slides from "../elements/Slides";
-import Pagination from "@/components/elements/Pagination";
+import React from 'react';
+import { useState, useEffect } from 'react';
+import Slides from '../elements/Slides';
+import Pagination from '@/components/elements/Pagination';
 
 const pages = [0, 1, 2, 3, 4, 5, 6];
 
@@ -37,7 +37,7 @@ const Interface = () => {
 
   return (
     <section
-      className={`flex flex-col items-center group w-full h-fit relative md:hidden fadeIn overflow-hidden`}
+      className={`fadeIn group relative flex h-fit w-full flex-col items-center overflow-hidden md:hidden`}
     >
       <Slides
         currentPage={currentPage}
