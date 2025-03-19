@@ -1,6 +1,7 @@
 class CustomError extends Error {
   code;
   data;
+
   constructor(code: number, message: string, cause?: string, data?: any) {
     super(message);
 

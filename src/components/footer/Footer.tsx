@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Image from 'next/image';
-import Button from '@/components/elements/Button';
 
 const Footer: React.FC = () => {
   return (

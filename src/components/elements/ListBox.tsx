@@ -4,10 +4,10 @@ import {
   Listbox as IListbox,
   ListboxButton,
   ListboxOption as IListboxOption,
-  ListboxOptions,
-  ListboxSelectedOption,
   ListboxOptionProps,
+  ListboxOptions,
   ListboxProps,
+  ListboxSelectedOption,
 } from '@headlessui/react';
 import clsx from 'clsx';
 import { Fragment, ReactElement } from 'react';

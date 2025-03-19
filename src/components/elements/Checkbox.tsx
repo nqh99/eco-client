@@ -1,9 +1,13 @@
 'use client';
 
-import { ReactNode, createContext, useContext } from 'react';
+import { createContext, ReactNode, useContext } from 'react';
 import { motion as m, MotionProps } from 'framer-motion';
-import { Field, Label, LabelProps } from '@headlessui/react';
-import { Checkbox as ICheckbox } from '@headlessui/react';
+import {
+  Checkbox as ICheckbox,
+  Field,
+  Label,
+  LabelProps,
+} from '@headlessui/react';
 
 const tickVariants = {
   checked: {
