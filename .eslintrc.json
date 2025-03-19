@@ -14,8 +14,7 @@
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
-    "prettier",
-    "no-loops"
+    "prettier"
   ],
   "rules": {
     "prettier/prettier": "error",

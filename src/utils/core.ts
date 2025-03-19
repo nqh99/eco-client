@@ -1,48 +1,3 @@
-import { CoreError } from '@/constants/error/core';
-import { HttpStatusCodes } from '@/constants/https/codes';
-import { AuthenticationError } from '@/models/errors/authentication-err';
-import { AuthorizationError } from '@/models/errors/authorization-err';
-import { ClientError } from '@/models/errors/client-err';
-import { CustomError } from '@/models/errors/custom-err';
-import { NotFoundError } from '@/models/errors/not-found-err';
-import { ServiceError } from '@/models/errors/service-err';
-import { ValidationError } from '@/models/errors/validation-err';
-
-/**
- * Specify the readable errors for client rendering based on the provided status.
- * @param status - The HTTP status code. Should not be falsy value.
- * @param err - The error response object. It should contains these below attributes:
- *                  - msg: the message which described the error
- *                  - info: which contains all error information like: cause, error stack trace, data object, etc
- * @returns A readable error object based on the status and err.
- */
-const generateReadableErr = (
-  status: number,
-  err?: CustomError | { msg: string; info: string }
-) => {
-  if (!status) {
-    return new ServiceError(CoreError.INVALID_HTTP_STATUS);
-  }
-
-  if (status > HttpStatusCodes.INTERNAL_SERVICE_ERROR) {
-    return err as ServiceError;
-  }
-
-  switch (status) {
-    case HttpStatusCodes.NOT_FOUND:
-      return err as NotFoundError;
-    case HttpStatusCodes.UNAUTHORIZED:
-      return err as AuthenticationError;
-    case HttpStatusCodes.FORBIDDEN:
-      return err as AuthorizationError;
-    case HttpStatusCodes.CONFLICT:
-    case HttpStatusCodes.UNPROCESSABLE_CONTENT:
-      return err as ValidationError;
-    default:
-      return err as ClientError;
-  }
-};
-
 // TODO: enhance later to mapping with VND, DOLLAR
 const formatCurrency = (number: number): string => {
   return number.toLocaleString('it-IT');
@@ -98,7 +53,6 @@ const copyToClipboard = (code: string) => {
 };
 
 export {
-  generateReadableErr,
   formatCurrency,
   convertPOJOToFormData,
   convertRoutingPath,

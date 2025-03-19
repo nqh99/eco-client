@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import Image, { StaticImageData } from 'next/image';
-
-//import banner slide
-import bannerSlide from '@/public/images/banner.png';
+import Image, { StaticImageData } from 'next/image'; //import banner slide
+import bannerSlide from '@/public/images/banner.png'; //type
 //type
 type Props = {
   currentPage: number;

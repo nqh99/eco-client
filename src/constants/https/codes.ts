@@ -6,7 +6,7 @@ enum HttpStatusCodes {
   NOT_FOUND = 404,
   CONFLICT = 409,
   UNPROCESSABLE_CONTENT = 422,
-  INTERNAL_SERVICE_ERROR = 500,
+  INTERNAL_SERVER_ERROR = 500,
 }
 
 const HttpStatusMessages: { [key in HttpStatusCodes]: string } = {
@@ -20,7 +20,7 @@ const HttpStatusMessages: { [key in HttpStatusCodes]: string } = {
   [HttpStatusCodes.CONFLICT]: 'Conflicts with the current state of the server!',
   [HttpStatusCodes.UNPROCESSABLE_CONTENT]:
     'The request faces some semantic errors!',
-  [HttpStatusCodes.INTERNAL_SERVICE_ERROR]: 'Internal service error!',
+  [HttpStatusCodes.INTERNAL_SERVER_ERROR]: 'Internal server error!',
 };
 
 export { HttpStatusCodes, HttpStatusMessages };

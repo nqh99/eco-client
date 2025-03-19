@@ -4,9 +4,12 @@ import React from 'react';
 import { motion as m } from 'framer-motion';
 import Button from '@/components/elements/Button';
 import { ErrorComponent } from 'next/dist/client/components/error-boundary';
+import { logger } from '@/utils/logger';
+import { usePathname } from 'next/navigation';
 
 const FullPageError: ErrorComponent = ({ error, reset }) => {
-  console.log(error);
+  const log = logger.child({ module: usePathname() });
+  log.error(error.message);
 
   return (
     <>
@@ -120,7 +123,7 @@ const FullPageError: ErrorComponent = ({ error, reset }) => {
         </center>
         <center className="mt-5">
           <Button
-            className="rounded-md bg-neutral-300 p-4 font-mono text-2xl text-gray-500 hover:text-slate-700 hover:shadow-inner"
+            className="rounded-md bg-neutral-300 px-4 py-2 font-mono text-xl text-gray-500 hover:text-gray-600 hover:shadow-inner"
             onClick={reset}
           >
             Try again

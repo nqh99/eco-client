@@ -1,7 +1,5 @@
 import ResponseMdl from '@/models/https/response';
 import { revalidatePath } from 'next/cache';
-import { generateReadableErr } from './core';
-import { ClientError } from '@/models/errors/client-err';
 import { refresh } from '@/apis/auth';
 import { AppDispatch } from '@/lib/store';
 import { authSlice, AuthState } from '@/lib/features/auth/authSlice';
@@ -51,23 +49,17 @@ const safeDataFetching = async <T>(
   })
     .then(async (res) => {
       if (!res.ok) {
-        throw generateReadableErr(res.status, {
-          msg: res.statusText,
-          info: await res.text(),
-        });
+        // TODO:
       }
       return res.text();
     })
     .then((data) => JSON.parse(data))
     .catch((err: Error) => {
-      throw new ClientError(err.cause as string, err.stack);
+      // TODO
     });
 
   if (!isResOK(ret.status)) {
-    throw generateReadableErr(ret.status, {
-      msg: ret.message,
-      info: String(ret.data),
-    });
+    // TODO
   }
 
   return ret.data;
@@ -103,23 +95,17 @@ const safePostRequest = async <T, D extends Record<string, unknown>>(
   })
     .then(async (res) => {
       if (!res.ok) {
-        throw generateReadableErr(res.status, {
-          msg: res.statusText,
-          info: await res.text(),
-        });
+        // TODO
       }
       return res.text();
     })
     .then((responseData) => JSON.parse(responseData))
     .catch((err: Error) => {
-      throw new ClientError(err.cause as string, err.stack);
+      // TODO
     });
 
   if (!isResOK(ret.status)) {
-    throw generateReadableErr(ret.status, {
-      msg: ret.message,
-      info: String(ret.data),
-    });
+    // TODO
   }
 
   return ret.data;
