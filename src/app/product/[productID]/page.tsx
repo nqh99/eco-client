@@ -10,7 +10,6 @@ import {
   getProductDetailsByID,
   getRelativeProductsByCategory,
 } from '@/apis/product';
-import Error from '@/app/checkout/error';
 import Link from 'next/link';
 import CartItem from '@/components/elements/CartItem';
 import CartItemMdl from '@/models/products/card-item';
@@ -51,7 +50,7 @@ const ProductDetailPage = async ({
   );
 
   // TODO: enhance later by upper reason
-  if (productData === undefined || productInfo === undefined) return <Error />;
+  if (productData === undefined || productInfo === undefined) return;
 
   return (
     <main className="flex flex-col gap-3 px-default">

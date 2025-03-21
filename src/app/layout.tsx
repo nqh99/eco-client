@@ -6,6 +6,8 @@ import '@/styles/globals.css';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '@/components/footer/Footer';
 import StoreProvider from './StoreProvider';
+import FullPageError from '@/components/error/FullPageError';
+import { ErrorBoundaryHandler } from 'next/dist/client/components/error-boundary';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,11 +27,11 @@ export default function RootLayout({
         className={`h-screen w-screen overflow-x-hidden ${inter.className}`}
       >
         <StoreProvider>
-          <div>
+          <ErrorBoundaryHandler pathname={'/'} errorComponent={FullPageError}>
             <Navbar />
             {children}
             <Footer />
-          </div>
+          </ErrorBoundaryHandler>
         </StoreProvider>
       </body>
     </html>

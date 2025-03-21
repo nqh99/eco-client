@@ -1,7 +1,5 @@
 import ResponseMdl from '@/models/https/response';
 import { revalidatePath } from 'next/cache';
-import { generateReadableErr } from './core';
-import { ClientError } from '@/models/errors/client-err';
 import { refresh } from '@/apis/auth';
 import { AppDispatch } from '@/lib/store';
 import { authSlice, AuthState } from '@/lib/features/auth/authSlice';
@@ -12,8 +10,8 @@ import { LoginResponse } from '@/models/auth/LoginResponse';
 /**
  * Converts a string to a URL-friendly format.
  *
- * @param string - The string to be converted.
  * @returns The converted URL string.
+ * @param str
  */
 const convertToURL = (str: string): string => {
   const stringWithHyphens = str.toLocaleLowerCase().replace(/\s+/g, '-');
@@ -34,7 +32,7 @@ const convertToURL = (str: string): string => {
  * Fetches data from the specified URL, convert it into specific response model (T type) and handles error cases.
  *
  * @param url - The URL to fetch the data from.
- * @param T - type of responded data
+ * @param needRevalidate
  * @returns A promise that resolves to the fetched data or an empty `ResponseMdl` object.
  */
 const safeDataFetching = async <T>(
@@ -51,23 +49,17 @@ const safeDataFetching = async <T>(
   })
     .then(async (res) => {
       if (!res.ok) {
-        throw generateReadableErr(res.status, {
-          msg: res.statusText,
-          info: await res.text(),
-        });
+        // TODO:
       }
       return res.text();
     })
     .then((data) => JSON.parse(data))
     .catch((err: Error) => {
-      throw new ClientError(err.cause as string, err.stack);
+      // TODO
     });
 
   if (!isResOK(ret.status)) {
-    throw generateReadableErr(ret.status, {
-      msg: ret.message,
-      info: String(ret.data),
-    });
+    // TODO
   }
 
   return ret.data;
@@ -76,8 +68,8 @@ const safeDataFetching = async <T>(
 /**
  * Checks if the HTTP response status is OK (200).
  *
- * @param response - The HTTP response object.
  * @returns True if the response status is OK, false otherwise.
+ * @param res
  */
 const isResOK = (res: number): boolean => {
   return res >= 200 && res < 300;
@@ -88,8 +80,6 @@ const isResOK = (res: number): boolean => {
  *
  * @param url - The URL to send the request to.
  * @param data - The data to send in the request body.
- * @param T - The type of the response data.
- * @param D - The type of the client data which will be sent to server.
  * @returns A promise that resolves to the response data or an empty `ResponseMdl` object.
  */
 const safePostRequest = async <T, D extends Record<string, unknown>>(
@@ -105,23 +95,17 @@ const safePostRequest = async <T, D extends Record<string, unknown>>(
   })
     .then(async (res) => {
       if (!res.ok) {
-        throw generateReadableErr(res.status, {
-          msg: res.statusText,
-          info: await res.text(),
-        });
+        // TODO
       }
       return res.text();
     })
     .then((responseData) => JSON.parse(responseData))
     .catch((err: Error) => {
-      throw new ClientError(err.cause as string, err.stack);
+      // TODO
     });
 
   if (!isResOK(ret.status)) {
-    throw generateReadableErr(ret.status, {
-      msg: ret.message,
-      info: String(ret.data),
-    });
+    // TODO
   }
 
   return ret.data;
